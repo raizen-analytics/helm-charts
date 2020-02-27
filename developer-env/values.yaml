@@ -3,15 +3,16 @@
 # Declare variables to be passed into your templates.
 
 users:
-  {}
+  - raphael-bos
+  - guifneves
 
 oauth:
   proxyProvider: github
-  # cookieSecret: someSecret
-  # clientId: someId
-  # clientSecret: someSecret
-  # emailDomains: '*'
-  # redirectUrl: https://dev.project.raizen.ai/oauth2/callback
+  cookieSecret: someSecret
+  clientId: someId
+  clientSecret: someSecret
+  emailDomains: '*'
+  redirectUrl: https://dev.project.raizen.ai/oauth2/callback
 
 ingress:
   host: dev.project.raizen.ai

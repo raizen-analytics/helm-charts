@@ -1,5 +1,6 @@
 {{- $root := . -}}
 {{- range .Values.users }}
+---
 apiVersion: v1
 kind: Service
 metadata:
