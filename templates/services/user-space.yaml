@@ -1,0 +1,16 @@
+{{- $root := . -}}
+{{- range .Values.users }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{.}}-space
+  name: {{.}}-space
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  ports:
+  - name: "4180"
+    port: 4180
+  selector:
+    app: {{.}}-space
+{{- end}}

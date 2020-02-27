@@ -1,0 +1,15 @@
+{{- $root := . -}}
+{{- range .Values.users }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{.}}
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: default
+  resources:
+    requests:
+      storage: 32Gi
+{{- end }}

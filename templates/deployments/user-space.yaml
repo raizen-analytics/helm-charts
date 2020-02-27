@@ -1,0 +1,103 @@
+{{- $root := . -}}
+{{- range .Values.users }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.}}-space
+  namespace: {{ $root.Release.Namespace | quote }}
+  labels:
+    app: {{.}}-space
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{.}}-space
+  template:
+    metadata:
+      labels:
+        app: {{.}}-space
+    spec:
+      initContainers:
+        - name: bash-command
+          image: bash
+          command: ["chown", "-R", "1000:1000", "/volume"]
+          volumeMounts:
+          - mountPath: /volume
+            name: user-disk
+      containers:
+      - name: oauth
+        image: quay.io/pusher/oauth2_proxy:v5.0.0
+        env:
+        - name: OAUTH2_PROXY_PROVIDER
+          value: {{ $root.Values.oauth.proxyProvider | quote }}
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: {{ $root.Values.oauth.cookieSecret | quote }}
+        - name: OAUTH2_PROXY_CLIENT_ID
+          value: {{ $root.Values.oauth.clientId | quote }}
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          value: {{ $root.Values.oauth.clientSecret | quote }}
+        - name: OAUTH2_PROXY_EMAIL_DOMAINS
+          value: {{ $root.Values.oauth.emailDomains | quote }}
+        - name: OAUTH2_PROXY_UPSTREAMS
+          value: http://localhost:80
+        - name: OAUTH2_PROXY_HTTP_ADDRESS
+          value: :4180
+        - name: OAUTH2_PROXY_REDIRECT_URL
+          value: {{ $root.Values.oauth.redirectUrl | quote }}
+        resources:
+          requests:
+            memory: 10Mi
+        ports:
+        - containerPort: 4180
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: /etc/nginx/conf.d/default.conf
+            subPath: default.conf
+            name: user-proxy-cfg
+          - mountPath: /usr/share/nginx/html/index.html
+            subPath: index.html
+            name: user-apps-html
+      - name: vscode
+        args: ['--auth', 'none']
+        image: codercom/code-server
+        ports:
+        - containerPort: 8080
+        resources: 
+          requests:
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /home/coder/project
+          name: user-disk
+      - name: jupyter
+        image: jupyter/datascience-notebook
+        command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter"]
+        ports:
+        - containerPort: 8888
+        resources: 
+          requests:
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /home/jovyan/
+          name: user-disk
+      volumes:
+        - name: user-disk
+          persistentVolumeClaim:
+            claimName: {{.}}
+        - name: user-proxy-cfg
+          configMap:
+            name: {{ . }}-nginx-cfg
+            items:
+            - key: default.conf
+              path: default.conf
+        - name: user-apps-html
+          configMap:
+            name: user-apps-html
+            items:
+            - key: index.html
+              path: index.html
+{{- end }}
