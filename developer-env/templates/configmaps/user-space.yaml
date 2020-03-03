@@ -21,7 +21,6 @@ data:
       proxy_buffering off;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
-      proxy_set_header Access-Control-Allow-Origin *;
       proxy_read_timeout 300;
 
       if ( $http_x_forwarded_user != {{ . | quote }} ) {
@@ -29,17 +28,21 @@ data:
       }
   
       location /jupyter {
-        proxy_pass   http://localhost:8888;
+        proxy_pass    http://127.0.0.1:8888;
       }
 
       location /code {
-        proxy_pass http://localhost:8080;
-        rewrite /code(/|$)(.*) /$2 break;
+        proxy_pass    http://127.0.0.1:8080;
+        rewrite       /code(/|$)(.*) /$2 break;
+      }
+
+      location /airflow {
+        proxy_pass    http://127.0.0.1:8081;
       }
 
       # try redirect to port
-      location ~/(\d+)$ {
-        proxy_pass http://127.0.0.1:$1/;
+      location ~ ^/(\d+)/?(.*) {
+        proxy_pass http://127.0.0.1:$1/$2;
       }
 
       location / {

@@ -12,6 +12,8 @@ spec:
   ports:
   - name: "4180"
     port: 4180
+  - name: "5432"
+    port: 5432
   selector:
     app: {{.}}-space
 {{- end}}

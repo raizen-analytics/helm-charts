@@ -4,13 +4,39 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{.}}
+  name: {{.}}-disk
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: default
+  storageClassName: {{ $root.Values.volumes.disk.storageClassName | quote }}
   resources:
     requests:
-      storage: 32Gi
+      storage: {{ $root.Values.volumes.disk.size | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{.}}-file-dags
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ $root.Values.volumes.file.storageClassName | quote }}
+  resources:
+    requests:
+      storage: {{ $root.Values.volumes.file.size | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{.}}-file-logs
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ $root.Values.volumes.file.storageClassName | quote }}
+  resources:
+    requests:
+      storage: {{ $root.Values.volumes.file.size | quote }}
 {{- end }}

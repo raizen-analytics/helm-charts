@@ -18,3 +18,13 @@ ingress:
   host: dev.project.raizen.ai
   tls:
     clusterIssuerName: letsencrypt-prod
+
+imagePullSecrets:
+  - name: acr-secret
+volumes:
+  disk:
+    size: 32Gi
+    storageClassName: default
+  file:
+    size: 500Mi
+    storageClassName: azurefile

@@ -20,6 +20,7 @@ spec:
       labels:
         app: {{.}}-space
     spec:
+      serviceAccountName: airflow-scheduler
       initContainers:
         - name: bash-command
           image: bash
@@ -72,8 +73,12 @@ spec:
           requests:
             memory: 200Mi
         volumeMounts:
-        - mountPath: /home/coder/project
+        - mountPath: /home/coder/project/disk
           name: user-disk
+        - mountPath: /home/coder/project/airflow/dags
+          name: user-file-dags
+        - mountPath: /home/coder/project/airflow/logs
+          name: user-file-logs
       - name: jupyter
         image: jupyter/datascience-notebook
         command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter"]
@@ -83,12 +88,122 @@ spec:
           requests:
             memory: 200Mi
         volumeMounts:
-        - mountPath: /home/jovyan/
+        - mountPath: /home/jovyan/disk
           name: user-disk
+        - mountPath: /home/jovyan/airflow/dags
+          name: user-file-dags
+        - mountPath: /home/jovyan/airflow/logs
+          name: user-file-logs
+      - name: postgres
+        image: postgres:9.6
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_DB
+          value: airflow
+        - name: POSTGRES_PASSWORD
+          value: airflow  
+        - name: POSTGRES_USER
+          value: airflow
+        ports:
+        - containerPort: 5432
+        resources: 
+          requests:
+            memory: 128Mi
+      - name: airflow-webserver
+        image: raizenanalyticsdev.azurecr.io/airflow-base:1.1.0-raizenlib
+        # command: ["sh", "-c", "airflow initdb
+        #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
+        #   && airflow webserver"]
+        command: ["sh", "-c", "airflow initdb && airflow webserver"]
+        env:
+        - name: AIRFLOW_HOME
+          value: /home/engineer/
+        - name: AIRFLOW__CORE__DAGS_FOLDER
+          value: /home/engineer/dags
+        - name: AIRFLOW__CORE__BASE_LOG_FOLDER
+          value: /home/engineer/logs
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: postgresql+psycopg2://airflow:airflow@{{.}}-space:5432/airflow
+        - name: AIRFLOW__CORE__FERNET_KEY
+          value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: KubernetesExecutor
+        - name: AIRFLOW__CORE__LOAD_EXAMPLES
+          value: 'False'
+        - name: AIRFLOW__WEBSERVER__RBAC
+          value: 'False'
+        - name: AIRFLOW__WEBSERVER__BASE_URL
+          value: http://127.0.0.1:8081/airflow
+        - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
+          value: '127.0.0.1'
+        - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
+          value: '8081'
+        - name: AIRFLOW__WEBSERVER__AUTHENTICATE
+          value: 'False'
+        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
+          value: {{.}}-file-dags
+        - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
+          value: {{.}}-file-logs
+        volumeMounts:
+        - mountPath: /home/engineer/dags
+          name: user-file-dags
+        - mountPath: /home/engineer/logs
+          name: user-file-logs
+      - name: airflow-scheduler
+        image: raizenanalyticsdev.azurecr.io/airflow-base:1.1.0-raizenlib
+        command: ["airflow", "scheduler"]
+        env:
+        - name: AIRFLOW_HOME
+          value: /home/engineer/
+        - name: AIRFLOW__CORE__DAGS_FOLDER
+          value: /home/engineer/dags
+        - name: AIRFLOW__CORE__BASE_LOG_FOLDER
+          value: /home/engineer/logs
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: postgresql+psycopg2://airflow:airflow@{{.}}-space:5432/airflow
+        - name: AIRFLOW__CORE__FERNET_KEY
+          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
+        - name: AIRFLOW__CORE__LOAD_EXAMPLES
+          value: 'False'
+        - name: AIRFLOW__WEBSERVER__RBAC
+          value: 'True'
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: KubernetesExecutor
+        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__FERNET_KEY
+          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
+        - name: AIRFLOW__KUBERNETES__NAMESPACE
+          value: {{ $root.Release.Namespace | quote }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
+          value: raizenanalyticsdev.azurecr.io/airflow-base
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
+          value: 1.1.0-raizenlib
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
+          value: Always
+        {{- if $root.Values.imagePullSecrets}}
+        - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
+          value: {{range $root.Values.imagePullSecrets}}{{ required "A valid name secret!" .name }},{{end}}
+        {{end}}
+        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
+          value: {{.}}-file-dags
+        - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
+          value: {{.}}-file-logs
+        volumeMounts:
+        - mountPath: /home/engineer/dags
+          name: user-file-dags
+        - mountPath: /home/engineer/logs
+          name: user-file-logs
+      imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk
           persistentVolumeClaim:
-            claimName: {{.}}
+            claimName: {{.}}-disk
+        - name: user-file-dags
+          persistentVolumeClaim:
+            claimName: {{.}}-file-dags
+        - name: user-file-logs
+          persistentVolumeClaim:
+            claimName: {{.}}-file-logs
         - name: user-proxy-cfg
           configMap:
             name: {{ . }}-nginx-cfg
