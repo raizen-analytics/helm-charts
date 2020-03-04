@@ -193,6 +193,18 @@ spec:
           name: user-file-dags
         - mountPath: /home/engineer/logs
           name: user-file-logs
+      - name: firefox
+        image: jlesage/firefox
+        env:
+          - name: DISPLAY_WIDTH
+            value: '1920'
+          - name: DISPLAY_HEIGHT
+            value: '1080'
+        ports:
+        - containerPort: 5800
+        volumeMounts:
+          - mountPath: /dev/shm
+            name: dshm
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk
@@ -216,4 +228,7 @@ spec:
             items:
             - key: index.html
               path: index.html
+        - name: dshm
+          emptyDir:
+            medium: Memory
 {{- end }}

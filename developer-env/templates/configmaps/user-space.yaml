@@ -40,6 +40,11 @@ data:
         proxy_pass    http://127.0.0.1:8081;
       }
 
+      location /browser {
+        proxy_pass    http://127.0.0.1:5800;
+        rewrite       /browser(/|$)(.*) /$2 break;
+      }
+
       # try redirect to port
       location ~ ^/(\d+)/?(.*) {
         proxy_pass http://127.0.0.1:$1/$2;

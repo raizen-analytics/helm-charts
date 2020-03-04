@@ -12,8 +12,9 @@ data:
     </head>
     <body>
       <ul>
-        <li><a href="./airflow/">airflow</a></li>
-        <li><a href="./code/">code</a></li>
-        <li><a href="./jupyter/">jupyter</a></li>
+        <li><a href="./airflow/">Airflow</a></li>
+        <li><a href="./browser/">Browser</a></li>
+        <li><a href="./code/">Code</a></li>
+        <li><a href="./jupyter/">Jupyter</a></li>
       </ul>
     </body>
