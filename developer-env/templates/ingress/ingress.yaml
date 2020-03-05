@@ -1,19 +1,54 @@
+{{- $root := . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
   name: project-ingress
-  namespace: {{ .Release.Namespace | quote}}
+  namespace: {{ .Release.Namespace}}
 spec: 
   tls:
   - hosts:
-    - {{ .Values.ingress.host | quote }}
+    - {{ .Values.ingress.host }}
+    {{- range .Values.users }}
+    - {{.}}.{{ $root.Values.ingress.host }}
+    {{- end }}
     secretName: tls-secret
   rules:
-  - host: {{ .Values.ingress.host | quote }}
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - backend:
           serviceName: user-gateway
           servicePort: 4180
+  {{- range .Values.users }}
+  - host: {{.}}.{{ $root.Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{.}}-space
+          servicePort: 5000
+  {{- end }}
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+#   name: project-registry-ingress
+#   namespace: {{ .Release.Namespace | quote}}
+# spec: 
+#   tls:
+#   - hosts:
+#     - {{ .Values.ingress.host | quote }}
+#     secretName: tls-secret
+#   rules:
+#   - host: {{ .Values.ingress.host | quote }}
+#     http:
+#       paths:
+#       {{- range .Values.users }}
+#       - path: /{{.}}(/|$)(.*)
+#         backend:
+#           serviceName: {{.}}-space
+#           servicePort: 5000
+#       {{- end }}

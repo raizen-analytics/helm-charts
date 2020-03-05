@@ -115,7 +115,7 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "airflow initdb && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow initdb && airflow webserver"]
         env:
         - name: AIRFLOW_HOME
           value: /home/engineer/
@@ -152,7 +152,7 @@ spec:
           name: user-file-logs
       - name: airflow-scheduler
         image: raizenanalyticsdev.azurecr.io/airflow-base:1.1.0-raizenlib
-        command: ["airflow", "scheduler"]
+        command: ["sh", "-c", "sleep 30 && airflow initdb && airflow scheduler"]
         env:
         - name: AIRFLOW_HOME
           value: /home/engineer/
@@ -205,6 +205,14 @@ spec:
         volumeMounts:
           - mountPath: /dev/shm
             name: dshm
+      - name: registry
+        image: registry:2
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - mountPath: /etc/docker/registry/config.yml
+            subPath: config.yaml
+            name: registry-cfg
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk
@@ -222,6 +230,12 @@ spec:
             items:
             - key: default.conf
               path: default.conf
+        - name: registry-cfg
+          configMap:
+            name: {{.}}-registry-cfg
+            items:
+            - key: config.yaml
+              path: config.yaml
         - name: user-apps-html
           configMap:
             name: user-apps-html

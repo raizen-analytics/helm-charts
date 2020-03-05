@@ -1,3 +1,4 @@
+{{- $root := . -}}
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
@@ -8,7 +9,10 @@ spec:
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   dnsNames:
-  - {{ .Values.ingress.host | quote }}
+  - {{ .Values.ingress.host }}
+  {{- range .Values.users }}
+  - {{.}}.{{ $root.Values.ingress.host }}
+  {{- end }}
   issuerRef:
     name: {{ .Values.ingress.tls.clusterIssuerName | quote }}
     kind: ClusterIssuer
