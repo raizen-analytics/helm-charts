@@ -1,8 +1,11 @@
+{{- $root := . -}}
+{{- range .Values.users }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-apps-html
-  namespace: {{ .Release.Namespace | quote }}
+  name: {{.}}-apps-html
+  namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
   index.html: |
@@ -18,10 +21,10 @@ data:
         <li><a href="./jupyter/">Jupyter</a></li>
       </ul>
         <p>
-          Docker Registry: raphael-bos.dev.project.raizen.ai
+          Docker Registry: {{.}}.{{ $root.Values.ingress.host }}
         </p>
         <p>
-          Username: raphael-bos
+          Username: {{.}}
         </p>
         <p>
           Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
@@ -45,3 +48,4 @@ data:
         onLoad();
       </script>
     </body>
+{{- end }}

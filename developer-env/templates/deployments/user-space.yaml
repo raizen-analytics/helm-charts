@@ -267,7 +267,7 @@ spec:
               path: config.yaml
         - name: user-apps-html
           configMap:
-            name: user-apps-html
+            name: {{.}}-apps-html
             items:
             - key: index.html
               path: index.html
