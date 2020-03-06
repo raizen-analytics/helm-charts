@@ -17,4 +17,31 @@ data:
         <li><a href="./code/">Code</a></li>
         <li><a href="./jupyter/">Jupyter</a></li>
       </ul>
+        <p>
+          Docker Registry: raphael-bos.dev.project.raizen.ai
+        </p>
+        <p>
+          Username: raphael-bos
+        </p>
+        <p>
+          Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
+          <input id="password" type="text" style="opacity:0;width:0;">
+        </p>
+      <script>
+        function onLoad(){
+          fetch("./password").then(function(response) {
+            response.text().then(function(password){
+              document.getElementById('password').value = password;
+            })
+          });
+        }
+
+        function copyToClipboard() {
+          var copyText = document.getElementById("password");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+        }
+        onLoad();
+      </script>
     </body>

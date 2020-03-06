@@ -22,12 +22,25 @@ spec:
     spec:
       serviceAccountName: airflow-scheduler
       initContainers:
-        - name: bash-command
-          image: bash
-          command: ["chown", "-R", "1000:1000", "/volume"]
-          volumeMounts:
-          - mountPath: /volume
-            name: user-disk
+      - name: bash-command
+        image: bash
+        command: ["chown", "-R", "1000:1000", "/volume"]
+        volumeMounts:
+        - mountPath: /volume
+          name: user-disk
+      - name: registry-credentials
+        image: registry:2
+        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{.}}", "$(USER_PASSWORD)"]
+        env:
+        - name: USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{.}}-registry-secret
+              key: password
+        volumeMounts:
+        - mountPath: /auth
+          name: user-disk
+          subPath: auth
       containers:
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v5.0.0
@@ -64,6 +77,9 @@ spec:
           - mountPath: /usr/share/nginx/html/index.html
             subPath: index.html
             name: user-apps-html
+          - mountPath: /usr/share/nginx/html/password
+            name: registry-secret
+            subPath: password
       - name: vscode
         args: ['--auth', 'none']
         image: codercom/code-server
@@ -180,10 +196,8 @@ spec:
           value: 1.1.0-raizenlib
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
           value: Always
-        {{- if $root.Values.imagePullSecrets}}
         - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-          value: {{range $root.Values.imagePullSecrets}}{{ required "A valid name secret!" .name }},{{end}}
-        {{end}}
+          value: {{.}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
           value: {{.}}-file-dags
         - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
@@ -196,10 +210,10 @@ spec:
       - name: firefox
         image: jlesage/firefox
         env:
-          - name: DISPLAY_WIDTH
-            value: '1920'
-          - name: DISPLAY_HEIGHT
-            value: '1080'
+        - name: DISPLAY_WIDTH
+          value: '1920'
+        - name: DISPLAY_HEIGHT
+          value: '1080'
         ports:
         - containerPort: 5800
         volumeMounts:
@@ -207,12 +221,22 @@ spec:
             name: dshm
       - name: registry
         image: registry:2
+        env:
+        - name: REGISTRY_AUTH
+          value: htpasswd
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
         ports:
         - containerPort: 5000
         volumeMounts:
           - mountPath: /etc/docker/registry/config.yml
             subPath: config.yaml
             name: registry-cfg
+          - mountPath: /auth
+            name: user-disk
+            subPath: auth
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk
@@ -242,6 +266,12 @@ spec:
             items:
             - key: index.html
               path: index.html
+        - name: registry-secret
+          secret:
+            secretName: {{.}}-registry-secret
+            items:
+            - key: password
+              path: password
         - name: dshm
           emptyDir:
             medium: Memory
