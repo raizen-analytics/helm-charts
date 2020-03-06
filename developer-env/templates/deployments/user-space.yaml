@@ -228,6 +228,11 @@ spec:
           value: "Registry Realm"
         - name: REGISTRY_AUTH_HTPASSWD_PATH
           value: /auth/htpasswd
+        - name: USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{.}}-registry-secret
+              key: password
         ports:
         - containerPort: 5000
         volumeMounts:
