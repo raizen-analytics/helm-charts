@@ -1,0 +1,20 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+- name: publish-image
+  image: banzaicloud/drone-kaniko
+  settings:
+    registry: raizenanalyticsdev.azurecr.io
+    repo: code-server
+    auto_tag: true
+    username: raizenanalyticsdev
+    password:
+      from_secret: azure-registry-key
+    context: /drone/src/images/code-server/
+  when:
+    branch:
+    - master
+    event:
+    - tag
