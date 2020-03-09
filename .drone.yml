@@ -4,7 +4,7 @@ name: default
 
 steps:
 - name: publish-image
-  image: banzaicloud/drone-kaniko
+  image: banzaicloud/drone-kaniko:0.6.0
   settings:
     registry: raizenanalyticsdev.azurecr.io
     repo: code-server
