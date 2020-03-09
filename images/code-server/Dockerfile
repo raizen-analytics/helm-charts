@@ -10,9 +10,7 @@ RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
 ENV PATH=$PATH:/usr/local/go/bin
 RUN go get github.com/GoogleContainerTools/kaniko/cmd/executor/
 RUN mv /root/go/bin/executor /usr/local/bin/kaniko \
-    && rm -r /root/go/ \
-    && mkdir -m 755 /kaniko \
-    && chown 1000:1000 /kaniko
+    && rm -r /root/go/ 
 
 # Install programming tools
 RUN apt install python3-pip -y
