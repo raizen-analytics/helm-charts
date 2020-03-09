@@ -82,7 +82,7 @@ spec:
             subPath: password
       - name: vscode
         args: ['--auth', 'none']
-        image: codercom/code-server
+        image: {{ $root.Values.applications.vscode.image }}
         ports:
         - containerPort: 8080
         resources: 
