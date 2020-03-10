@@ -15,5 +15,6 @@ RUN mv /root/go/bin/executor /usr/local/bin/kaniko \
 # Install programming tools
 RUN apt install python3-pip -y
 USER coder
-RUN pip3 install --user streamlit
+RUN pip3 install --user streamlit \
+    && pip3 install --user kubernetes
 ENV PATH=$PATH:/home/coder/.local/bin

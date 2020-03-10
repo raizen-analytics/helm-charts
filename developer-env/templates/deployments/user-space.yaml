@@ -28,6 +28,7 @@ spec:
         volumeMounts:
         - mountPath: /volume
           name: user-disk
+        imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2
         command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{.}}", "$(USER_PASSWORD)"]
@@ -41,6 +42,7 @@ spec:
         - mountPath: /auth
           name: user-disk
           subPath: auth
+        imagePullPolicy: Always 
       containers:
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v5.0.0
@@ -66,6 +68,7 @@ spec:
             memory: 10Mi
         ports:
         - containerPort: 4180
+        imagePullPolicy: Always
       - name: nginx
         image: nginx
         ports:
@@ -80,6 +83,7 @@ spec:
           - mountPath: /usr/share/nginx/html/password
             name: registry-secret
             subPath: password
+        imagePullPolicy: Always
       - name: vscode
         args: ['--auth', 'none']
         image: {{ $root.Values.applications.vscode.image }}
@@ -95,6 +99,7 @@ spec:
           name: user-file-dags
         - mountPath: /home/coder/project/airflow/logs
           name: user-file-logs
+        imagePullPolicy: Always
       - name: jupyter
         image: jupyter/datascience-notebook
         command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter"]
@@ -110,6 +115,7 @@ spec:
           name: user-file-dags
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
+        imagePullPolicy: Always
       - name: postgres
         image: postgres:9.6
         env:
@@ -126,6 +132,7 @@ spec:
         resources: 
           requests:
             memory: 128Mi
+        imagePullPolicy: Always
       - name: airflow-webserver
         image: raizenanalyticsdev.azurecr.io/airflow-base:1.1.0-raizenlib
         # command: ["sh", "-c", "airflow initdb
@@ -166,6 +173,7 @@ spec:
           name: user-file-dags
         - mountPath: /home/engineer/logs
           name: user-file-logs
+        imagePullPolicy: Always
       - name: airflow-scheduler
         image: raizenanalyticsdev.azurecr.io/airflow-base:1.1.0-raizenlib
         command: ["sh", "-c", "sleep 30 && airflow initdb && airflow scheduler"]
@@ -207,6 +215,7 @@ spec:
           name: user-file-dags
         - mountPath: /home/engineer/logs
           name: user-file-logs
+        imagePullPolicy: Always
       - name: firefox
         image: jlesage/firefox
         env:
@@ -219,6 +228,7 @@ spec:
         volumeMounts:
           - mountPath: /dev/shm
             name: dshm
+        imagePullPolicy: Always
       - name: registry
         image: registry:2
         env:
@@ -242,6 +252,7 @@ spec:
           - mountPath: /auth
             name: user-disk
             subPath: auth
+        imagePullPolicy: Always
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk
