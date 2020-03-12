@@ -71,6 +71,12 @@ spec:
         imagePullPolicy: Always
       - name: nginx
         image: nginx
+        env:
+        - name: REGISTRY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{.}}-registry-secret
+              key: password
         ports:
         - containerPort: 80
         volumeMounts:
