@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+import os
+import signal
+import sys
+import argparse
+
+from kubernetes import client, config, utils, watch
+
+class CustomParser(argparse.ArgumentParser): 
+   def error(self, message):
+        sys.stderr.write('error: %s\n' % message)
+        self.print_help()
+        sys.exit(2)
+
+def watch_pod_logs(pod_name: str, namespace: str, kubernetes_api:client.apis.core_v1_api.CoreV1Api):
+    w = watch.Watch()
+    for event in w.stream(kubernetes_api.read_namespaced_pod_log,
+        name=pod_name,
+        namespace=namespace):
+        print(event)
+
+def watch_pod_events(pod_name: str, namespace: str, kubernetes_api:client.apis.core_v1_api.CoreV1Api ):
+    w = watch.Watch()
+    pod_deleted = False
+    for event in w.stream(kubernetes_api.list_namespaced_pod,
+        namespace=namespace,
+        field_selector='metadata.name={0}'.format(pod_name),
+        _request_timeout=0):
+        print('\033[93m' + 'POD_EVENT' + '\033[0m' + ': {0}, {1}'.format(event['type'], event['object'].status.phase))
+        if event['object'].status.phase == 'Running':
+            watch_pod_logs(pod_name, namespace, kubernetes_api)
+        if not pod_deleted and (event['object'].status.phase == 'Succeeded' or event['object'].status.phase == 'Failed'):
+                kubernetes_api.delete_namespaced_pod(pod_name, namespace)
+                pod_deleted = True
+        if event['type'] == 'DELETED':
+            w.stop()
+
+def create_pod(tag: str, build_context: str):
+    _build_context = '/workspace/{0}'.format(build_context)
+    _username = os.getenv('K8S_USER')
+    _namespace = os.getenv('K8S_NAMESPACE')
+    _kaniko_subpath = os.getenv('K8S_KANIKO_VOLUME_SUBPATH')
+    _kaniko_volume = os.getenv('K8S_KANIKO_VOLUME_CLAIM')
+    _registry_secret_name = os.getenv('K8S_REGISTRY_SECRET_NAME')
+    _pod_predix = '{0}-builder-'.format(_username)
+    _registry_secret_path = 'config.json'
+
+
+    config.load_incluster_config()
+    kaniko_volume_mount = client.V1VolumeMount(
+        mount_path="/workspace",
+        name='kaniko-workspace',
+        sub_path=_kaniko_subpath)
+    docker_credential_volume_mount = client.V1VolumeMount(
+        mount_path="/kaniko/.docker/config.json",
+        name='docker-credential',
+        sub_path=_registry_secret_path)
+    container = client.V1Container(name='bash-test',
+        image='gcr.io/kaniko-project/executor:latest',
+        volume_mounts=[kaniko_volume_mount, docker_credential_volume_mount],
+        args=[
+            '--destination={0}'.format(tag),
+            '--context={0}'.format(_build_context)
+            ]
+        )
+    kaniko_pvc =  client.V1PersistentVolumeClaimVolumeSource(claim_name=_kaniko_volume)
+    kaniko_volume = client.V1Volume(
+        name='kaniko-workspace',
+        persistent_volume_claim=kaniko_pvc)
+    registry_secret = client.V1SecretVolumeSource(secret_name=_registry_secret_name, items=[{'key': '.dockerconfigjson' , 'path': 'config.json' }])
+    registry_secret_volume = client.V1Volume(name='docker-credential', secret=registry_secret)
+    pod_spec = client.V1PodSpec(
+        containers=[container],
+        restart_policy='Never',
+        volumes=[kaniko_volume, registry_secret_volume],
+        )
+    pod_metadata = client.V1ObjectMeta(generate_name=_pod_predix)
+    pod = client.V1Pod(api_version='v1', kind='Pod', metadata=pod_metadata, spec=pod_spec)
+    api = client.CoreV1Api()
+    running_pod = api.create_namespaced_pod(_namespace, pod)
+    # Handling interruption
+    def signal_handler(*args):
+        api.delete_namespaced_pod(running_pod.metadata.name, _namespace)
+        sys.exit()
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGHUP, signal_handler)
+
+    watch_pod_events(running_pod.metadata.name, _namespace, api)
+
+if __name__ == '__main__':
+    parser = CustomParser(description='Build image with kaniko pod.')
+    parser.add_argument('image_tag', metavar='tag', type=str,
+                    help='a full image tag name: Ex: user.project.io/repo:version')
+    parser.add_argument('--context', dest='build_context', type=str, default='/',
+                    help='path string relative to kaniko root directory. Ex: image_dir/')
+    args = parser.parse_args()
+    create_pod(vars(args)['image_tag'], vars(args)['build_context'])

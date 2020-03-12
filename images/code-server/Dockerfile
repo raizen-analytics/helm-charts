@@ -6,15 +6,26 @@ ARG GO_VERSION=1.14
 RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
     && tar -xzf go1.14.linux-amd64.tar.gz -C /usr/local \
     && apt update \
-    && apt install gcc -y
+    && apt install gcc -y \
+    && rm -r go${GO_VERSION}.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
-RUN go get github.com/GoogleContainerTools/kaniko/cmd/executor/
-RUN mv /root/go/bin/executor /usr/local/bin/kaniko \
-    && rm -r /root/go/ 
+
+# RUN go get github.com/GoogleContainerTools/kaniko/cmd/executor/
+# RUN mv /root/go/bin/executor /usr/local/bin/kaniko \
+#     && rm -r /root/go/
 
 # Install programming tools
 RUN apt install python3-pip -y
-USER coder
-RUN pip3 install --user streamlit \
-    && pip3 install --user kubernetes
+RUN pip3 install streamlit
 ENV PATH=$PATH:/home/coder/.local/bin
+
+# Install kaniko-build tool
+
+WORKDIR /pip-packages
+COPY kaniko_build /pip-packages/kaniko_build
+RUN pip3 install ./kaniko_build \
+    && rm -r kaniko_build
+
+WORKDIR /home/coder/
+    
+USER coder
