@@ -21,11 +21,8 @@ ENV PATH=$PATH:/home/coder/.local/bin
 
 # Install kaniko-build tool
 
-WORKDIR /pip-packages
-COPY kaniko_build /pip-packages/kaniko_build
-RUN pip3 install ./kaniko_build \
-    && rm -r kaniko_build
-
-WORKDIR /home/coder/
+COPY kaniko_build /home/coder/kaniko_build
+RUN pip3 install /home/coder/kaniko_build \
+    && rm -r /home/coder/kaniko_build
     
 USER coder
