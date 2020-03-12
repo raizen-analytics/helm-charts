@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-file
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: {{ .Values.volumes.file.storageClassName | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.volumes.file.size | quote }}

@@ -87,6 +87,15 @@ spec:
       - name: vscode
         args: ['--auth', 'none']
         image: {{ $root.Values.applications.vscode.image }}
+        env:
+        - name: K8S_USER
+          value: {{.}}
+        - name: K8S_KANIKO_VOLUME_SUBPATH
+          value: kaniko
+        - name: K8S_KANIKO_VOLUME_CLAIM
+          value: {{.}}-file-data
+        - name: K8S_REGISTRY_SECRET_NAME
+          value: {{.}}-registry-secret
         ports:
         - containerPort: 8080
         resources: 
@@ -96,7 +105,13 @@ spec:
         - mountPath: /home/coder/project/disk
           name: user-disk
         - mountPath: /home/coder/project/airflow/dags
-          name: user-file-dags
+          name: user-file-data
+          subPath: dags
+        - mountPath: /home/coder/project/kaniko
+          name: user-file-data
+          subPath: kaniko
+        - mountPath: /home/coder/project/shared
+          name: shared-file
         - mountPath: /home/coder/project/airflow/logs
           name: user-file-logs
         imagePullPolicy: Always
@@ -112,7 +127,8 @@ spec:
         - mountPath: /home/jovyan/disk
           name: user-disk
         - mountPath: /home/jovyan/airflow/dags
-          name: user-file-dags
+          name: user-file-data
+          subPatg: dags
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
         imagePullPolicy: Always
@@ -170,7 +186,8 @@ spec:
           value: {{.}}-file-logs
         volumeMounts:
         - mountPath: /home/engineer/dags
-          name: user-file-dags
+          name: user-file-data
+          subPath: dags
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
@@ -207,12 +224,15 @@ spec:
         - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
           value: {{.}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-          value: {{.}}-file-dags
+          value: {{.}}-file-data
+        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
+          value: dags
         - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
           value: {{.}}-file-logs
         volumeMounts:
         - mountPath: /home/engineer/dags
-          name: user-file-dags
+          name: user-file-data
+          subPath: dags
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
@@ -258,12 +278,15 @@ spec:
         - name: user-disk
           persistentVolumeClaim:
             claimName: {{.}}-disk
-        - name: user-file-dags
+        - name: user-file-data
           persistentVolumeClaim:
-            claimName: {{.}}-file-dags
+            claimName: {{.}}-file-data
         - name: user-file-logs
           persistentVolumeClaim:
             claimName: {{.}}-file-logs
+        - name: shared-file
+          persistentVolumeClaim:
+            claimName: shared-file
         - name: user-proxy-cfg
           configMap:
             name: {{ . }}-nginx-cfg

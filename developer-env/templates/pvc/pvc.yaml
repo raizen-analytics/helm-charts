@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{.}}-file-dags
+  name: {{.}}-file-data
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   accessModes:
