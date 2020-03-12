@@ -38,6 +38,8 @@ spec:
             secretKeyRef:
               name: {{.}}-registry-secret
               key: password
+        - name: FORCE_RELOAD
+          value: {{randAlphaNum 16 | quote}}
         volumeMounts:
         - mountPath: /auth
           name: user-disk
@@ -71,12 +73,6 @@ spec:
         imagePullPolicy: Always
       - name: nginx
         image: nginx
-        env:
-        - name: REGISTRY_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{.}}-registry-secret
-              key: password
         ports:
         - containerPort: 80
         volumeMounts:
