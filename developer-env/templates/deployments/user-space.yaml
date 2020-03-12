@@ -135,6 +135,8 @@ spec:
           subPatg: dags
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
+        - mountPath: /home/jovyan/shared
+          name: shared-file
         imagePullPolicy: Always
       - name: postgres
         image: postgres:9.6
