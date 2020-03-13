@@ -106,17 +106,17 @@ spec:
           requests:
             memory: 200Mi
         volumeMounts:
-        - mountPath: /home/coder/project/disk
+        - mountPath: /home/coder/
           name: user-disk
-        - mountPath: /home/coder/project/airflow/dags
+        - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/coder/project/kaniko
+        - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
-        - mountPath: /home/coder/project/shared
+        - mountPath: /home/coder/shared
           name: shared-file
-        - mountPath: /home/coder/project/airflow/logs
+        - mountPath: /home/coder/airflow/logs
           name: user-file-logs
         imagePullPolicy: Always
       - name: jupyter
