@@ -10,7 +10,7 @@ setup(
     license='unlicense',
     # packages=find_packages(),
     install_requires=[
-          'kubernetes>=10.0.1',
+          'kubernetes==10.0.1',
       ],
     scripts = [
         'kaniko_build/kaniko-build'
