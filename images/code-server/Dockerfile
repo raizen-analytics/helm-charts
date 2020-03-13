@@ -15,8 +15,10 @@ ENV PATH=$PATH:/usr/local/go/bin
 #     && rm -r /root/go/
 
 # Install programming tools
-RUN apt install python3-pip -y
-RUN pip3 install streamlit
+RUN apt install -y python3-pip \
+    && apt install -y python3-venv \
+    && pip3 install virtualenv \
+    && pip3 install streamlit
 ENV PATH=$PATH:/home/coder/.local/bin
 
 # Install kaniko-build tool
