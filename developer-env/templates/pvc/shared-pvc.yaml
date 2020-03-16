@@ -10,3 +10,16 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volumes.file.size | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-disk
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: {{ .Values.volumes.disk.storageClassName | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.volumes.disk.size | quote }}

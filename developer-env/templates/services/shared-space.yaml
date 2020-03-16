@@ -9,5 +9,27 @@ spec:
   ports:
   - name: '5000'
     port: 5000
+  - name: '21'
+    port: 21
+  - name: '30000'
+    port: 30000
+  - name: '30001'
+    port: 30001
+  - name: '30002'
+    port: 30002
+  - name: '30003'
+    port: 30003
+  - name: '30004'
+    port: 30004
+  - name: '30005'
+    port: 30005
+  - name: '30006'
+    port: 30006
+  - name: '30007'
+    port: 30007
+  - name: '30008'
+    port: 30008
+  - name: '30009'
+    port: 30009
   selector:
     app: shared-space

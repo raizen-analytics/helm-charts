@@ -20,8 +20,43 @@ spec:
       containers:
       - name: mlflow
         image: raizenanalyticsdev.azurecr.io/mlflowz
-        command: ["mlflow", "server", "--host", "0.0.0.0"]
+        command: ["mlflow", "server", "--host", "0.0.0.0", "--default-artifact-root", "ftp://admin:admin@shared-space"]
+        volumeMounts:
+          - mountPath: /home/engineer/mlflow/mlruns/
+            subPath: mlflow
+            name: shared-disk
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
+      - name: ftp-server
+        image: stilliard/pure-ftpd
+        env:
+        - name: PUBLICHOST
+          value: shared-space
+        - name: FTP_USER_NAME
+          value: admin
+        - name: FTP_USER_PASS
+          value: admin
+        - name: FTP_USER_HOME
+          value: /home/admin
+        volumeMounts:
+          - mountPath: /home/admin/
+            subPath: ftp
+            name: shared-disk
+        ports:
+        - containerPort: 21
+        - containerPort: 30000
+        - containerPort: 30001
+        - containerPort: 30002
+        - containerPort: 30003
+        - containerPort: 30004
+        - containerPort: 30005
+        - containerPort: 30006
+        - containerPort: 30007
+        - containerPort: 30008
+        - containerPort: 30009
       imagePullSecrets: {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      volumes:
+        - name: shared-disk
+          persistentVolumeClaim:
+            claimName: shared-disk
