@@ -120,7 +120,7 @@ spec:
           name: user-file-logs
         imagePullPolicy: Always
       - name: jupyter
-        image: jupyter/datascience-notebook
+        image: {{ $root.Values.applications.jupyter.image }}
         command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter"]
         ports:
         - containerPort: 8888

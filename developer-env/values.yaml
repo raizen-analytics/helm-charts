@@ -17,6 +17,8 @@ oauth:
 applications:
   vscode:
     image: codercom/code-server
+  jupyter:
+    image: jupyter/datascience-notebook
   
 
 ingress:
