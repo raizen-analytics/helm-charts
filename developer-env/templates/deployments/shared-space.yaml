@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shared-space
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: shared-space
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: shared-space
+  template:
+    metadata:
+      labels:
+        app: shared-space
+    spec:
+      containers:
+      - name: mlflow
+        image: raizenanalyticsdev.azurecr.io/mlflowz
+        command: ["mlflow", "server", "--host", "0.0.0.0"]
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+      imagePullSecrets: {{- toYaml .Values.imagePullSecrets | nindent 8 }}
