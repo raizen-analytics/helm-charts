@@ -280,6 +280,9 @@ spec:
           - mountPath: /auth
             name: user-disk
             subPath: auth
+          - mountPath: /var/lib/registry
+            name: user-disk
+            subPath: docker-registry
         imagePullPolicy: Always
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
