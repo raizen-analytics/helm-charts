@@ -235,8 +235,8 @@ spec:
           value: dags
         - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
           value: {{.}}-file-logs
-        - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
-          value: airflow-scheduler
+        # - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
+        #   value: airflow-scheduler
         volumeMounts:
         - mountPath: /home/engineer/dags
           name: user-file-data
