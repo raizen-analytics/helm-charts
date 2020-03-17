@@ -14,22 +14,30 @@ data:
       <meta charset="UTF-8">
     </head>
     <body>
+      <h2>Applications</h2>
       <ul>
         <li><a href="./airflow/">Airflow</a></li>
         <li><a href="./browser/">Browser</a></li>
         <li><a href="./code/">Code</a></li>
         <li><a href="./jupyter/">Jupyter</a></li>
+        <li><a href="./mlflow/">Mlflow</a></li>
       </ul>
-        <p>
-          Docker Registry: {{.}}.{{ $root.Values.ingress.host }}
-        </p>
-        <p>
-          Username: {{.}}
-        </p>
-        <p>
-          Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
-          <input id="password" type="text" style="opacity:0;width:1px;">
-        </p>
+      <h2>Instructions</h2>
+      <h3>Mlflow</h3>
+      <p>
+        Tracking URI for cluster internal use: http://shared-space:5000
+      </p>
+      <h3>Docker Registry</h3>
+      <p>
+        URI: {{.}}.{{ $root.Values.ingress.host }}
+      </p>
+      <p>
+        Username: {{.}}
+      </p>
+      <p>
+        Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
+        <input id="password" type="text" style="opacity:0;width:1px;">
+      </p>
       <script>
         function onLoad(){
           fetch("./password").then(function(response) {

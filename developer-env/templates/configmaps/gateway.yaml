@@ -21,9 +21,7 @@ data:
       proxy_read_timeout 300;
   
       location /mlflow {
-        resolver kube-dns.kube-system.svc.cluster.local valid=5s;
-        set $upstream_server "http://shared-space.{{ .Release.Namespace }}.svc.cluster.local:5000";
-        proxy_pass    $upstream_server;
+        proxy_pass    "http://shared-space:5000";
         rewrite       /mlflow(/|$)(.*) /$2 break;
       }
 
