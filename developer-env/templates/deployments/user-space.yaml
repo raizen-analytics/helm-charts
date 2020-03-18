@@ -100,6 +100,8 @@ spec:
           value: {{.}}-registry-secret
         - name: K8S_NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
+        - name: MLFLOW_TRACKING_URI
+          value: http://shared-space:5000
         ports:
         - containerPort: 8080
         resources: 
