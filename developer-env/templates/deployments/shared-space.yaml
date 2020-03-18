@@ -20,9 +20,9 @@ spec:
       containers:
       - name: mlflow
         image: {{ .Values.applications.mlflow.image }}
-        command: ["mlflow", "server", "--host", "0.0.0.0", "--default-artifact-root", "ftp://admin:admin@shared-space"]
+        command: ["mlflow", "server", "--host", "0.0.0.0", "--default-artifact-root", "ftp://admin:admin@shared-space", "--backend-store-uri", "sqlite:///mlflow.db"]
         volumeMounts:
-          - mountPath: /home/engineer/mlflow/mlruns/
+          - mountPath: /home/engineer/mlflow/
             subPath: mlflow
             name: shared-disk
         ports:
