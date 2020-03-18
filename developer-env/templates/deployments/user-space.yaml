@@ -217,7 +217,7 @@ spec:
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
-        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__FERNET_KEY
+        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__KUBERNETES__NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
