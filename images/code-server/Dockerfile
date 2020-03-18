@@ -26,5 +26,13 @@ ENV PATH=$PATH:/home/coder/.local/bin
 COPY kaniko_build /home/coder/kaniko_build
 RUN pip3 install /home/coder/kaniko_build \
     && rm -r /home/coder/kaniko_build
-    
+
+# Install other tools
+
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda3 \
+    && rm Miniconda3-latest-Linux-x86_64.sh
+
+ENV PATH=${PATH}:/usr/local/miniconda3/bin
+
 USER coder
