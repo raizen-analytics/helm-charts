@@ -19,6 +19,8 @@ applications:
     image: codercom/code-server
   jupyter:
     image: jupyter/datascience-notebook
+  mlflow:
+    image: raizenanalyticsdev.azurecr.io/mlflowz
   
 
 ingress:

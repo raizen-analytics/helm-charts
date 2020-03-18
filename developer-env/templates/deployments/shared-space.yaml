@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: mlflow
-        image: raizenanalyticsdev.azurecr.io/mlflowz
+        image: {{ .Values.applications.mlflow.image }}
         command: ["mlflow", "server", "--host", "0.0.0.0", "--default-artifact-root", "ftp://admin:admin@shared-space"]
         volumeMounts:
           - mountPath: /home/engineer/mlflow/mlruns/
