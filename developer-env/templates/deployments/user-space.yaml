@@ -136,7 +136,7 @@ spec:
           name: user-disk
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
-          subPatg: dags
+          subPath: dags
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
         - mountPath: /home/jovyan/shared
