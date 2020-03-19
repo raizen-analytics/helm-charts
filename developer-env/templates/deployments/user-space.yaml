@@ -132,7 +132,7 @@ spec:
           requests:
             memory: 200Mi
         volumeMounts:
-        - mountPath: /home/jovyan/disk
+        - mountPath: /home/jovyan/
           name: user-disk
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
