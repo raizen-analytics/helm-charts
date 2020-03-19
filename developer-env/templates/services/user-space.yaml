@@ -10,12 +10,12 @@ metadata:
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   ports:
-  - name: "4180"
-    port: 4180
-  - name: "5432"
-    port: 5432
-  - name: "5000"
-    port: 5000
+  - name: "29180"
+    port: 29180
+  - name: "29432"
+    port: 29432
+  - name: "29500"
+    port: 29500
   - name: "11211"
     port: 11211
   selector:

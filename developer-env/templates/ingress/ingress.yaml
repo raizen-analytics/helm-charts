@@ -28,5 +28,5 @@ spec:
       paths:
       - backend:
           serviceName: {{.}}-space
-          servicePort: 5000
+          servicePort: 29500
   {{- end }}
