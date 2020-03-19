@@ -20,6 +20,9 @@ spec:
       containers:  
       - name: nginx
         image: nginx
+        env:
+        - name: FORCE_RELOAD
+          value: {{ randAlphaNum 16 | quote }}
         ports:
         - containerPort: 80
         resources: 
