@@ -90,6 +90,8 @@ spec:
         args: ['--auth', 'none']
         image: {{ $root.Values.applications.vscode.image }}
         env:
+        - name: USERNAME
+          value: {{.}}
         - name: K8S_USER
           value: {{.}}
         - name: K8S_KANIKO_VOLUME_SUBPATH
