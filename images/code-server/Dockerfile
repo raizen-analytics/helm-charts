@@ -35,4 +35,8 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
 
 ENV PATH=${PATH}:/usr/local/miniconda3/bin
 
+# Add custom entrypoint to change username
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 USER coder
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
