@@ -13,6 +13,12 @@ rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["pods", "pods/log"]
   verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/portforward"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
