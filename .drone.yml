@@ -18,3 +18,35 @@ steps:
     - master
     event:
     - tag
+
+- name: publish-ws-tunnel-server
+  image: banzaicloud/drone-kaniko:0.6.0
+  settings:
+    registry: raizenanalyticsdev.azurecr.io
+    repo: ws-tunnel-server
+    auto_tag: true
+    username: raizenanalyticsdev
+    password:
+      from_secret: azure-registry-key
+    context: /drone/src/images/ws-tunnel/server
+  when:
+    branch:
+    - master
+    event:
+    - tag
+
+- name: publish-ws-tunnel-client
+  image: banzaicloud/drone-kaniko:0.6.0
+  settings:
+    registry: raizenanalyticsdev.azurecr.io
+    repo: ws-tunnel-client
+    auto_tag: true
+    username: raizenanalyticsdev
+    password:
+      from_secret: azure-registry-key
+    context: /drone/src/images/ws-tunnel/client
+  when:
+    branch:
+    - master
+    event:
+    - tag
