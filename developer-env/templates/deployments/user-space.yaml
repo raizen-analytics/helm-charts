@@ -300,6 +300,11 @@ spec:
             name: user-disk
             subPath: docker-registry
         imagePullPolicy: Always
+      - name: ws-tunnel
+        image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
+        args: ['-addr', 'localhost:22']
+        ports:
+          - containerPort: 9191
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       volumes:
         - name: user-disk

@@ -1,3 +1,4 @@
+{{- $root := . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -19,6 +20,14 @@ data:
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
       proxy_read_timeout 300;
+
+      {{- range .Values.users }}
+      
+      location /{{.}}{
+        proxy_pass    "http://{{.}}-space:9191";
+        rewrite       /{{.}}(/|$)(.*) /$2 break;
+      }
+      {{- end }}
   
       location /mlflow {
         proxy_pass    "http://shared-space:5000";

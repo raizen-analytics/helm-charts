@@ -18,8 +18,8 @@ spec:
     port: 29500
   - name: "11211"
     port: 11211
-  - name: "22"
-    port: 22
+  - name: "9191"
+    port: 9191
   selector:
     app: {{.}}-space
 {{- end}}
