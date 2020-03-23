@@ -302,7 +302,7 @@ spec:
         imagePullPolicy: Always
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
-        args: ['-addr', 'localhost:22']
+        args: ['-addr', 'localhost:22', '-path', 'ssh']
         ports:
           - containerPort: 9191
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
