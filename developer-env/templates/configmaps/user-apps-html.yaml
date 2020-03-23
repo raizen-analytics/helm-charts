@@ -38,6 +38,13 @@ data:
         Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
         <input id="password" type="text" style="opacity:0;width:1px;">
       </p>
+      <h3>SSH (Experimental)</h3>
+      <p>
+        Execute program: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{.}}/ssh
+      </p>
+      <p>
+        Then connect to the port exposed: ssh {{.}}@localhost -p EXPOSED_PORT
+      </p>
       <script>
         function onLoad(){
           fetch("./password").then(function(response) {
@@ -46,7 +53,7 @@ data:
             })
           });
         }
-
+    
         function copyToClipboard() {
           var copyText = document.getElementById("password");
           copyText.select();
