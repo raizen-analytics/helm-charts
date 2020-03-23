@@ -3,6 +3,35 @@ type: kubernetes
 name: default
 
 steps:
+
+- name: publish-ws-tunnel-asset
+  image: golang:1.14.1
+  environment:
+    ASSET_NAME: ws-tunnel_linux_amd64.tar.gz
+    RELEASE_MESSAGE: "This release was automatically compiled and uploaded using Go 1.11.4"      
+    GITHUB_ACCESS_TOKEN:
+      from_secret: GITHUB_ACCESS_TOKEN
+  commands:
+    - cd /drone/src/images/ws-tunnel/client
+    - CGO_ENABLED=0 GOOS=linux go build -o ws-tunnel app.go
+    - tar -czvf $ASSET_NAME ws-tunnel
+    - >
+      release=$(curl -XPOST -H "Authorization:token $GITHUB_ACCESS_TOKEN" --data "{\"tag_name\": \"$DRONE_TAG\", \"target_commitish\": \"$DRONE_REPO_BRANCH\", 
+      \"name\": \"$DRONE_TAG\", \"body\": \"$RELEASE_MESSAGE\", \"draft\": false, \"prerelease\": false}" https://api.github.com/repos/$DRONE_REPO/releases)
+    - echo $release
+    - >
+      id=$(echo "$release" | grep -Po '"id": \K([0-9])+' | head -n 1)
+    - echo $id
+    - >
+      curl -XPOST -H "Authorization:token $GITHUB_ACCESS_TOKEN" -H "Content-Type:application/octet-stream" --data-binary @$ASSET_NAME 
+      https://uploads.github.com/repos/$DRONE_REPO/releases/$id/assets?name=$ASSET_NAME
+
+  when:
+    branch:
+    - master
+    event:
+    - tag
+
 - name: publish-vscode-image
   image: banzaicloud/drone-kaniko:0.6.0
   settings:
