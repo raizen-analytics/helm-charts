@@ -3,7 +3,7 @@ type: kubernetes
 name: default
 
 steps:
-- name: publish-image
+- name: publish-vscode-image
   image: banzaicloud/drone-kaniko:0.6.0
   settings:
     registry: raizenanalyticsdev.azurecr.io
@@ -13,6 +13,9 @@ steps:
     password:
       from_secret: azure-registry-key
     context: /drone/src/images/code-server/
+  resources:
+    requests:
+      memory: 1GiB
   when:
     branch:
     - master
@@ -29,6 +32,9 @@ steps:
     password:
       from_secret: azure-registry-key
     context: /drone/src/images/ws-tunnel/server
+  resources:
+    requests:
+      memory: 1GiB
   when:
     branch:
     - master
@@ -45,6 +51,9 @@ steps:
     password:
       from_secret: azure-registry-key
     context: /drone/src/images/ws-tunnel/client
+  resources:
+    requests:
+      memory: 1GiB
   when:
     branch:
     - master
