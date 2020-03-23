@@ -31,7 +31,8 @@ RUN pip3 install /home/coder/kaniko_build \
 
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
     && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda3 \
-    && rm Miniconda3-latest-Linux-x86_64.sh
+    && rm Miniconda3-latest-Linux-x86_64.sh \
+    && apt install -y ssh
 
 ENV PATH=${PATH}:/usr/local/miniconda3/bin
 
