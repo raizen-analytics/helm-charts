@@ -17,6 +17,7 @@ oauth:
 applications:
   airflow:
     image: raizenanalyticsdev.azurecr.io/airflow-base
+    tag: latest
   vscode:
     image: codercom/code-server
   jupyter:

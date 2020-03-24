@@ -161,7 +161,7 @@ spec:
             memory: 128Mi
         imagePullPolicy: Always
       - name: airflow-webserver
-        image: {{ $root.Values.applications.airflow.image }}
+        image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
@@ -205,7 +205,7 @@ spec:
           name: user-file-logs
         imagePullPolicy: Always
       - name: airflow-scheduler
-        image: {{ $root.Values.applications.airflow.image }}
+        image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 30 && airflow initdb && airflow scheduler"]
         env:
         - name: AIRFLOW_HOME
@@ -231,9 +231,9 @@ spec:
         - name: AIRFLOW__KUBERNETES__NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: raizenanalyticsdev.azurecr.io/airflow-base
+          value: {{ $root.Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: 1.1.0-raizenlib
+          value: {{ $root.Values.applications.airflow.tag }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
           value: Always
         - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
