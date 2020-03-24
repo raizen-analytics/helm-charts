@@ -40,7 +40,7 @@ data:
       </p>
       <h3>SSH (Experimental)</h3>
       <p>
-        Execute program: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{.}}/ssh
+        Download <a href="{{ $root.Values.ssh.clientDownloadLink }}">ws-tunnel</a> and execute: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{.}}/ssh
       </p>
       <p>
         Then connect to the port exposed: ssh {{.}}@localhost -p EXPOSED_PORT

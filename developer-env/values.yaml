@@ -28,6 +28,9 @@ ingress:
   tls:
     clusterIssuerName: letsencrypt-prod
 
+ssh:
+  clientDownloadLink: https://github.com/raizen-analytics-ldt/helm-charts/releases
+
 imagePullSecrets:
   - name: acr-secret
 volumes:
