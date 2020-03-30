@@ -28,6 +28,9 @@ spec:
         volumeMounts:
         - mountPath: /volume
           name: user-disk
+        - mountPath: /volume/project
+          name: user-disk
+          subPath: project
         imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2
@@ -112,6 +115,9 @@ spec:
         volumeMounts:
         - mountPath: /home/coder/
           name: user-disk
+        - mountPath: /home/coder/project/
+          name: user-disk
+          subPath: project
         - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
@@ -134,11 +140,17 @@ spec:
         volumeMounts:
         - mountPath: /home/jovyan/
           name: user-disk
+        - mountPath: /home/jovyan/project/
+          name: user-disk
+          subPath: project
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
           subPath: dags
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
+        - mountPath: /home/jovyan/kaniko
+          name: user-file-data
+          subPath: kaniko
         - mountPath: /home/jovyan/shared
           name: shared-file
         imagePullPolicy: Always
