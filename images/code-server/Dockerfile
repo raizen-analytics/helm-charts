@@ -1,11 +1,12 @@
-FROM codercom/code-server:2.1698
+FROM codercom/code-server:3.0.2
 
 USER root
-ARG GO_VERSION=1.14
+ARG GO_VERSION=1.14.1
 # Install go and kaniko to build images
-RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
-    && tar -xzf go1.14.linux-amd64.tar.gz -C /usr/local \
-    && apt update \
+RUN apt update \
+    && apt install wget \
+    && wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
+    && tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local \
     && apt install gcc -y \
     && rm -r go${GO_VERSION}.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
