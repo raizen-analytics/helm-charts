@@ -252,6 +252,8 @@ spec:
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
           value: {{.}}-space
+        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: engineer
         - name: AIRFLOW__KUBERNETES__NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
