@@ -232,6 +232,8 @@ spec:
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
+        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: engineer
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
