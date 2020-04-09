@@ -121,6 +121,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/coder/airflow/worker-storage
+          name: user-file-data
+          subPath: worker-storage
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
@@ -146,6 +149,9 @@ spec:
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/jovyan/airflow/worker-storage
+          name: user-file-data
+          subPath: worker-storage
         - mountPath: /home/jovyan/airflow/logs
           name: user-file-logs
         - mountPath: /home/jovyan/kaniko
