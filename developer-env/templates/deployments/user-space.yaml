@@ -135,6 +135,9 @@ spec:
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
         command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: http://shared-space:5000
         ports:
         - containerPort: 29902
         resources: 
