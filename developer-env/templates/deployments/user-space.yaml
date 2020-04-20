@@ -202,6 +202,8 @@ spec:
           value: KubernetesExecutor
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
+        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: engineer
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
         - name: AIRFLOW__WEBSERVER__BASE_URL
@@ -241,14 +243,20 @@ spec:
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
+        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: engineer
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
         - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
-          value: '30'
+          value: '60'
         - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
           value: '60'
+        - name: AIRFLOW__SCHEDULER__PRINT_STATS_INTERVAL
+          value: '30'
+        - name: AIRFLOW__SCHEDULER__RUN_DURATION
+          value: '86400'
         # - name: AIRFLOW__SCHEDULER__RUN_DURATION
         #   value: '610'
         # - name: AIRFLOW__SCHEDULER__NUM_RUNS
