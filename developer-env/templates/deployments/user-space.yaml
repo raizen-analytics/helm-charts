@@ -255,8 +255,8 @@ spec:
           value: '60'
         - name: AIRFLOW__SCHEDULER__PRINT_STATS_INTERVAL
           value: '30'
-        - name: AIRFLOW__SCHEDULER__RUN_DURATION
-          value: '86400'
+        # - name: AIRFLOW__SCHEDULER__RUN_DURATION
+        #   value: '86400'
         # - name: AIRFLOW__SCHEDULER__RUN_DURATION
         #   value: '610'
         # - name: AIRFLOW__SCHEDULER__NUM_RUNS
