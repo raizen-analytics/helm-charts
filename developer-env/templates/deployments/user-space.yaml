@@ -121,6 +121,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/coder/airflow/plugins
+          name: user-file-data
+          subPath: plugins
         - mountPath: /home/coder/airflow/worker-storage
           name: user-file-data
           subPath: worker-storage
@@ -152,6 +155,9 @@ spec:
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/jovyan/airflow/plugins
+          name: user-file-data
+          subPath: plugins
         - mountPath: /home/jovyan/airflow/worker-storage
           name: user-file-data
           subPath: worker-storage
@@ -224,6 +230,9 @@ spec:
         - mountPath: /home/engineer/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/engineer/dags/plugins
+          name: user-file-data
+          subPath: plugins
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
@@ -295,6 +304,9 @@ spec:
         - mountPath: /home/engineer/dags
           name: user-file-data
           subPath: dags
+        - mountPath: /home/engineer/dags/plugins
+          name: user-file-data
+          subPath: plugins
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
