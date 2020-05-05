@@ -121,9 +121,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/coder/airflow/plugins
-          name: user-file-data
-          subPath: plugins
+        # - mountPath: /home/coder/airflow/plugins
+        #   name: user-file-data
+        #   subPath: plugins
         - mountPath: /home/coder/airflow/conf
           name: user-file-data
           subPath: conf
@@ -158,9 +158,9 @@ spec:
         - mountPath: /home/jovyan/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/jovyan/airflow/plugins
-          name: user-file-data
-          subPath: plugins
+        # - mountPath: /home/jovyan/airflow/plugins
+        #   name: user-file-data
+        #   subPath: plugins
         - mountPath: /home/jovyan/airflow/conf
           name: user-file-data
           subPath: conf
@@ -236,9 +236,9 @@ spec:
         - mountPath: /home/engineer/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/engineer/plugins
-          name: user-file-data
-          subPath: plugins
+        # - mountPath: /home/engineer/plugins
+        #   name: user-file-data
+        #   subPath: plugins
         - mountPath: /home/engineer/conf
           name: user-file-data
           subPath: conf
@@ -316,9 +316,9 @@ spec:
         - mountPath: /home/engineer/conf
           name: user-file-data
           subPath: conf
-        - mountPath: /home/engineer/plugins
-          name: user-file-data
-          subPath: plugins
+        # - mountPath: /home/engineer/plugins
+        #   name: user-file-data
+        #   subPath: plugins
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
