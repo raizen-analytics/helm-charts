@@ -109,9 +109,10 @@ spec:
           value: http://shared-space:5000
         ports:
         - containerPort: 29901
-        resources: 
-          requests:
-            memory: 200Mi
+        resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
+        # resources: 
+        #   requests:
+        #     memory: 200Mi
         volumeMounts:
         - mountPath: /home/coder/
           name: user-disk
@@ -146,9 +147,7 @@ spec:
           value: http://shared-space:5000
         ports:
         - containerPort: 29902
-        resources: 
-          requests:
-            memory: 200Mi
+        resources: {{- toYaml $root.Values.applications.jupyter.resources | nindent 10}}
         volumeMounts:
         - mountPath: /home/jovyan/
           name: user-disk
@@ -322,6 +321,9 @@ spec:
         - mountPath: /home/engineer/logs
           name: user-file-logs
         imagePullPolicy: Always
+        resources: 
+          requests:
+            memory: 256Mi
       - name: memcached
         image: memcached
         ports:

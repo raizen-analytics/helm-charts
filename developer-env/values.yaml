@@ -20,8 +20,16 @@ applications:
     tag: latest
   vscode:
     image: codercom/code-server
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
   jupyter:
     image: jupyter/datascience-notebook
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   
