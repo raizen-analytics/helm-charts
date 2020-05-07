@@ -36,6 +36,8 @@ ssh:
 
 imagePullSecrets:
   - name: acr-secret
+nodeSelector:
+  # key: value
 volumes:
   disk:
     size: 32Gi

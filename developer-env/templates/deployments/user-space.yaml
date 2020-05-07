@@ -375,6 +375,9 @@ spec:
         ports:
           - containerPort: 9191
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
+      {{- if $root.Values.nodeSelector }}
+      nodeSelector: {{- toYaml $root.Values.nodeSelector | nindent 8}}
+      {{- end }}
       volumes:
         - name: user-disk
           persistentVolumeClaim:

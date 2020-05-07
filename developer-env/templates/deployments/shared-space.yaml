@@ -56,6 +56,9 @@ spec:
         - containerPort: 30008
         - containerPort: 30009
       imagePullSecrets: {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8}}
+      {{- end }}
       volumes:
         - name: shared-disk
           persistentVolumeClaim:

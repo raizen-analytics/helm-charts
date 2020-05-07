@@ -57,7 +57,10 @@ spec:
           requests:
             memory: 10Mi
         ports:
-        - containerPort: 4180  
+        - containerPort: 4180
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8}}
+      {{- end }}  
       volumes:
       - name: user-gateway-cfg
         configMap:
