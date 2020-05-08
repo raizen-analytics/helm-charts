@@ -141,37 +141,39 @@ spec:
         imagePullPolicy: Always
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
-        args: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
+        args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
         env:
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
+        - name: USERNAME
+          value: {{.}}
         ports:
         - containerPort: 29902
         resources: {{- toYaml $root.Values.applications.jupyter.resources | nindent 10}}
         volumeMounts:
-        - mountPath: /home/jovyan/
+        - mountPath: /home/coder/
           name: user-disk
-        - mountPath: /home/jovyan/project/
+        - mountPath: /home/coder/project/
           name: user-disk
           subPath: project
-        - mountPath: /home/jovyan/airflow/dags
+        - mountPath: /home/coder/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/jovyan/airflow/plugins
+        - mountPath: /home/coder/airflow/plugins
           name: user-file-data
           subPath: plugins
-        - mountPath: /home/jovyan/airflow/conf
+        - mountPath: /home/coder/airflow/conf
           name: user-file-data
           subPath: conf
-        - mountPath: /home/jovyan/airflow/worker-storage
+        - mountPath: /home/coder/airflow/worker-storage
           name: user-file-data
           subPath: worker-storage
-        - mountPath: /home/jovyan/airflow/logs
+        - mountPath: /home/coder/airflow/logs
           name: user-file-logs
-        - mountPath: /home/jovyan/kaniko
+        - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
-        - mountPath: /home/jovyan/shared
+        - mountPath: /home/coder/shared
           name: shared-file
         imagePullPolicy: Always
       - name: postgres

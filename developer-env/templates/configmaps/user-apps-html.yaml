@@ -14,13 +14,20 @@ data:
       <meta charset="UTF-8">
     </head>
     <body>
+      <h2>Tools</h2>
+      <ul>
+        <li><a href="./code/">Code</a></li>
+        <li><a href="./jupyter/">JupyterLab</a></li>
+        <li><a href="./jupyter/tree">Jupyter (classic)</a></li>
+      </ul>
       <h2>Applications</h2>
       <ul>
         <li><a href="./airflow/">Airflow</a></li>
-        <li><a href="./browser/">Browser</a></li>
-        <li><a href="./code/">Code</a></li>
-        <li><a href="./jupyter/">Jupyter</a></li>
         <li><a href="./mlflow/">Mlflow</a></li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li><a href="./browser/">Firefox</a></li>
       </ul>
       <h2>Instructions</h2>
       <h3>Mlflow</h3>
