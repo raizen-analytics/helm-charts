@@ -35,7 +35,8 @@ def watch_pod_events(pod_name: str, namespace: str, kubernetes_api:client.apis.c
         if event['type'] == 'DELETED':
             w.stop()
 
-def create_pod(tag: str, build_context: str):
+def create_pod(tag: str, build_context: str, cache: str):
+    print("Cache: {0}".format(cache))
     _build_context = '/workspace/{0}'.format(build_context)
     _username = os.getenv('K8S_USER')
     _namespace = os.getenv('K8S_NAMESPACE')
@@ -60,7 +61,8 @@ def create_pod(tag: str, build_context: str):
         volume_mounts=[kaniko_volume_mount, docker_credential_volume_mount],
         args=[
             '--destination={0}'.format(tag),
-            '--context={0}'.format(_build_context)
+            '--context={0}'.format(_build_context),
+            '--cache={0}'.format(cache)
             ]
         )
     kaniko_pvc =  client.V1PersistentVolumeClaimVolumeSource(claim_name=_kaniko_volume)
@@ -95,5 +97,7 @@ if __name__ == '__main__':
                     help='a full image tag name: Ex: user.project.io/repo:version')
     parser.add_argument('--context', dest='build_context', type=str, default='/',
                     help='path string relative to kaniko root directory. Ex: image_dir/')
+    parser.add_argument('--cache', dest='cache', type=str, default='true',
+                    help='activate kaniko build cache. Default true')
     args = parser.parse_args()
-    create_pod(vars(args)['image_tag'], vars(args)['build_context'])
+    create_pod(vars(args)['image_tag'], vars(args)['build_context'], vars(args)['cache'])
