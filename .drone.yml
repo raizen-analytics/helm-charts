@@ -43,6 +43,7 @@ steps:
     registry: raizenanalyticsdev.azurecr.io
     repo: code-server
     auto_tag: true
+    cache: true
     username: raizenanalyticsdev
     password:
       from_secret: azure-registry-key
@@ -62,6 +63,7 @@ steps:
     registry: raizenanalyticsdev.azurecr.io
     repo: ws-tunnel-server
     auto_tag: true
+    cache: true
     username: raizenanalyticsdev
     password:
       from_secret: azure-registry-key
@@ -81,6 +83,7 @@ steps:
     registry: raizenanalyticsdev.azurecr.io
     repo: ws-tunnel-client
     auto_tag: true
+    cache: true
     username: raizenanalyticsdev
     password:
       from_secret: azure-registry-key
