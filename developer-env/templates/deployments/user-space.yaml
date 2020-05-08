@@ -90,7 +90,7 @@ spec:
             subPath: password
         imagePullPolicy: Always
       - name: vscode
-        args: ['--auth', 'none', '--port', '29901']
+        args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
         image: {{ $root.Values.applications.vscode.image }}
         env:
         - name: USERNAME
@@ -141,7 +141,7 @@ spec:
         imagePullPolicy: Always
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
-        command: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
+        args: ["jupyter", "notebook","--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
         env:
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
