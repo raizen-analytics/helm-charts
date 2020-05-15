@@ -90,7 +90,13 @@ spec:
             subPath: password
         imagePullPolicy: Always
       - name: vscode
-        args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
+        {{- if $root.Values.applications.vscode.command }}
+        command: {{- toYaml $root.Values.applications.vscode.command | nindent 10}}
+        {{- end }}
+        {{- if $root.Values.applications.vscode.args }}
+        args: {{- toYaml $root.Values.applications.vscode.args | nindent 10}}
+        {{- end }}
+        # args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
         image: {{ $root.Values.applications.vscode.image }}
         env:
         - name: USERNAME
@@ -141,7 +147,13 @@ spec:
         imagePullPolicy: Always
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
-        args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
+        {{- if $root.Values.applications.jupyter.command }}
+        command: {{- toYaml $root.Values.applications.jupyter.command | nindent 10}}
+        {{- end }}
+        {{- if $root.Values.applications.jupyter.args }}
+        args: {{- toYaml $root.Values.applications.jupyter.args | nindent 10}}
+        {{- end }}
+        # args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
         env:
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
@@ -381,6 +393,9 @@ spec:
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       {{- if $root.Values.nodeSelector }}
       nodeSelector: {{- toYaml $root.Values.nodeSelector | nindent 8}}
+      {{- end }}
+      {{- if $root.Values.tolerations }}
+      tolerations: {{- toYaml $root.Values.tolerations | nindent 8}}
       {{- end }}
       volumes:
         - name: user-disk
