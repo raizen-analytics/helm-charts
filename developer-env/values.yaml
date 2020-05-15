@@ -20,12 +20,14 @@ applications:
     tag: latest
   vscode:
     image: codercom/code-server
+    args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
     resources:
       requests:
         memory: "256Mi"
         cpu: "250m"
   jupyter:
     image: jupyter/datascience-notebook
+    args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
     resources:
       requests:
         memory: "256Mi"
@@ -44,8 +46,17 @@ ssh:
 
 imagePullSecrets:
   - name: acr-secret
-nodeSelector:
+
+
+# nodeSelector:
   # key: value
+  
+# tolerations:
+#   - key: "key"
+#     operator: "Equal"
+#     value: "value"
+#     effect: "NoSchedule"
+
 volumes:
   disk:
     size: 32Gi
