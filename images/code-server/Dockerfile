@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.0.2
+FROM codercom/code-server:3.3.1
 
 USER root
 ARG GO_VERSION=1.14.1
@@ -68,12 +68,25 @@ RUN pip3 install pyspark==2.4.5 \
     findspark \
     pyarrow==0.14.1 \
     mlflow==1.2.0 \
-    streamlit
+    streamlit \
+    apache-airflow==1.10.10 \
+    apache-airflow[kubernetes]==1.10.10 \
+    apache-airflow[ssh]==1.10.10 \
+    psycopg2-binary \
+    azure-datalake-store \
+    pymemcache \
+    lazy-import==0.2.2
 
 RUN apt-get install -y nodejs npm
 RUN pip3 install jupyter jupyterlab
 
 RUN chown -R coder:coder /usr/local/share/jupyter/
+
+#Install kubectl
+
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin/kubectl
 
 # COPY requirements.txt requirements.txt
 # RUN pip3 install -r requirements.txt \
