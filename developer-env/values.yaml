@@ -16,7 +16,7 @@ oauth:
 
 applications:
   airflow:
-    image: raizenanalyticsdev.azurecr.io/airflow-base
+    image: raizenanalyticsdev.azurecr.io/code-server:1.1.0
     tag: latest
   vscode:
     image: codercom/code-server
@@ -26,7 +26,7 @@ applications:
         memory: "256Mi"
         cpu: "250m"
   jupyter:
-    image: jupyter/datascience-notebook
+    image: raizenanalyticsdev.azurecr.io/code-server:1.1.0
     args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
     resources:
       requests:
