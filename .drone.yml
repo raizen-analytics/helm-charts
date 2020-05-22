@@ -38,7 +38,7 @@ steps:
     - tag
 
 - name: publish-vscode-image
-  image: banzaicloud/drone-kaniko:0.6.0
+  image: banzaicloud/drone-kaniko:0.5.1
   settings:
     registry: raizenanalyticsdev.azurecr.io
     repo: code-server
@@ -58,7 +58,7 @@ steps:
     - tag
 
 - name: publish-ws-tunnel-server
-  image: banzaicloud/drone-kaniko:0.6.0
+  image: banzaicloud/drone-kaniko:0.5.1
   settings:
     registry: raizenanalyticsdev.azurecr.io
     repo: ws-tunnel-server
@@ -78,7 +78,7 @@ steps:
     - tag
 
 - name: publish-ws-tunnel-client
-  image: banzaicloud/drone-kaniko:0.6.0
+  image: banzaicloud/drone-kaniko:0.5.1
   settings:
     registry: raizenanalyticsdev.azurecr.io
     repo: ws-tunnel-client
