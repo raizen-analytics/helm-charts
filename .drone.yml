@@ -9,6 +9,7 @@ steps:
   environment:
     LINUX_ASSET_NAME: ws-tunnel_linux_amd64.tar.gz
     WINDOWS_ASSET_NAME: ws-tunnel_windows_amd64.tar.gz
+    DARWIN_ASSET_NAME: ws-tunnel_darwin_amd64.tar.gz
     RELEASE_MESSAGE: "This release was automatically compiled and uploaded using Go 1.11.4"      
     GITHUB_ACCESS_TOKEN:
       from_secret: GITHUB_ACCESS_TOKEN
@@ -18,6 +19,9 @@ steps:
     - tar -czvf $LINUX_ASSET_NAME ws-tunnel
     - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ws-tunnel.exe app.go
     - tar -czvf $WINDOWS_ASSET_NAME ws-tunnel.exe
+    - rm ws-tunnel
+    - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o ws-tunnel app.go
+    - tar -czvf $DARWIN_ASSET_NAME ws-tunnel
     - >
       release=$(curl -XPOST -H "Authorization:token $GITHUB_ACCESS_TOKEN" --data "{\"tag_name\": \"$DRONE_TAG\", \"target_commitish\": \"$DRONE_REPO_BRANCH\", 
       \"name\": \"$DRONE_TAG\", \"body\": \"$RELEASE_MESSAGE\", \"draft\": false, \"prerelease\": false}" https://api.github.com/repos/$DRONE_REPO/releases)
@@ -31,6 +35,9 @@ steps:
     - >
       curl -XPOST -H "Authorization:token $GITHUB_ACCESS_TOKEN" -H "Content-Type:application/octet-stream" --data-binary @$WINDOWS_ASSET_NAME 
       https://uploads.github.com/repos/$DRONE_REPO/releases/$id/assets?name=$WINDOWS_ASSET_NAME
+    - >
+      curl -XPOST -H "Authorization:token $GITHUB_ACCESS_TOKEN" -H "Content-Type:application/octet-stream" --data-binary @$DARWIN_ASSET_NAME 
+      https://uploads.github.com/repos/$DRONE_REPO/releases/$id/assets?name=$DARWIN_ASSET_NAME
   when:
     branch:
     - master
