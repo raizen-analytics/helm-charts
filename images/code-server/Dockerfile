@@ -3,10 +3,6 @@ FROM codercom/code-server:3.4.1
 USER root
 ARG GO_VERSION=1.14.1
 
-#Install ZSH
-RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "-y", "zsh"]
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 # Install go and kaniko to build images
 RUN apt-get update \
     && apt install wget \
@@ -21,6 +17,11 @@ RUN apt-get install -y python3-pip python3-venv \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 ENV PATH=$PATH:/home/coder/.local/bin
+
+#Install ZSH
+RUN apt-get update
+RUN apt-get install -y zsh
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
 # Install kaniko-build tool
 
