@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{.}}-apps-html
+  name: {{lower .}}-apps-html
   namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
@@ -36,10 +36,10 @@ data:
       </p>
       <h3>Docker Registry</h3>
       <p>
-        URI: {{.}}.{{ $root.Values.ingress.host }}
+        URI: {{lower .}}.{{ $root.Values.ingress.host }}
       </p>
       <p>
-        Username: {{.}}
+        Username: {{lower .}}
       </p>
       <p>
         Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
@@ -47,10 +47,10 @@ data:
       </p>
       <h3>SSH (Experimental)</h3>
       <p>
-        Download <a href="{{ $root.Values.ssh.clientDownloadLink }}">ws-tunnel</a> and execute: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{.}}/ssh
+        Download <a href="{{ $root.Values.ssh.clientDownloadLink }}">ws-tunnel</a> and execute: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{lower .}}/ssh
       </p>
       <p>
-        Then connect to the port exposed: ssh {{.}}@localhost -p EXPOSED_PORT
+        Then connect to the port exposed: ssh {{lower .}}@localhost -p EXPOSED_PORT
       </p>
       <script>
         function onLoad(){

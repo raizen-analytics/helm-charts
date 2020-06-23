@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 users:
-  - raphael-bos
+  - RAPHAEL-bos
   - guifneves
 
 oauth:

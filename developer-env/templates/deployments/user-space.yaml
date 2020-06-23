@@ -4,21 +4,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{.}}-space
+  name: {{lower .}}-space
   namespace: {{ $root.Release.Namespace | quote }}
   labels:
-    app: {{.}}-space
+    app: {{lower .}}-space
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: {{.}}-space
+      app: {{lower .}}-space
   template:
     metadata:
       labels:
-        app: {{.}}-space
+        app: {{lower .}}-space
     spec:
       serviceAccountName: airflow-scheduler
       initContainers:
@@ -34,12 +34,12 @@ spec:
         imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2
-        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{.}}", "$(USER_PASSWORD)"]
+        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .}}", "$(USER_PASSWORD)"]
         env:
         - name: USER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{.}}-registry-secret
+              name: {{lower .}}-registry-secret
               key: password
         - name: FORCE_RELOAD
           value: {{randAlphaNum 16 | quote}}
@@ -100,15 +100,15 @@ spec:
         image: {{ $root.Values.applications.vscode.image }}
         env:
         - name: USERNAME
-          value: {{.}}
+          value: {{lower .}}
         - name: K8S_USER
-          value: {{.}}
+          value: {{lower .}}
         - name: K8S_KANIKO_VOLUME_SUBPATH
           value: kaniko
         - name: K8S_KANIKO_VOLUME_CLAIM
-          value: {{.}}-file-data
+          value: {{lower .}}-file-data
         - name: K8S_REGISTRY_SECRET_NAME
-          value: {{.}}-registry-secret
+          value: {{lower .}}-registry-secret
         - name: K8S_NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
         - name: MLFLOW_TRACKING_URI
@@ -158,7 +158,7 @@ spec:
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
         - name: USERNAME
-          value: {{.}}
+          value: {{lower .}}
         ports:
         - containerPort: 29902
         resources: {{- toYaml $root.Values.applications.jupyter.resources | nindent 10}}
@@ -220,7 +220,7 @@ spec:
         - name: AIRFLOW__CORE__BASE_LOG_FOLDER
           value: /home/engineer/logs
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{.}}-space:29432/airflow
+          value: postgresql+psycopg2://airflow:airflow@{{lower .}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
         - name: AIRFLOW__CORE__EXECUTOR
@@ -240,9 +240,9 @@ spec:
         - name: AIRFLOW__WEBSERVER__AUTHENTICATE
           value: 'False'
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-          value: {{.}}-file-dags
+          value: {{lower .}}-file-dags
         - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-          value: {{.}}-file-logs
+          value: {{lower .}}-file-logs
         ports:
         - containerPort: 29903
         volumeMounts:
@@ -269,7 +269,7 @@ spec:
         - name: AIRFLOW__CORE__BASE_LOG_FOLDER
           value: /home/engineer/logs
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{.}}-space:29432/airflow
+          value: postgresql+psycopg2://airflow:airflow@{{lower .}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
@@ -297,7 +297,7 @@ spec:
         - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
-          value: {{.}}-space
+          value: {{lower .}}-space
         - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
           value: engineer
         - name: AIRFLOW__KUBERNETES__NAMESPACE
@@ -309,13 +309,13 @@ spec:
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
           value: Always
         - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-          value: {{.}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
+          value: {{lower .}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-          value: {{.}}-file-data
+          value: {{lower .}}-file-data
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
           value: dags
         - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-          value: {{.}}-file-logs
+          value: {{lower .}}-file-logs
         - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
           value: airflow-scheduler
         - name: AIRFLOW__KUBERNETES__RUN_AS_USER
@@ -370,7 +370,7 @@ spec:
         - name: USER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{.}}-registry-secret
+              name: {{lower .}}-registry-secret
               key: password
         ports:
         - containerPort: 29500
@@ -400,37 +400,37 @@ spec:
       volumes:
         - name: user-disk
           persistentVolumeClaim:
-            claimName: {{.}}-disk
+            claimName: {{lower .}}-disk
         - name: user-file-data
           persistentVolumeClaim:
-            claimName: {{.}}-file-data
+            claimName: {{lower .}}-file-data
         - name: user-file-logs
           persistentVolumeClaim:
-            claimName: {{.}}-file-logs
+            claimName: {{lower .}}-file-logs
         - name: shared-file
           persistentVolumeClaim:
             claimName: shared-file
         - name: user-proxy-cfg
           configMap:
-            name: {{ . }}-nginx-cfg
+            name: {{lower . }}-nginx-cfg
             items:
             - key: default.conf
               path: default.conf
         - name: registry-cfg
           configMap:
-            name: {{.}}-registry-cfg
+            name: {{lower .}}-registry-cfg
             items:
             - key: config.yaml
               path: config.yaml
         - name: user-apps-html
           configMap:
-            name: {{.}}-apps-html
+            name: {{lower .}}-apps-html
             items:
             - key: index.html
               path: index.html
         - name: registry-secret
           secret:
-            secretName: {{.}}-registry-secret
+            secretName: {{lower .}}-registry-secret
             items:
             - key: password
               path: password

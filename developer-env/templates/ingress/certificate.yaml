@@ -11,7 +11,7 @@ spec:
   dnsNames:
   - {{ .Values.ingress.host }}
   {{- range .Values.users }}
-  - {{.}}.{{ $root.Values.ingress.host }}
+  - {{lower .}}.{{ $root.Values.ingress.host }}
   {{- end }}
   issuerRef:
     name: {{ .Values.ingress.tls.clusterIssuerName | quote }}
