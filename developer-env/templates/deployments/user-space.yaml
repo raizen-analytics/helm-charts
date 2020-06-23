@@ -33,7 +33,7 @@ spec:
           subPath: project
         imagePullPolicy: Always
       - name: registry-credentials
-        image: registry:2
+        image: registry:2.6
         command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .}}", "$(USER_PASSWORD)"]
         env:
         - name: USER_PASSWORD
