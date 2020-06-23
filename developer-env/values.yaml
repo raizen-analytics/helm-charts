@@ -62,5 +62,5 @@ volumes:
     size: 32Gi
     storageClassName: default
   file:
-    size: 500Mi
+    size: 1Gi
     storageClassName: azurefile
