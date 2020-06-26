@@ -14,7 +14,8 @@ ENV PATH=$PATH:/usr/local/go/bin
 
 # Install programming tools
 RUN apt-get install -y python3-pip python3-venv \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3  1 \
+    && pip3 install -U pip
 
 ENV PATH=$PATH:/home/coder/.local/bin
 
@@ -85,6 +86,19 @@ RUN pip3 install pyspark==2.4.5 \
 
 RUN apt-get install -y nodejs npm
 RUN pip3 install jupyter jupyterlab
+
+# install data data science tools
+
+RUN pip3 install wheel \
+    mlflow==1.7.2 \
+    pandas==1.0.3 \
+    numpy==1.18.2 \
+    deap==1.3.1 \
+    tensorflow==2.1.0 \
+    tensorflow-cpu==2.1.0 \
+    keras==2.3.1 \
+    joblib==0.14.1 \
+    matplotlib==3.2.1
 
 RUN chown -R coder:coder /usr/local/share/jupyter/
 
