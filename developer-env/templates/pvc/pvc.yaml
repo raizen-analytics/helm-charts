@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{lower .}}-disk
+  name: {{lower .username}}-disk
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   accessModes:
@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{lower .}}-file-data
+  name: {{lower .username}}-file-data
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   accessModes:
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{lower .}}-file-logs
+  name: {{lower .username}}-file-logs
   namespace: {{ $root.Release.Namespace | quote }}
 spec:
   accessModes:

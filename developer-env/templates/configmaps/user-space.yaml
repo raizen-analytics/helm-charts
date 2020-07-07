@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{lower .}}-nginx-cfg
+  name: {{lower .username}}-nginx-cfg
   namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
@@ -24,7 +24,7 @@ data:
       proxy_set_header Connection "upgrade";
       proxy_read_timeout 300;
 
-      if ( $http_x_forwarded_user != {{ . | quote }} ) {
+      if ( $http_x_forwarded_user != {{ .username | quote }} ) {
           return 401;
       }
   

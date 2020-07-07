@@ -3,8 +3,10 @@
 # Declare variables to be passed into your templates.
 
 users:
-  - raphael-bos
-  - guifneves
+  - username: raphael-bos
+    # nodeSelector:
+    #   key: value
+  - username: guifneves
 
 oauth:
   proxyProvider: github
@@ -16,7 +18,7 @@ oauth:
 
 applications:
   airflow:
-    image: raizenanalyticsdev.azurecr.io/code-server
+    image: raizenanalyticsdev.azurecr.io/airflow-base
     tag: latest
   vscode:
     image: codercom/code-server
@@ -42,14 +44,14 @@ ingress:
     clusterIssuerName: letsencrypt-prod
 
 ssh:
-  clientDownloadLink: https://github.com/raizen-analytics-ldt/helm-charts/releases
+  clientDownloadLink: https://github.com/raizen-analytics/helm-charts/releases
 
 imagePullSecrets:
   - name: acr-secret
 
 
 # nodeSelector:
-  # key: value
+#   key: value2
   
 # tolerations:
 #   - key: "key"
