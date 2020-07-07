@@ -57,7 +57,7 @@ steps:
     context: /drone/src/images/code-server/
   resources:
     requests:
-      memory: 1GiB
+      memory: 2GiB
   when:
     branch:
     - master
@@ -77,7 +77,7 @@ steps:
     context: /drone/src/images/ws-tunnel/server
   resources:
     requests:
-      memory: 1GiB
+      memory: 2GiB
   when:
     branch:
     - master
@@ -97,7 +97,7 @@ steps:
     context: /drone/src/images/ws-tunnel/client
   resources:
     requests:
-      memory: 1GiB
+      memory: 2GiB
   when:
     branch:
     - master
