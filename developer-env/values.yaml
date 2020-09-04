@@ -36,7 +36,10 @@ applications:
         cpu: "250m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
-  
+  registry:
+    admin:
+      enabled: false
+      secret: admin-registry
 
 ingress:
   host: dev.project.raizen.ai

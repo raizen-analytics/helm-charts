@@ -34,13 +34,30 @@ spec:
         imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2.6
+        {{- if $root.Values.applications.registry.admin.enabled}}
+        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)",
+                  "&&", "htpasswd", "-Bb", "/auth/htpasswd", "$(ADMIN_USER)", "$(ADMIN_PASSWORD)"]
+        {{ else }}
         command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)"]
+        {{ end }}
         env:
         - name: USER_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{lower .username}}-registry-secret
               key: password
+        {{- if $root.Values.applications.registry.admin.enabled}}
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ $root.Values.applications.registry.admin.secret }}
+              key: username
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ $root.Values.applications.registry.admin.secret }}
+              key: password
+        {{- end }}
         - name: FORCE_RELOAD
           value: {{randAlphaNum 16 | quote}}
         volumeMounts:
