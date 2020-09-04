@@ -35,8 +35,7 @@ spec:
       - name: registry-credentials
         image: registry:2.6
         {{- if $root.Values.applications.registry.admin.enabled}}
-        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)",
-                  "&&", "htpasswd", "-Bb", "/auth/htpasswd", "$(ADMIN_USER)", "$(ADMIN_PASSWORD)"]
+        command: ["/bin/sh", "-c", "htpasswd -Bbc /auth/htpasswd {{lower .username}} $(USER_PASSWORD) && htpasswd -Bb /auth/htpasswd $(ADMIN_USER) $(ADMIN_PASSWORD)"]
         {{ else }}
         command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)"]
         {{ end }}

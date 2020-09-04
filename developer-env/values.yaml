@@ -40,6 +40,7 @@ applications:
     admin:
       enabled: false
       secret: admin-registry
+      # secret must have username and password keys
 
 ingress:
   host: dev.project.raizen.ai
