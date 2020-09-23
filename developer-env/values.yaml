@@ -64,9 +64,17 @@ imagePullSecrets:
 #     effect: "NoSchedule"
 
 volumes:
-  disk:
-    size: 32Gi
-    storageClassName: default
-  file:
-    size: 1Gi
-    storageClassName: azurefile
+  users:
+    disk:
+      size: 32Gi
+      storageClassName: default
+    file:
+      size: 1Gi
+      storageClassName: azurefile
+  shared:
+    disk:
+      size: 32Gi
+      storageClassName: default
+    file:
+      size: 1Gi
+      storageClassName: azurefile

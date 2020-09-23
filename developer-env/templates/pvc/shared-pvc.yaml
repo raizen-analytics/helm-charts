@@ -6,10 +6,10 @@ metadata:
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: {{ .Values.volumes.file.storageClassName | quote }}
+  storageClassName: {{ .Values.volumes.shared.file.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ .Values.volumes.file.size | quote }}
+      storage: {{ .Values.volumes.shared.file.size | quote }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -19,7 +19,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: {{ .Values.volumes.disk.storageClassName | quote }}
+  storageClassName: {{ .Values.volumes.shared.disk.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ .Values.volumes.disk.size | quote }}
+      storage: {{ .Values.volumes.shared.disk.size | quote }}

@@ -9,10 +9,10 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: {{ $root.Values.volumes.disk.storageClassName | quote }}
+  storageClassName: {{ $root.Values.volumes.users.disk.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ $root.Values.volumes.disk.size | quote }}
+      storage: {{ $root.Values.volumes.users.disk.size | quote }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,10 +22,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ $root.Values.volumes.file.storageClassName | quote }}
+  storageClassName: {{ $root.Values.volumes.users.file.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ $root.Values.volumes.file.size | quote }}
+      storage: {{ $root.Values.volumes.users.file.size | quote }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -35,8 +35,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ $root.Values.volumes.file.storageClassName | quote }}
+  storageClassName: {{ $root.Values.volumes.users.file.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ $root.Values.volumes.file.size | quote }}
+      storage: {{ $root.Values.volumes.users.file.size | quote }}
 {{- end }}
