@@ -14,6 +14,7 @@ oauth:
   clientId: someId
   clientSecret: someSecret
   emailDomains: '*'
+  gitHubOrg: 'org'
   redirectUrl: https://dev.project.raizen.ai/oauth2/callback
 
 applications:

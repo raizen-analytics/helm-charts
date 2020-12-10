@@ -45,6 +45,8 @@ spec:
           value: {{ required "A valid .Values.oauth.clientSecret entry required!" .Values.oauth.clientSecret | quote }}
         - name: OAUTH2_PROXY_EMAIL_DOMAINS
           value: {{ required "A valid .Values.oauth.emailDomains entry required!" .Values.oauth.emailDomains | quote }}
+        - name: OAUTH2_PROXY_GITHUB_ORG
+          value: {{ required "A valid .Values.oauth.gitHubOrg entry required!" .Values.oauth.gitHubOrg | quote }}
         - name: OAUTH2_PROXY_UPSTREAMS
           value: http://localhost:80
         - name: OAUTH2_PROXY_HTTP_ADDRESS
