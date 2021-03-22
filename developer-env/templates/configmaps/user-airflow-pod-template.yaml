@@ -13,6 +13,7 @@ data:
     kind: Pod
     metadata:
       name: dummy-name
+      namespace: {{ $root.Release.Namespace | quote }}
     spec:
       containers:
         - args: []
