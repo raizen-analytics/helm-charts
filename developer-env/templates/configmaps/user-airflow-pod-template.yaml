@@ -30,7 +30,7 @@ data:
             - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
               value: airflow
           envFrom: []
-          image: dummy_image
+          image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
           imagePullPolicy: Always
           name: base
           ports: []
@@ -41,6 +41,7 @@ data:
             - mountPath: /opt/airflow/dags
               name: airflow-dags
               subPath: dags
+      imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       hostNetwork: false
       restartPolicy: Never
       securityContext:
