@@ -285,8 +285,8 @@ spec:
           value: KubernetesExecutor
         - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
           value: "/opt/airflow/pod_template.yml"
-        - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
-          value: '{"_request_timeout" : [50, 50]}'
+        # - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
+        #   value: '{"_request_timeout" : [50, 50]}'
         - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
           value: '60'
         - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
