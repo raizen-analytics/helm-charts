@@ -296,8 +296,8 @@ spec:
         #   value: {{lower .username}}-space
         # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
         #   value: engineer
-        # - name: AIRFLOW__KUBERNETES__NAMESPACE
-        #   value: {{ $root.Release.Namespace | quote }}
+        - name: AIRFLOW__KUBERNETES__NAMESPACE
+          value: {{ $root.Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
           value: {{ $root.Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
