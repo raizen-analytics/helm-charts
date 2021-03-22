@@ -252,17 +252,20 @@ spec:
         ports:
         - containerPort: 29903
         volumeMounts:
-        - mountPath: /home/engineer/dags
+        - mountPath: /opt/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/engineer/plugins
+        - mountPath: /opt/airflow/plugins
           name: user-file-data
           subPath: plugins
-        - mountPath: /home/engineer/conf
+        - mountPath: /opt/airflow/conf
           name: user-file-data
           subPath: conf
-        - mountPath: /home/engineer/logs
+        - mountPath: /opt/airflow/logs
           name: user-file-logs
+        - mountPath: /opt/airflow/webserver_config.py
+          name: airflow-webserver-config
+          subPath: webserver_config.py
         imagePullPolicy: Always
       - name: airflow-scheduler
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
@@ -441,6 +444,12 @@ spec:
             items:
             - key: pod_template.yml
               path: pod_template.yml
+        - name: airflow-webserver-config
+          configMap:
+            name: airflow-webserver-config
+            items:
+            - key: webserver_config.py
+              path: webserver_config.py
         - name: dshm
           emptyDir:
             medium: Memory
