@@ -227,14 +227,8 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow initdb && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
         env:
-        - name: AIRFLOW_HOME
-          value: /home/engineer/
-        - name: AIRFLOW__CORE__DAGS_FOLDER
-          value: /home/engineer/dags
-        - name: AIRFLOW__CORE__BASE_LOG_FOLDER
-          value: /home/engineer/logs
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
@@ -244,7 +238,7 @@ spec:
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
-          value: engineer
+          value: airflow
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
         - name: AIRFLOW__WEBSERVER__BASE_URL
@@ -255,10 +249,6 @@ spec:
           value: '29903'
         - name: AIRFLOW__WEBSERVER__AUTHENTICATE
           value: 'False'
-        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-          value: {{lower .username}}-file-dags
-        - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-          value: {{lower .username}}-file-logs
         ports:
         - containerPort: 29903
         volumeMounts:
@@ -278,12 +268,6 @@ spec:
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 30 && airflow initdb && airflow scheduler"]
         env:
-        - name: AIRFLOW_HOME
-          value: /home/engineer/
-        - name: AIRFLOW__CORE__DAGS_FOLDER
-          value: /home/engineer/dags
-        - name: AIRFLOW__CORE__BASE_LOG_FOLDER
-          value: /home/engineer/logs
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
@@ -291,11 +275,13 @@ spec:
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
-          value: engineer
+          value: airflow
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
+        - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
+          value: "/opt/airflow/pod_template.yml"
         - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
           value: '{"_request_timeout" : [50, 50]}'
         - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
@@ -304,54 +290,49 @@ spec:
           value: '60'
         - name: AIRFLOW__SCHEDULER__PRINT_STATS_INTERVAL
           value: '30'
-        # - name: AIRFLOW__SCHEDULER__RUN_DURATION
-        #   value: '86400'
-        # - name: AIRFLOW__SCHEDULER__RUN_DURATION
-        #   value: '610'
-        # - name: AIRFLOW__SCHEDULER__NUM_RUNS
-        #   value: '3'
-        # - name: AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE
-        #   value: 'False'
-        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
-          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
-        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
-          value: {{lower .username}}-space
-        - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
-          value: engineer
-        - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ $root.Release.Namespace | quote }}
+        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
+        #   value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
+        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
+        #   value: {{lower .username}}-space
+        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
+        #   value: engineer
+        # - name: AIRFLOW__KUBERNETES__NAMESPACE
+        #   value: {{ $root.Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
           value: {{ $root.Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
           value: {{ $root.Values.applications.airflow.tag }}
-        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
-          value: Always
-        - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-          value: {{lower .username}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
-        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-          value: {{lower .username}}-file-data
-        - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
-          value: dags
-        - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-          value: {{lower .username}}-file-logs
-        - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
-          value: airflow-scheduler
-        - name: AIRFLOW__KUBERNETES__RUN_AS_USER
-          value: '1000'
-        - name: AIRFLOW__KUBERNETES__FS_GROUP
-          value: '1000'
+        # - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
+        #   value: Always
+        # - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
+        #   value: {{lower .username}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
+        # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
+        #   value: {{lower .username}}-file-data
+        # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
+        #   value: dags
+        # - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
+        #   value: {{lower .username}}-file-logs
+        # - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
+        #   value: airflow-scheduler
+        # - name: AIRFLOW__KUBERNETES__RUN_AS_USER
+        #   value: '1000'
+        # - name: AIRFLOW__KUBERNETES__FS_GROUP
+        #   value: '1000'
         volumeMounts:
-        - mountPath: /home/engineer/dags
+        - mountPath: /opt/airflow/dags
           name: user-file-data
           subPath: dags
-        - mountPath: /home/engineer/conf
+        - mountPath: /opt/airflow/conf
           name: user-file-data
           subPath: conf
-        - mountPath: /home/engineer/plugins
+        - mountPath: /opt/airflow/plugins
           name: user-file-data
           subPath: plugins
-        - mountPath: /home/engineer/logs
+        - mountPath: /opt/airflow/logs
           name: user-file-logs
+        - mountPath: /opt/airflow/pod_template.yml
+          name: airflow-pod-template
+          subPath: pod_template.yml
         imagePullPolicy: Always
         resources: 
           requests:
@@ -454,6 +435,12 @@ spec:
             items:
             - key: password
               path: password
+        - name: airflow-pod-template
+          configMap:
+            name: {{lower .username}}-airflow-pod-template
+            items:
+            - key: pod_template.yml
+              path: pod_template.yml
         - name: dshm
           emptyDir:
             medium: Memory

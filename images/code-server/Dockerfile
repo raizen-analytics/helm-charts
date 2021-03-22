@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.4.1
+FROM codercom/code-server:3.9.1
 
 USER root
 ARG GO_VERSION=1.14.1
@@ -84,7 +84,7 @@ RUN pip3 install pyspark==2.4.5 \
     pymemcache \
     lazy-import==0.2.2
 
-RUN apt-get install -y nodejs npm
+RUN apt-get install -y nodejs npm openssh-server
 RUN pip3 install jupyter jupyterlab
 
 # install data data science tools
