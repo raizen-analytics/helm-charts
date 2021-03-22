@@ -247,8 +247,12 @@ spec:
           value: '127.0.0.1'
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
           value: '29903'
-        - name: AIRFLOW__WEBSERVER__AUTHENTICATE
-          value: 'False'
+        - name: AIRFLOW__KUBERNETES__NAMESPACE
+          value: {{ $root.Release.Namespace | quote }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
+          value: {{ $root.Values.applications.airflow.image }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
+          value: {{ $root.Values.applications.airflow.tag }}
         ports:
         - containerPort: 29903
         volumeMounts:
