@@ -239,6 +239,10 @@ spec:
           value: 'False'
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
           value: airflow
+        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
+          value: /opt/airflow/logs
+        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+          value: 'False'
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
         - name: AIRFLOW__WEBSERVER__BASE_URL
@@ -287,6 +291,10 @@ spec:
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
+        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
+          value: /opt/airflow/logs
+        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+          value: 'False'
         - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
           value: "/opt/airflow/pod_template.yml"
         # - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
