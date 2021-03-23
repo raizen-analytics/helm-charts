@@ -108,6 +108,16 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s 
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/kubectl
 
+#Install R-Studio
+# install prerequisities of r-studio server
+sudo apt-get install r-base
+
+# install r-studio server for derbian 10
+sudo apt-get install gdebi-core
+wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1106-amd64.deb
+sudo gdebi rstudio-server-1.4.1106-amd64.deb
+
+
 # COPY requirements.txt requirements.txt
 # RUN pip3 install -r requirements.txt \
 #     && rm requirements.txt
