@@ -17,12 +17,12 @@ data:
     spec:
       initContainers:
         - name: init-myservice
-        image: busybox:1.33
-        command: ['sh', '-c', "chown -R 50000:50000 /opt/airflow/logs"]
-        volumeMounts:
-        - mountPath: "/opt/airflow/logs"
-          name: airflow-logs
-          subPath: logs
+          image: busybox:1.33
+          command: ['sh', '-c', "chown -R 50000:50000 /opt/airflow/logs"]
+          volumeMounts:
+          - mountPath: "/opt/airflow/logs"
+            name: airflow-logs
+            subPath: logs
       containers:
         - args: []
           command: []
