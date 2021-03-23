@@ -49,8 +49,8 @@ data:
       imagePullSecrets: {{- toYaml $root.Values.imagePullSecrets | nindent 8 }}
       hostNetwork: false
       restartPolicy: Never
-      securityContext:
-        runAsUser: 50000
+      # securityContext:
+      #   runAsUser: 50000
       nodeSelector:
         {}
       affinity:
