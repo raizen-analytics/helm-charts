@@ -117,7 +117,8 @@ RUN apt-get install -y r-base gdebi-core lib32gcc1 lib32stdc++6 \
     libclang-7-dev libclang-common-7-dev libclang-dev libclang1-7 \
     libgc1c2 libobjc-8-dev libobjc4 libpq5 \
     && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1106-amd64.deb \
-    && gdebi -n rstudio-server-1.4.1106-amd64.deb
+    && gdebi -n rstudio-server-1.4.1106-amd64.deb \
+    && rm rstudio-server-1.4.1106-amd64.deb
 
 RUN echo 'directory=/home/coder/rstudiodb' >> /etc/rstudio/database.conf \
     && chmod -R +r /etc/rstudio/
