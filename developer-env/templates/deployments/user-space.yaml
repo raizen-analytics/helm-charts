@@ -236,6 +236,8 @@ spec:
           value: {{lower .username}}
         - name: K8S_USER
           value: {{lower .username}}
+        - name: USER
+          value: {{lower .username}}
         - name: K8S_KANIKO_VOLUME_SUBPATH
           value: kaniko
         - name: K8S_KANIKO_VOLUME_CLAIM
