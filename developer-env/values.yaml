@@ -37,7 +37,7 @@ applications:
         cpu: "250m"
   rstudio:
     image: raizenanalyticsdev.azurecr.io/code-server:latest
-    args: ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0", "--auth-none=1"]
+    args: ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0", "--auth-none=1", "--www-root-path=/rstudio/"]
     resources:
       requests:
         memory: "256Mi"
