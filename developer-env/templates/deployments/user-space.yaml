@@ -222,6 +222,62 @@ spec:
           requests:
             memory: 128Mi
         imagePullPolicy: Always
+      - name: rstudio
+        {{- if $root.Values.applications.rstudio.command }}
+        command: {{- toYaml $root.Values.applications.rstudio.command | nindent 10}}
+        {{- end }}
+        {{- if $root.Values.applications.rstudio.args }}
+        args: {{- toYaml $root.Values.applications.rstudio.args | nindent 10}}
+        {{- end }}
+        # args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
+        image: {{ $root.Values.applications.rstudio.image }}
+        env:
+        - name: USERNAME
+          value: {{lower .username}}
+        - name: K8S_USER
+          value: {{lower .username}}
+        - name: K8S_KANIKO_VOLUME_SUBPATH
+          value: kaniko
+        - name: K8S_KANIKO_VOLUME_CLAIM
+          value: {{lower .username}}-file-data
+        - name: K8S_REGISTRY_SECRET_NAME
+          value: {{lower .username}}-registry-secret
+        - name: K8S_NAMESPACE
+          value: {{ $root.Release.Namespace | quote }}
+        - name: MLFLOW_TRACKING_URI
+          value: http://shared-space:5000
+        ports:
+        - containerPort: 29901
+        resources: {{- toYaml $root.Values.applications.rstudio.resources | nindent 10}}
+        # resources: 
+        #   requests:
+        #     memory: 200Mi
+        volumeMounts:
+        - mountPath: /home/coder/
+          name: user-disk
+        - mountPath: /home/coder/project/
+          name: user-disk
+          subPath: project
+        - mountPath: /home/coder/airflow/dags
+          name: user-file-data
+          subPath: dags
+        - mountPath: /home/coder/airflow/plugins
+          name: user-file-data
+          subPath: plugins
+        - mountPath: /home/coder/airflow/conf
+          name: user-file-data
+          subPath: conf
+        - mountPath: /home/coder/airflow/worker-storage
+          name: user-file-data
+          subPath: worker-storage
+        - mountPath: /home/coder/kaniko
+          name: user-file-data
+          subPath: kaniko
+        - mountPath: /home/coder/shared
+          name: shared-file
+        - mountPath: /home/coder/airflow/logs
+          name: user-file-logs
+        imagePullPolicy: Always
       - name: airflow-webserver
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         # command: ["sh", "-c", "airflow initdb
