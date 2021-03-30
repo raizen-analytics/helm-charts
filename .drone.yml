@@ -45,10 +45,10 @@ steps:
     - tag
 
 - name: publish-vscode-image
-  image: banzaicloud/drone-kaniko:0.5.1
+  image: plugins/docker
   settings:
     registry: raizenanalyticsdev.azurecr.io
-    repo: code-server
+    repo: raizenanalyticsdev.azurecr.io/code-server
     auto_tag: true
     cache: true
     username: raizenanalyticsdev
