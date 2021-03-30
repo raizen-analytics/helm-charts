@@ -55,6 +55,7 @@ steps:
     password:
       from_secret: azure-registry-key
     context: /drone/src/images/code-server/
+    dockerfile: /drone/src/images/code-server/Dockerfile
   resources:
     requests:
       memory: 2GiB
