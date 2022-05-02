@@ -32,6 +32,13 @@ spec:
           name: user-disk
           subPath: project
         imagePullPolicy: Always
+      - name: remove-airflow-logs
+        image: bash
+        command: ["rm", "-r", "/volume/*"]
+        volumeMounts:
+        - mounthPath: /volume
+          name: user-file-logs
+        imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2.6
         {{- if $root.Values.applications.registry.admin.enabled}}
@@ -107,9 +114,7 @@ spec:
         imagePullPolicy: Always
       - name: vscode
         {{- if $root.Values.applications.vscode.command }}
-        command: |
-          {{- toYaml $root.Values.applications.vscode.command | nindent 10}}
-          rm -r /home/coder/airflow/logs/*
+        command: {{- toYaml $root.Values.applications.vscode.command | nindent 10}}
         {{- end }}
         {{- if $root.Values.applications.vscode.args }}
         args: {{- toYaml $root.Values.applications.vscode.args | nindent 10}}
@@ -166,9 +171,7 @@ spec:
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
         {{- if $root.Values.applications.jupyter.command }}
-        command: |
-          {{- toYaml $root.Values.applications.jupyter.command | nindent 10}}
-          rm -r /home/coder/airflow/logs/*
+        command: {{- toYaml $root.Values.applications.jupyter.command | nindent 10}}
         {{- end }}
         {{- if $root.Values.applications.jupyter.args }}
         args: {{- toYaml $root.Values.applications.jupyter.args | nindent 10}}
