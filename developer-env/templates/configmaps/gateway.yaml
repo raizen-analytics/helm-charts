@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-gateway-cfg
+  name: {{lower .username}}-registry-cfg
   namespace: {{ .Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
