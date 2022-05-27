@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: airflow-scheduler
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   namespace: {{ .Release.Namespace | quote }}
-  name: pod-editor
+  name: {{lower .username}}
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["pods", "pods/log"]
@@ -23,13 +23,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: edit-pods
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
 subjects:
 - kind: ServiceAccount
-  name: airflow-scheduler
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
 roleRef:
   kind: Role
-  name: pod-editor
+  name: {{lower .username}}
   apiGroup: rbac.authorization.k8s.io

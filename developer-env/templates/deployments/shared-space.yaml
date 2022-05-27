@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shared-space
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: shared-space

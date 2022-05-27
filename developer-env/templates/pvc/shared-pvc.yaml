@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: shared-file
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   accessModes:

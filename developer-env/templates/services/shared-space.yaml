@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: shared-space
-  name: shared-space
+  name: {{lower .username}}
   namespace: {{ .Release.Namespace | quote }}
 spec:
   ports:

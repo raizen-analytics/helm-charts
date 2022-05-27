@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-gateway
+  name: {{lower .username}}-registry-cfg
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: user-gateway
