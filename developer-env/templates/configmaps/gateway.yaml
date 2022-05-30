@@ -24,8 +24,8 @@ data:
 
       {{- range .Values.users }}
       
-      location /{{.username}}{
-        proxy_pass    "http://{{.username}}-space:9191";
+      location /{{lower .username}}{
+        proxy_pass    "http://{{lower .username}}-space:9191";
         rewrite       /{{.username}}(/|$)(.*) /$2 break;
       }
       {{- end }}
