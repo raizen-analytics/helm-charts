@@ -34,7 +34,7 @@ spec:
         imagePullPolicy: Always
       - name: remove-airflow-logs
         image: bash
-        command: ["rm", "-r", "/volume/*"]
+        command: ["rm", "-rf", "/volume/*"]
         volumeMounts:
         - mountPath: /volume
           name: user-file-logs
