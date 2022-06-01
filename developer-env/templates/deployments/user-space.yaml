@@ -36,7 +36,7 @@ spec:
         image: bash
         command: ["rm", "-r", "/volume/*"]
         volumeMounts:
-        - mounthPath: /volume
+        - mountPath: /volume
           name: user-file-logs
         imagePullPolicy: Always
       - name: registry-credentials
