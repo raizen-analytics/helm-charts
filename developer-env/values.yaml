@@ -45,6 +45,7 @@ applications:
 
 ingress:
   host: dev.project.raizen.ai
+  secretName: tls-ingress-secret
   tls:
     clusterIssuerName: letsencrypt-prod
 
@@ -53,7 +54,6 @@ ssh:
 
 imagePullSecrets:
   - name: acr-secret
-
 
 # nodeSelector:
 #   key: value2

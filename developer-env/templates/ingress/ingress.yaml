@@ -1,32 +1,38 @@
 {{- $root := . -}}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "256k"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '300'
   name: project-ingress
   namespace: {{ .Release.Namespace}}
-spec: 
+spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - {{ .Values.ingress.host }}
-    {{- range .Values.users }}
-    - {{lower .username}}.{{ $root.Values.ingress.host }}
-    {{- end }}
-    secretName: tls-secret
+    # {{- range .Values.users }}
+    # - {{lower .username}}.{{ $root.Values.ingress.host }}
+    # {{- end }}
+    secretName: {{ .Values.ingress.secretName }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
-      - backend:
-          serviceName: user-gateway
-          servicePort: 4180
-  {{- range .Values.users }}
-  - host: {{lower .username}}.{{ $root.Values.ingress.host }}
-    http:
-      paths:
-      - backend:
-          serviceName: {{lower .username}}-space
-          servicePort: 29500
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: user-gateway
+            port:
+              number: 4180
+  # {{- range .Values.users }}
+  # - host: {{lower .username}}.{{ $root.Values.ingress.host }}
+  #   http:
+  #     paths:
+  #     - backend:
+  #         serviceName: {{lower .username}}-space
+  #         servicePort: 29500
   {{- end }}

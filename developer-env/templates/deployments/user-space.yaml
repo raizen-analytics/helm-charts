@@ -39,38 +39,38 @@ spec:
         - mountPath: /volume
           name: user-file-logs
         imagePullPolicy: Always
-      - name: registry-credentials
-        image: registry:2.6
-        {{- if $root.Values.applications.registry.admin.enabled}}
-        command: ["/bin/sh", "-c", "htpasswd -Bbc /auth/htpasswd {{lower .username}} $(USER_PASSWORD) && htpasswd -Bb /auth/htpasswd $(ADMIN_USER) $(ADMIN_PASSWORD)"]
-        {{ else }}
-        command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)"]
-        {{ end }}
-        env:
-        - name: USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{lower .username}}-registry-secret
-              key: password
-        {{- if $root.Values.applications.registry.admin.enabled}}
-        - name: ADMIN_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.applications.registry.admin.secret }}
-              key: username
-        - name: ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.applications.registry.admin.secret }}
-              key: password
-        {{- end }}
-        - name: FORCE_RELOAD
-          value: {{randAlphaNum 16 | quote}}
-        volumeMounts:
-        - mountPath: /auth
-          name: user-disk
-          subPath: auth
-        imagePullPolicy: Always 
+      # - name: registry-credentials
+      #   image: registry:2.6
+      #   {{- if $root.Values.applications.registry.admin.enabled}}
+      #   command: ["/bin/sh", "-c", "htpasswd -Bbc /auth/htpasswd {{lower .username}} $(USER_PASSWORD) && htpasswd -Bb /auth/htpasswd $(ADMIN_USER) $(ADMIN_PASSWORD)"]
+      #   {{ else }}
+      #   command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)"]
+      #   {{ end }}
+      #   env:
+      #   - name: USER_PASSWORD
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: {{lower .username}}-registry-secret
+      #         key: password
+      #   {{- if $root.Values.applications.registry.admin.enabled}}
+      #   - name: ADMIN_USER
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: {{ $root.Values.applications.registry.admin.secret }}
+      #         key: username
+      #   - name: ADMIN_PASSWORD
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: {{ $root.Values.applications.registry.admin.secret }}
+      #         key: password
+      #   {{- end }}
+      #   - name: FORCE_RELOAD
+      #     value: {{randAlphaNum 16 | quote}}
+      #   volumeMounts:
+      #   - mountPath: /auth
+      #     name: user-disk
+      #     subPath: auth
+      #   imagePullPolicy: Always 
       containers:
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v6.1.1
@@ -108,9 +108,9 @@ spec:
           - mountPath: /usr/share/nginx/html/index.html
             subPath: index.html
             name: user-apps-html
-          - mountPath: /usr/share/nginx/html/password
-            name: registry-secret
-            subPath: password
+          # - mountPath: /usr/share/nginx/html/password
+          #   name: registry-secret
+          #   subPath: password
         imagePullPolicy: Always
       - name: vscode
         {{- if $root.Values.applications.vscode.command }}
@@ -130,8 +130,8 @@ spec:
           value: kaniko
         - name: K8S_KANIKO_VOLUME_CLAIM
           value: {{lower .username}}-file-data
-        - name: K8S_REGISTRY_SECRET_NAME
-          value: {{lower .username}}-registry-secret
+        # - name: K8S_REGISTRY_SECRET_NAME
+        #   value: {{lower .username}}-registry-secret
         - name: K8S_NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
         - name: MLFLOW_TRACKING_URI
@@ -334,7 +334,7 @@ spec:
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
           value: Always
         - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-          value: {{lower .username}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
+          value: {{range $root.Values.imagePullSecrets}}{{ .name }}{{end}}
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
           value: {{lower .username}}-file-data
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
@@ -383,33 +383,33 @@ spec:
           - mountPath: /dev/shm
             name: dshm
         imagePullPolicy: Always
-      - name: registry
-        image: registry:2
-        env:
-        - name: REGISTRY_AUTH
-          value: htpasswd
-        - name: REGISTRY_AUTH_HTPASSWD_REALM
-          value: "Registry Realm"
-        - name: REGISTRY_AUTH_HTPASSWD_PATH
-          value: /auth/htpasswd
-        - name: USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{lower .username}}-registry-secret
-              key: password
-        ports:
-        - containerPort: 29500
-        volumeMounts:
-          - mountPath: /etc/docker/registry/config.yml
-            subPath: config.yaml
-            name: registry-cfg
-          - mountPath: /auth
-            name: user-disk
-            subPath: auth
-          - mountPath: /var/lib/registry
-            name: user-disk
-            subPath: docker-registry
-        imagePullPolicy: Always
+      # - name: registry
+      #   image: registry:2
+      #   env:
+      #   - name: REGISTRY_AUTH
+      #     value: htpasswd
+      #   - name: REGISTRY_AUTH_HTPASSWD_REALM
+      #     value: "Registry Realm"
+      #   - name: REGISTRY_AUTH_HTPASSWD_PATH
+      #     value: /auth/htpasswd
+      #   - name: USER_PASSWORD
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: {{lower .username}}-registry-secret
+      #         key: password
+      #   ports:
+      #   - containerPort: 29500
+      #   volumeMounts:
+      #     - mountPath: /etc/docker/registry/config.yml
+      #       subPath: config.yaml
+      #       name: registry-cfg
+      #     - mountPath: /auth
+      #       name: user-disk
+      #       subPath: auth
+      #     - mountPath: /var/lib/registry
+      #       name: user-disk
+      #       subPath: docker-registry
+      #   imagePullPolicy: Always
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
         args: ['-addr', 'localhost:22', '-path', 'ssh']
@@ -443,24 +443,24 @@ spec:
             items:
             - key: default.conf
               path: default.conf
-        - name: registry-cfg
-          configMap:
-            name: {{lower .username}}-registry-cfg
-            items:
-            - key: config.yaml
-              path: config.yaml
+        # - name: registry-cfg
+        #   configMap:
+        #     name: {{lower .username}}-registry-cfg
+        #     items:
+        #     - key: config.yaml
+        #       path: config.yaml
         - name: user-apps-html
           configMap:
             name: {{lower .username}}-apps-html
             items:
             - key: index.html
               path: index.html
-        - name: registry-secret
-          secret:
-            secretName: {{lower .username}}-registry-secret
-            items:
-            - key: password
-              path: password
+        # - name: registry-secret
+        #   secret:
+        #     secretName: {{lower .username}}-registry-secret
+        #     items:
+        #     - key: password
+        #       path: password
         - name: dshm
           emptyDir:
             medium: Memory
