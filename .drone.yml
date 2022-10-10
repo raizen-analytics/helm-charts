@@ -45,22 +45,24 @@ steps:
     - tag
 
 - name: publish-vscode-image
-  image: banzaicloud/drone-kaniko:0.5.1
+  image: plugins/docker
   settings:
     registry: raizenanalyticsdev.azurecr.io
-    repo: code-server
+    repo: raizenanalyticsdev.azurecr.io/code-server
     auto_tag: true
     cache: true
     username: raizenanalyticsdev
     password:
       from_secret: azure-registry-key
     context: /drone/src/images/code-server/
+    dockerfile: /drone/src/images/code-server/Dockerfile
   resources:
     requests:
       memory: 2GiB
   when:
     branch:
     - master
+    - airflow2
     event:
     - tag
 

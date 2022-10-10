@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.4.1
+FROM codercom/code-server:3.9.1
 
 USER root
 ARG GO_VERSION=1.14.1
@@ -87,7 +87,7 @@ RUN pip3 install pyspark==2.4.5 \
     pymemcache \
     lazy-import==0.2.2
 
-RUN apt-get install -y nodejs npm
+RUN apt-get install -y nodejs npm openssh-server
 RUN pip3 install jupyter jupyterlab
 
 # install data data science tools
@@ -111,6 +111,22 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s 
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/kubectl
 
+#Install R-Studio
+# install prerequisities of r-studio server
+# install r-studio server for derbian 10
+
+USER root
+RUN apt-get install -y r-base gdebi-core lib32gcc1 lib32stdc++6 \
+    libclang-7-dev libclang-common-7-dev libclang-dev libclang1-7 \
+    libgc1c2 libobjc-8-dev libobjc4 libpq5 \
+    && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1106-amd64.deb \
+    && gdebi -n rstudio-server-1.4.1106-amd64.deb \
+    && rm rstudio-server-1.4.1106-amd64.deb
+
+RUN echo 'directory=/home/coder/rstudiodb' >> /etc/rstudio/database.conf \
+    && chmod -R +r /etc/rstudio/
+
+ENV USER=coder
 # COPY requirements.txt requirements.txt
 # RUN pip3 install -r requirements.txt \
 #     && rm requirements.txt
