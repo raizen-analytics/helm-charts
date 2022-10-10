@@ -47,7 +47,7 @@ ingress:
   host: dev.project.raizen.ai
   secretName: tls-ingress-secret
   tls:
-    clusterIssuerName: letsencrypt-prod
+    clusterIssuerName: letsencrypt-prod # Retirar
 
 ssh:
   clientDownloadLink: https://github.com/raizen-analytics/helm-charts/releases
