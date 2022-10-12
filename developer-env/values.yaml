@@ -54,6 +54,7 @@ ingress:
   host: dev.project.raizen.ai
   secretName: tls-ingress-secret
   tls:
+    createCertificate: true
     clusterIssuerName: letsencrypt-prod # Retirar
 
 ssh:
