@@ -229,6 +229,7 @@ spec:
           requests:
             memory: 128Mi
         imagePullPolicy: Always
+      {{- if $root.Values.applications.rstudio.enabled }}
       - name: rstudio
         {{- if $root.Values.applications.rstudio.command }}
         command: {{- toYaml $root.Values.applications.rstudio.command | nindent 10}}
@@ -287,6 +288,7 @@ spec:
         - mountPath: /home/coder/airflow/logs
           name: user-file-logs
         imagePullPolicy: Always
+      {{- end }}
       - name: airflow-webserver
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         # command: ["sh", "-c", "airflow initdb
