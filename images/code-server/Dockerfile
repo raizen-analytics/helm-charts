@@ -2,7 +2,10 @@ FROM codercom/code-server:3.9.1
 
 USER root
 ARG GO_VERSION=1.14.1
-
+# Install cron
+RUN apt-get update && apt-get install -y cron
+COPY cronjob /etc/cron.d/cronjob
+RUN chmod 0644 /etc/cron.d/cronjob && crontab /etc/cron.d/cronjob
 # Install go and kaniko to build images
 RUN apt-get update \
     && apt install wget \

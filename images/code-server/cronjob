@@ -1,0 +1,2 @@
+0 * * * * root find /home/coder/airflow/logs/ -mtime +1 -delete
+# Linha vazia

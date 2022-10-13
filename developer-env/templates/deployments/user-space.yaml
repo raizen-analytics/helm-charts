@@ -32,6 +32,13 @@ spec:
           name: user-disk
           subPath: project
         imagePullPolicy: Always
+      - name: remove-airflow-logs
+        image: bash
+        command: ["rm", "-rf", "/volume/*"]
+        volumeMounts:
+        - mountPath: /volume
+          name: user-file-logs
+        imagePullPolicy: Always
       - name: registry-credentials
         image: registry:2.6
         {{- if $root.Values.applications.registry.admin.enabled}}
