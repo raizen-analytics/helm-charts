@@ -22,4 +22,5 @@ spec:
     port: 9191
   selector:
     app: {{lower .username}}-space
+  publishNotReadyAddresses: true
 {{- end}}
