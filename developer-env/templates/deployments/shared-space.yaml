@@ -28,6 +28,14 @@ spec:
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
+      {{- if $root.Values.applications.controller.enabled }}
+      - name: controller
+        image: {{ $root.Values.applications.controller.image }}
+        ports:
+        - containerPort: 5002
+        resources: {{- toYaml $root.Values.applications.controller.resources | nindent 10}}
+        imagePullPolicy: Always
+      {{- end }}
       - name: ftp-server
         image: stilliard/pure-ftpd
         env:

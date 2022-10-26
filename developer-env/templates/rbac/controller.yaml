@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: controller
+  namespace: {{ .Release.Namespace | quote }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    namespace: {{ .Release.Namespace | quote }}
+    name: pod-editor
+rules:
+- apiGroups: ["", "apis", "apps"]
+  resources: ["pods", "serviceaccounts", "componentstatuses", "deployments", "events", "endpoints", "namespaces", "replicasets", "apis/apps/deployments"]
+  verbs: ["get", "watch", "list", "create", "update", "patch", "delete", "deletecollection"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: controller-role-binding
+  namespace: {{ .Release.Namespace | quote }}
+subjects:
+- kind: ServiceAccount
+  name: controller
+  namespace: {{ .Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: pod-editor
+  apiGroup: rbac.authorization.k8s.io
