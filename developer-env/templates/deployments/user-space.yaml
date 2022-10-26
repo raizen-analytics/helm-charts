@@ -289,6 +289,14 @@ spec:
           name: user-file-logs
         imagePullPolicy: Always
       {{- end }}
+      {{- if $root.Values.applications.controller.enabled }}
+      - name: controller
+        image: {{ $root.Values.applications.controller.image }}
+        ports:
+        - containerPort: 5002
+        resources: {{- toYaml $root.Values.applications.controller.resources | nindent 10}}
+        imagePullPolicy: Always
+      {{- end }}
       - name: airflow-webserver
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         # command: ["sh", "-c", "airflow initdb

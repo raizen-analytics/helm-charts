@@ -43,6 +43,13 @@ applications:
       requests:
         memory: "256Mi"
         cpu: "250m"
+  controller:
+    enabled: true
+    image: raizenanalyticsdev.azurecr.io/environment-controller:latest
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   registry:

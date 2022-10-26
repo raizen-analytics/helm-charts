@@ -20,6 +20,7 @@ data:
         <li><a href="./jupyter/">JupyterLab</a></li>
         <li><a href="./jupyter/tree">Jupyter (classic)</a></li>
         <li><a href="./rstudio/">R-Studio</a></li>
+        <li><a href="./controller/">Controller</a></li>
       </ul>
       <h2>Applications</h2>
       <ul>
