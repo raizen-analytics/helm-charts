@@ -11,8 +11,8 @@ metadata:
     name: pod-editor
 rules:
 - apiGroups: ["", "apis", "apps"]
-  resources: ["pods", "serviceaccounts", "componentstatuses", "deployments", "events", "endpoints", "namespaces", "replicasets", "apis/apps/deployments"]
-  verbs: ["get", "watch", "list", "create", "update", "patch", "delete", "deletecollection"]
+  resources: ["pods", "serviceaccounts", "deployments", "namespaces", "replicasets", "apis/apps/deployments"]
+  verbs: ["get", "list", "update", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
