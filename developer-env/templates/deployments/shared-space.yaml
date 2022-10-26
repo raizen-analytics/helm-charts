@@ -17,6 +17,8 @@ spec:
       labels:
         app: shared-space
     spec:
+      serviceAccountName: controller
+      automountServiceAccountToken: true
       containers:
       - name: mlflow
         image: {{ .Values.applications.mlflow.image }}
