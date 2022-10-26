@@ -35,7 +35,8 @@ data:
         rewrite       /mlflow(/|$)(.*) /$2 break;
       }
       location /controller {
-        proxy_pass    http://127.0.0.1:5002;
+        proxy_pass    "http://shared-space:5002";
+        rewrite       /controller(/|$)(.*) /$2 break;
       }
       location / {
         resolver kube-dns.kube-system.svc.cluster.local valid=5s;
