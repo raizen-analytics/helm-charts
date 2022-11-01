@@ -24,7 +24,7 @@ data:
       proxy_set_header Connection "upgrade";
       proxy_read_timeout 300;
 
-      if ( $http_x_forwarded_user != {{.username | quote }} ) {
+      if ( $http_x_forwarded_user != {{ .username | quote }} ) {
           return 401;
       }
   
