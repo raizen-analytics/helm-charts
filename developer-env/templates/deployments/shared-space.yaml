@@ -17,6 +17,7 @@ spec:
       labels:
         app: shared-space
     spec:
+      imagePullSecrets: {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       serviceAccountName: controller
       automountServiceAccountToken: true
       containers:
