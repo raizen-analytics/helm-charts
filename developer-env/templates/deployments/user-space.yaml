@@ -313,7 +313,7 @@ spec:
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
         - name: AIRFLOW__WEBSERVER__BASE_URL
-          value: http://127.0.0.1:29903/airflow
+          value: http://127.0.0.1:29903/home/airflow
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
           value: '127.0.0.1'
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT

@@ -22,12 +22,12 @@ data:
         {{- if $root.Values.applications.rstudio.enabled }}
         <li><a href="./rstudio/">R-Studio</a></li>
         {{- end }}
-        <li><a href="./controller/">Controlador de ambienter</a></li>
+        <li><a href="/">Controlador de Ambienter</a></li>
       </ul>
       <h2>Applications</h2>
       <ul>
         <li><a href="./airflow/">Airflow</a></li>
-        <li><a href="./mlflow/">Mlflow</a></li>
+        <li><a href="/mlflow/">Mlflow</a></li>
       </ul>
       <h2>Other</h2>
       <ul>
