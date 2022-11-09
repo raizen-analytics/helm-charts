@@ -57,7 +57,7 @@ data:
 
       location /home {
         root   /usr/share/nginx/html;
-        index  index.html index.htm;
+        try_files $uri /index.html;
       }
     }
 {{- end }}
