@@ -19,12 +19,15 @@ data:
         <li><a href="./code/">Code</a></li>
         <li><a href="./jupyter/">JupyterLab</a></li>
         <li><a href="./jupyter/tree">Jupyter (classic)</a></li>
+        {{- if $root.Values.applications.rstudio.enabled }}
         <li><a href="./rstudio/">R-Studio</a></li>
+        {{- end }}
+        <li><a href="/">Controlador de Ambiente</a></li>
       </ul>
       <h2>Applications</h2>
       <ul>
         <li><a href="./airflow/">Airflow</a></li>
-        <li><a href="./mlflow/">Mlflow</a></li>
+        <li><a href="/mlflow/">Mlflow</a></li>
       </ul>
       <h2>Other</h2>
       <ul>
@@ -34,17 +37,6 @@ data:
       <h3>Mlflow</h3>
       <p>
         Tracking URI for cluster internal use: http://shared-space:5000
-      </p>
-      <h3>Docker Registry</h3>
-      <p>
-        URI: {{lower .username}}.{{ $root.Values.ingress.host }}
-      </p>
-      <p>
-        Username: {{lower .username}}
-      </p>
-      <p>
-        Password: <button onclick=copyToClipboard() >Copy to clipboard</button>
-        <input id="password" type="text" style="opacity:0;width:1px;">
       </p>
       <h3>SSH (Experimental)</h3>
       <p>
