@@ -8,6 +8,8 @@ metadata:
   namespace: {{ $root.Release.Namespace | quote }}
   labels:
     app: {{lower .username}}-space
+    type: user-space
+    owner: {{lower .username}}
 spec:
   replicas: 1
   strategy:
