@@ -52,6 +52,10 @@ applications:
         cpu: "250m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
+  scheduleUserSpaceStop:
+    enbled: true
+    image: bitnami/kubectl:1.22
+    cron: "0 20 * * *"
   registry:
     admin:
       enabled: false
