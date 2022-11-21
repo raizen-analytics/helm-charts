@@ -53,7 +53,7 @@ applications:
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   scheduleUserSpaceStop:
-    enbled: true
+    enabled: true
     image: bitnami/kubectl:1.22
     cron: "0 20 * * *"
   registry:
