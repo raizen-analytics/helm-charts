@@ -1,4 +1,4 @@
-{{if .Values.scheduleUserSpaceStop.enabled }}
+{{if .Values.applications.scheduleUserSpaceStop.enabled }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
