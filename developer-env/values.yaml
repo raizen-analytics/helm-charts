@@ -55,7 +55,7 @@ applications:
   scheduleUserSpaceStop:
     enabled: true
     image: bitnami/kubectl:1.22
-    cron: "0 20 * * *"
+    cron: "0 23 * * *"
   registry:
     admin:
       enabled: false
