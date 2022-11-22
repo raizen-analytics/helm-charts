@@ -11,7 +11,7 @@ metadata:
     name: pod-controller
 rules:
 - apiGroups: ["", "apis", "apps"]
-  resources: ["pods", "serviceaccounts", "deployments", "namespaces", "replicasets", "apis/apps/deployments"]
+  resources: ["pods", "serviceaccounts", "deployments", "deployments/scale", "namespaces", "replicasets", "apis/apps/deployments"]
   verbs: ["get", "list", "update", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
