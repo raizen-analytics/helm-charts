@@ -9,7 +9,7 @@ metadata:
   labels:
     app: {{lower .username}}-space
     type: user-space
-    owner: {{lower .username}}
+    owner: {{.username}}
 spec:
   replicas: 1
   strategy:
