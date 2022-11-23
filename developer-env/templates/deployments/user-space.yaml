@@ -21,6 +21,8 @@ spec:
     metadata:
       labels:
         app: {{lower .username}}-space
+        type: user-space
+        owner: {{.username}}
     spec:
       serviceAccountName: airflow-scheduler
       initContainers:
