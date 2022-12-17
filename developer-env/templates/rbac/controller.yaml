@@ -10,7 +10,7 @@ metadata:
     namespace: {{ .Release.Namespace | quote }}
     name: pod-controller
 rules:
-- apiGroups: ["", "apis", "apps"]
+- apiGroups: ["", "apis", "apps", "metrics.k8s.io"]
   resources: ["pods", "serviceaccounts", "deployments", "deployments/scale", "namespaces", "replicasets", "apis/apps/deployments"]
   verbs: ["get", "list", "update", "patch"]
 ---
