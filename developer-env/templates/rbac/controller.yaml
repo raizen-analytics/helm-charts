@@ -10,9 +10,9 @@ metadata:
     namespace: {{ .Release.Namespace | quote }}
     name: pod-controller
 rules:
-- apiGroups: ["", "apis", "apps", "metrics.k8s.io"]
+- apiGroups: ["", "apis", "apps"]
   resources: ["pods", "serviceaccounts", "deployments", "deployments/scale", "namespaces", "replicasets", "apis/apps/deployments"]
-  verbs: ["get", "list", "update", "patch"]
+  verbs: ["get", "list", "update", "patch", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
