@@ -1,7 +1,8 @@
-FROM codercom/code-server:3.9.1
+FROM codercom/code-server
 
 USER root
 ARG GO_VERSION=1.14.1
+ARG PYTHON_VERSION=3.10.0
 # Install cron
 RUN apt-get update && apt-get install -y cron
 COPY cronjob /etc/cron.d/cronjob
@@ -16,10 +17,25 @@ RUN apt-get update \
 ENV PATH=$PATH:/usr/local/go/bin
 
 # Install programming tools
-RUN apt-get install -y python3-pip python3-venv \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3  1 \
-    && pip3 install -U pip
+RUN apt-get install wget build-essential libreadline-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y
+RUN apt-get install build-essential. build-essential -y
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
 
+RUN tar -xvf Python-${PYTHON_VERSION}.tgz
+
+WORKDIR ./Python-${PYTHON_VERSION}
+
+RUN ./configure --enable-optimizations
+
+RUN make altinstall
+RUN apt-get clean \
+    && apt-get autoremove --purge \
+    && apt-get remove python3.9 -y \
+    && apt-get autoremove -y
+RUN which python3.10
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.10  1 \
+    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.10 1
+RUN python -v
 ENV PATH=$PATH:/home/coder/.local/bin
 
 #Install ZSH
@@ -30,7 +46,7 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 # Install kaniko-build tool
 
 COPY kaniko_build /home/coder/kaniko_build
-RUN pip3 install /home/coder/kaniko_build \
+RUN pip install /home/coder/kaniko_build \
     && rm -r /home/coder/kaniko_build
 
 # Install Spark and python tools
@@ -74,7 +90,7 @@ ENV PYSPARK_PYTHON "/usr/bin/python"
 ENV PYTHONPATH "${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-${PY4J_VERSION}-src.zip:${PYTHONPATH}"
 ENV SPARK_OPTS "--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info"
 
-RUN pip3 install pyspark==2.4.5 \
+RUN pip install pyspark==2.4.5 \
     findspark \
     pyarrow==0.14.1 \
     mlflow==1.2.0 \
@@ -88,11 +104,11 @@ RUN pip3 install pyspark==2.4.5 \
     lazy-import==0.2.2
 
 RUN apt-get install -y nodejs npm openssh-server
-RUN pip3 install jupyter jupyterlab
+RUN pip install jupyter jupyterlab
 
 # install data data science tools
 
-RUN pip3 install wheel \
+RUN pip install wheel \
     mlflow==1.7.2 \
     pandas==1.0.3 \
     numpy==1.18.2 \
