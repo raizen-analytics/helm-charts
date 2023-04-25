@@ -1,4 +1,4 @@
-FROM codercom/code-server
+FROM codercom/code-server:3.9.1
 
 USER root
 ARG GO_VERSION=1.14.1
