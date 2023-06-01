@@ -23,6 +23,10 @@ spec:
             - deployment
             - --replicas=0
             - --selector=type=user-space
+            - ;
+            - delete
+            - pods
+            - --all
             resources:
               requests:
                 memory: 100Mi
