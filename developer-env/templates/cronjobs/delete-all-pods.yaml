@@ -19,10 +19,9 @@ spec:
           - name: kubectl
             image: {{ .Values.applications.scheduleUserSpaceStop.image }}
             args:
-            - scale
-            - deployment
-            - --replicas=0
-            - --selector=type=user-space
+            - delete
+            - pods
+            - --all
             resources:
               requests:
                 memory: 100Mi
