@@ -26,15 +26,21 @@ applications:
     args: ['code-server', '--auth', 'none', '--bind-addr', '0.0.0.0:29901', '.']
     resources:
       requests:
-        memory: "512Mi"
-        cpu: "450m"
+        memory: "2Gi"
+        cpu: 1
+      limits:
+        memory: "2Gi"
+        cpu: 1
   jupyter:
     image: raizenanalyticsdev.azurecr.io/code-server:latest
     args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/home/jupyter", "--port", "29902"]
     resources:
       requests:
-        memory: "512Mi"
-        cpu: "450m"
+        memory: "2Gi"
+        cpu: 1
+      limits:
+        memory: "2Gi"
+        cpu: 1
   rstudio:
     enabled: true
     image: raizenanalyticsdev.azurecr.io/code-server:latest
