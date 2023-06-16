@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: stop-userspace
+  name: delete-all-pods
   namespace: {{ .Release.Namespace | quote }}
 spec:
   schedule: {{ .Values.applications.scheduleUserSpaceStop.cron }}
