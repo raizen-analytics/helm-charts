@@ -1,29 +1,29 @@
-{{if .Values.applications.scheduleUserSpaceStop.enabled }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: delete-all-pods
-  namespace: {{ .Release.Namespace | quote }}
-spec:
-  schedule: {{ .Values.applications.scheduleUserSpaceStop.cron }}
-  concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  jobTemplate:
-    spec:
-      backoffLimit: 2
-      template:
-        spec:
-          serviceAccountName: controller
-          containers:
-          - name: kubectl
-            image: {{ .Values.applications.scheduleUserSpaceStop.image }}
-            args:
-            - delete
-            - pods
-            - --all
-            resources:
-              requests:
-                memory: 100Mi
-          restartPolicy: Never
-{{- end }}
+# {{if .Values.applications.scheduleUserSpaceStop.enabled }}
+# apiVersion: batch/v1beta1
+# kind: CronJob
+# metadata:
+#   name: delete-all-pods
+#   namespace: {{ .Release.Namespace | quote }}
+# spec:
+#   schedule: {{ .Values.applications.scheduleUserSpaceStop.cron }}
+#   concurrencyPolicy: Forbid
+#   successfulJobsHistoryLimit: 1
+#   failedJobsHistoryLimit: 1
+#   jobTemplate:
+#     spec:
+#       backoffLimit: 2
+#       template:
+#         spec:
+#           serviceAccountName: controller
+#           containers:
+#           - name: kubectl
+#             image: {{ .Values.applications.scheduleUserSpaceStop.image }}
+#             args:
+#             - delete
+#             - pods
+#             - --all
+#             resources:
+#               requests:
+#                 memory: 100Mi
+#           restartPolicy: Never
+# {{- end }}
