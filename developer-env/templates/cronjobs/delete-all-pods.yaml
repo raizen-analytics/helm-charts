@@ -25,5 +25,5 @@ spec:
             resources:
               requests:
                 memory: 100Mi
-          restartPolicy: OnFailure
+          restartPolicy: Never
 {{- end }}
