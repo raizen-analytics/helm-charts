@@ -28,9 +28,9 @@ applications:
       requests:
         memory: "2Gi"
         cpu: 1
-      #limits:
-        #memory: "2Gi"
-        #cpu: 1
+      limits:
+        memory: "2Gi"
+        cpu: 1
   jupyter:
     image: raizenanalyticsdev.azurecr.io/code-server:latest
     args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/home/jupyter", "--port", "29902"]
@@ -38,9 +38,9 @@ applications:
       requests:
         memory: "2Gi"
         cpu: 1
-      #limits:
-        #memory: "2Gi"
-        #cpu: 1
+      limits:
+        memory: "2Gi"
+        cpu: 1
   rstudio:
     enabled: true
     image: raizenanalyticsdev.azurecr.io/code-server:latest
