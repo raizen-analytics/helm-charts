@@ -24,8 +24,8 @@ spec:
         type: user-space
         owner: {{.username}}
     spec:
-      {{- if $root.Values.custom-scheduler}}
-      schedulerName: {{ $root.Values.custom-scheduler }}
+      {{- if $root.Values.customScheduler}}
+      schedulerName: {{ $root.Values.customScheduler }}
       {{- end }}
       serviceAccountName: airflow-scheduler
       initContainers:
