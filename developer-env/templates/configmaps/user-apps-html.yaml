@@ -23,6 +23,7 @@ data:
         <li><a href="./rstudio/">R-Studio</a></li>
         {{- end }}
         <li><a href="/">Controlador de Ambiente</a></li>
+        <li><a href="https://analyticsldt.atlassian.net/wiki/spaces/EED/pages/2333999704/Data+Ops+Estrutura+o">Confluence de DataOPS</a></li>
       </ul>
       <h2>Applications</h2>
       <ul>
