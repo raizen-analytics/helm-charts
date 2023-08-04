@@ -20,7 +20,7 @@ oauth:
 applications:
   airflow:
     image: raizenanalyticsdev.azurecr.io/airflow-base
-    tag: latest
+    tag: v2.6.3-slim-qa
   vscode:
     image: codercom/code-server
     args: ['code-server', '--auth', 'none', '--bind-addr', '0.0.0.0:29901', '.']
