@@ -35,14 +35,14 @@ spec:
         - mountPath: /volume/project
           name: user-disk
           subPath: project
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: remove-airflow-logs
         image: bash
         command: ["rm", "-rf", "/volume/*"]
         volumeMounts:
         - mountPath: /volume
           name: user-file-logs
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       # - name: registry-credentials
       #   image: registry:2.6
       #   {{- if $root.Values.applications.registry.admin.enabled}}
@@ -74,7 +74,7 @@ spec:
       #   - mountPath: /auth
       #     name: user-disk
       #     subPath: auth
-      #   imagePullPolicy: Always 
+      #   imagePullPolicy: IfNotPresent 
       containers:
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v6.1.1
@@ -100,7 +100,7 @@ spec:
             memory: 10Mi
         ports:
         - containerPort: 29180
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: nginx
         image: nginx
         ports:
@@ -115,7 +115,7 @@ spec:
           # - mountPath: /usr/share/nginx/html/password
           #   name: registry-secret
           #   subPath: password
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: vscode
         {{- if $root.Values.applications.vscode.command }}
         command: {{- toYaml $root.Values.applications.vscode.command | nindent 10}}
@@ -171,7 +171,7 @@ spec:
           name: shared-file
         - mountPath: /home/coder/airflow/logs
           name: user-file-logs
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
         {{- if $root.Values.applications.jupyter.command }}
@@ -214,7 +214,7 @@ spec:
           subPath: kaniko
         - mountPath: /home/coder/shared
           name: shared-file
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: postgres
         image: postgres:9.6
         args: ['-p', '29432']
@@ -232,7 +232,7 @@ spec:
         resources: 
           requests:
             memory: 128Mi
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       {{- if $root.Values.applications.rstudio.enabled }}
       - name: rstudio
         {{- if $root.Values.applications.rstudio.command }}
@@ -291,7 +291,7 @@ spec:
           name: shared-file
         - mountPath: /home/coder/airflow/logs
           name: user-file-logs
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       {{- end }}
       - name: airflow-webserver
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
@@ -345,7 +345,7 @@ spec:
         - mountPath: /opt/airflow/webserver_config.py
           name: airflow-webserver-config
           subPath: webserver_config.py
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       - name: airflow-scheduler
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
@@ -419,7 +419,7 @@ spec:
         - mountPath: /opt/airflow/pod_template.yml
           name: airflow-pod-template
           subPath: pod_template.yml
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources: 
           requests:
             memory: 256Mi
@@ -442,7 +442,7 @@ spec:
         volumeMounts:
           - mountPath: /dev/shm
             name: dshm
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       # - name: registry
       #   image: registry:2
       #   env:
@@ -469,7 +469,7 @@ spec:
       #     - mountPath: /var/lib/registry
       #       name: user-disk
       #       subPath: docker-registry
-      #   imagePullPolicy: Always
+      #   imagePullPolicy: IfNotPresent
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
         args: ['-addr', 'localhost:22', '-path', 'ssh']

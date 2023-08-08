@@ -43,7 +43,7 @@ data:
               value: 'False'
           envFrom: []
           image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: base
           ports: []
           volumeMounts:

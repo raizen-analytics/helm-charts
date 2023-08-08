@@ -29,14 +29,14 @@ spec:
             name: shared-disk
         ports:
         - containerPort: 5000
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       {{- if .Values.applications.controller.enabled }}
       - name: controller
         image: {{ .Values.applications.controller.image }}
         ports:
         - containerPort: 5002
         resources: {{- toYaml .Values.applications.controller.resources | nindent 10}}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       {{- end }}
       - name: ftp-server
         image: stilliard/pure-ftpd
