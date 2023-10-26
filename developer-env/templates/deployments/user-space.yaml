@@ -219,7 +219,7 @@ spec:
           name: shared-file
         imagePullPolicy: IfNotPresent
       - name: postgres
-        image: postgres:9.6
+        image: postgres:13.8
         args: ['-p', '29432']
         env:
         - name: PGDATA
