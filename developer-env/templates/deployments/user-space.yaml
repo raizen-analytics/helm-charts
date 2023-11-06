@@ -301,14 +301,16 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
+        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          value: 'DEBUG'
         - name: AIRFLOW__CORE__EXECUTOR
-          value: KubernetesExecutor
+          value: raizen.custom_kubernetes_executor.CustomKubernetesExecutor
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
@@ -355,6 +357,8 @@ spec:
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
+        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          value: 'DEBUG'
         - name: AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
@@ -364,7 +368,7 @@ spec:
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
-          value: KubernetesExecutor
+          value: raizen.custom_kubernetes_executor.CustomKubernetesExecutor
         - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
           value: /opt/airflow/logs
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
