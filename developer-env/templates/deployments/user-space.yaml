@@ -306,7 +306,7 @@ spec:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
-          value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
+          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__LOGGING__LOGGING_LEVEL
           value: 'DEBUG'
         - name: AIRFLOW__CORE__EXECUTOR
