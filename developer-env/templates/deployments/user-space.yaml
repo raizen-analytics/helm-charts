@@ -310,7 +310,7 @@ spec:
         - name: AIRFLOW__LOGGING__LOGGING_LEVEL
           value: 'DEBUG'
         - name: AIRFLOW__CORE__EXECUTOR
-          value: raizen.custom_kubernetes_executor.CustomKubernetesExecutor
+          value: KubernetesExecutor
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
           value: 'False'
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
@@ -368,7 +368,7 @@ spec:
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'True'
         - name: AIRFLOW__CORE__EXECUTOR
-          value: raizen.custom_kubernetes_executor.CustomKubernetesExecutor
+          value: KubernetesExecutor
         - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
           value: /opt/airflow/logs
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
