@@ -216,8 +216,8 @@ spec:
           name: shared-file
         imagePullPolicy: IfNotPresent
       - name: postgres
-        image: postgres:9.6
-        args: ['-p', '29432']
+        image: postgres:13.8
+        args: ['-p', '5432']
         env:
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
@@ -228,7 +228,7 @@ spec:
         - name: POSTGRES_USER
           value: airflow
         ports:
-        - containerPort: 29432
+        - containerPort: 5432
         resources: 
           requests:
             memory: 128Mi
@@ -301,7 +301,7 @@ spec:
         command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
+          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:5432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
         - name: AIRFLOW__CORE__EXECUTOR
@@ -351,7 +351,7 @@ spec:
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
+          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:5432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
