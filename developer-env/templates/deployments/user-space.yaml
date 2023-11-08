@@ -320,7 +320,7 @@ spec:
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
           value: 'False'
         - name: AIRFLOW__WEBSERVER__RBAC
-          value: 'False'
+          value: 'True'
         - name: AIRFLOW__WEBSERVER__BASE_URL
           value: http://127.0.0.1:29903/home/airflow
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
