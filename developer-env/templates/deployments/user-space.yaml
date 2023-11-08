@@ -24,9 +24,6 @@ spec:
         type: user-space
         owner: {{.username}}
     spec:
-      {{- if $root.Values.customScheduler}}
-      schedulerName: {{ $root.Values.customScheduler }}
-      {{- end }}
       serviceAccountName: airflow-scheduler
       initContainers:
       - name: bash-command
@@ -219,7 +216,7 @@ spec:
           name: shared-file
         imagePullPolicy: IfNotPresent
       - name: postgres
-        image: postgres:13.8
+        image: postgres:9.6
         args: ['-p', '29432']
         env:
         - name: PGDATA
@@ -301,14 +298,12 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
-          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
-        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
-          value: 'DEBUG'
+          value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
@@ -321,8 +316,6 @@ spec:
           value: 'False'
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
-        - name: AIRFLOW__API__AUTH_BACKENDS
-          value: airflow.api.auth.backend.basic_auth
         - name: AIRFLOW__WEBSERVER__BASE_URL
           value: http://127.0.0.1:29903/home/airflow
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
@@ -359,8 +352,6 @@ spec:
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
-        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
-          value: 'DEBUG'
         - name: AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
         - name: AIRFLOW__CORE__LOAD_EXAMPLES
