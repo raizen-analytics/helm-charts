@@ -298,8 +298,10 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
         env:
+        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          value: 'DEBUG'
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
@@ -350,6 +352,8 @@ spec:
         image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
         env:
+        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          value: 'DEBUG'
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
