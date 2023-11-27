@@ -28,7 +28,7 @@ spec:
       initContainers:
       - name: bash-command
         image: bash
-        command: ["chown", "-R", "1000:1000", "/volume"]
+        command: ["chown", "-R", "999:999", "/volume"]
         volumeMounts:
         - mountPath: /volume
           name: user-disk
@@ -404,10 +404,10 @@ spec:
         #   value: {{lower .username}}-file-logs
         # - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
         #   value: airflow-scheduler
-        # - name: AIRFLOW__KUBERNETES__RUN_AS_USER
-        #   value: '1000'
-        # - name: AIRFLOW__KUBERNETES__FS_GROUP
-        #   value: '1000'
+        - name: AIRFLOW__KUBERNETES__RUN_AS_USER
+           value: '1000'
+        - name: AIRFLOW__KUBERNETES__FS_GROUP
+           value: '1000'
         volumeMounts:
         - mountPath: /opt/airflow/dags
           name: user-file-data
