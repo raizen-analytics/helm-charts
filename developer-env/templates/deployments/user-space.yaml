@@ -28,7 +28,7 @@ spec:
       initContainers:
       - name: bash-command
         image: bash
-        command: ["chown", "-R", "999:999", "/volume"]
+        command: ["chown", "-R", "1000:1000", "/volume"]
         volumeMounts:
         - mountPath: /volume
           name: user-disk
