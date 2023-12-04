@@ -23,21 +23,24 @@ data:
     # KIND, either express or implied.  See the License for the
     # specific language governing permissions and limitations
     # under the License.
-    """Default configuration for the Airflow webserver"""
+    """Default configuration for the Airflow webserver."""
+    from __future__ import annotations
+
     import os
 
-    from flask_appbuilder.security.manager import AUTH_DB
+    from flask_appbuilder.const import AUTH_DB
 
-    # from flask_appbuilder.security.manager import AUTH_LDAP
-    # from flask_appbuilder.security.manager import AUTH_OAUTH
-    # from flask_appbuilder.security.manager import AUTH_OID
-    # from flask_appbuilder.security.manager import AUTH_REMOTE_USER
+    # from airflow.www.fab_security.manager import AUTH_LDAP
+    # from airflow.www.fab_security.manager import AUTH_OAUTH
+    # from airflow.www.fab_security.manager import AUTH_OID
+    # from airflow.www.fab_security.manager import AUTH_REMOTE_USER
 
 
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # Flask-WTF flag for CSRF
     WTF_CSRF_ENABLED = True
+    WTF_CSRF_TIME_LIMIT = None
 
     # ----------------------------------------------------
     # AUTHENTICATION CONFIG
@@ -57,7 +60,7 @@ data:
     # Uncomment to setup Full admin role name
     # AUTH_ROLE_ADMIN = 'Admin'
 
-    # Uncomment to setup Public role name, no authentication needed
+    # Uncomment and set to desired role to enable access without authentication
     AUTH_ROLE_PUBLIC = 'Admin'
 
     # Will allow user self registration
