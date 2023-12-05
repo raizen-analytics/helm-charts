@@ -298,7 +298,7 @@ spec:
         # command: ["sh", "-c", "airflow initdb
         #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
         #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow db upgrade && airflow webserver"]
+        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
         env:
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
