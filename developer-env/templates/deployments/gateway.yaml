@@ -37,6 +37,8 @@ spec:
         env:
         - name: OAUTH2_PROXY_PROVIDER
           value: {{ required "A valid .Values.oauth.proxyProvider entry required!" .Values.oauth.proxyProvider | quote }}
+        - name: OAUTH2_COOKIE_EXPIRE
+          value: 300h0m0s
         - name: OAUTH2_PROXY_COOKIE_SECRET
           value: {{ required "A valid .Values.oauth.cookieSecret entry required!" .Values.oauth.cookieSecret | quote }}
         - name: OAUTH2_PROXY_CLIENT_ID
