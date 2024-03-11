@@ -324,6 +324,10 @@ spec:
           value: '127.0.0.1'
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
           value: '29903'
+        - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
+          value: 'DEV'
+        - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
+          value: '#0000ff'
         - name: AIRFLOW__API__AUTH_BACKENDS
           value: airflow.api.auth.backend.default
         - name: AIRFLOW__KUBERNETES__NAMESPACE
