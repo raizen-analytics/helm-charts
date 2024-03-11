@@ -324,10 +324,10 @@ spec:
           value: '29903'
         - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
           value: 'DEV'
-        - AIRFLOW__WEBSERVER__NAVBAR_COLOR
+        - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
           value: '#0000ff'
-        - AIRFLOW__WEBSERVER__NAVBAR_TEXT_COLOR
-          value: "#d1ebf7'
+        - name: AIRFLOW__WEBSERVER__NAVBAR_TEXT_COLOR
+          value: '#d1ebf7'
         - name: AIRFLOW__API__AUTH_BACKENDS
           value: airflow.api.auth.backend.default
         - name: AIRFLOW__KUBERNETES__NAMESPACE
