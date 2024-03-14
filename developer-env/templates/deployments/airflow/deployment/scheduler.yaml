@@ -17,6 +17,8 @@ spec:
         app: airflow-scheduler
     spec:
       containers:
+      serviceAccountName: airflow-scheduler
+      automountServiceAccountToken: true
       - name: airflow-scheduler
         image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
