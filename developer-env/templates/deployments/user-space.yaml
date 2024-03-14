@@ -296,12 +296,9 @@ spec:
         - name: user-file-data
           persistentVolumeClaim:
             claimName: {{lower .username}}-file-data
-        - name: airlfow-logs
+        - name: airflow-dags
           persistentVolumeClaim:
-            claimName: airlfow-logs
-        - name: airlfow-dag
-          persistentVolumeClaim:
-            claimName: airlfow-dags
+            claimName: airflow-dags
         - name: shared-file
           persistentVolumeClaim:
             claimName: shared-file
