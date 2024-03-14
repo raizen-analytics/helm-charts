@@ -36,13 +36,6 @@ spec:
           name: user-disk
           subPath: project
         imagePullPolicy: IfNotPresent
-      - name: remove-airflow-logs
-        image: bash
-        command: ["rm", "-rf", "/volume/*"]
-        volumeMounts:
-        - mountPath: /volume
-          name: user-file-logs
-        imagePullPolicy: IfNotPresent
       # - name: registry-credentials
       #   image: registry:2.6
       #   {{- if $root.Values.applications.registry.admin.enabled}}
@@ -233,24 +226,13 @@ spec:
           name: user-disk
           subPath: project
         - mountPath: /home/coder/airflow/dags
-          name: user-file-data
+          name: airlfow-dags
           subPath: dags
-        - mountPath: /home/coder/airflow/plugins
-          name: user-file-data
-          subPath: plugins
-        - mountPath: /home/coder/airflow/conf
-          name: user-file-data
-          subPath: conf
-        - mountPath: /home/coder/airflow/worker-storage
-          name: user-file-data
-          subPath: worker-storage
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
         - mountPath: /home/coder/shared
           name: shared-file
-        - mountPath: /home/coder/airflow/logs
-          name: user-file-logs
         imagePullPolicy: IfNotPresent
       {{- end }}
       - name: firefox
@@ -314,9 +296,12 @@ spec:
         - name: user-file-data
           persistentVolumeClaim:
             claimName: {{lower .username}}-file-data
-        - name: user-file-logs
+        - name: airlfow-logs
           persistentVolumeClaim:
-            claimName: {{lower .username}}-file-logs
+            claimName: airlfow-logs
+        - name: airlfow-dag
+          persistentVolumeClaim:
+            claimName: airlfow-dags
         - name: shared-file
           persistentVolumeClaim:
             claimName: shared-file
