@@ -4,7 +4,7 @@ metadata:
   name: airflow-dags
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  storageClassName: disk
+  storageClassName: azurefile-internal
   accessModes:
   - ReadWriteMany
   resources:
