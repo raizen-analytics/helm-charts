@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: airflow-scheduler
-        image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
+        image: "{{ Values.applications.airflow.image }}:{{ Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
         env:
         #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
@@ -51,8 +51,6 @@ spec:
           value: '30'
         # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
         #   value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
-        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
-        #   value: {{lower .username}}-space
         # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
         #   value: engineer
         - name: AIRFLOW__KUBERNETES__NAMESPACE
@@ -63,14 +61,8 @@ spec:
           value: {{ Values.applications.airflow.tag }}
         # - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
         #   value: Always
-        # - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-        #   value: {{lower .username}}-registry-secret{{range Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
-        # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-        #   value: {{lower .username}}-file-data
         # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
         #   value: dags
-        # - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-        #   value: {{lower .username}}-file-logs
         # - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
         #   value: airflow-scheduler
         #- name: AIRFLOW__KUBERNETES__RUN_AS_USER
