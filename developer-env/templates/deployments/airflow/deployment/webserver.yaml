@@ -54,9 +54,9 @@ spec:
         - name: AIRFLOW__KUBERNETES__NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ Values.applications.airflow.image }}
+          value: {{ .Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ Values.applications.airflow.tag }}
+          value: {{ .Values.applications.airflow.tag }}
         volumeMounts:
         - mountPath: /opt/airflow/dags
           name: airflow-dags

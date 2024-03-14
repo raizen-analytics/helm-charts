@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: airflow-scheduler
-        image: "{{ Values.applications.airflow.image }}:{{ Values.applications.airflow.tag }}"
+        image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow scheduler"]
         env:
         #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
@@ -54,11 +54,11 @@ spec:
         # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
         #   value: engineer
         - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ Release.Namespace | quote }}
+          value: {{ .Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ Values.applications.airflow.image }}
+          value: {{ .Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ Values.applications.airflow.tag }}
+          value: {{ .Values.applications.airflow.tag }}
         # - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
         #   value: Always
         # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
