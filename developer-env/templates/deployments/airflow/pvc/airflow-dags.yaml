@@ -1,9 +1,8 @@
-{{- $root := . -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: airflow-dags
-  namespace: {{ $root.Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   storageClassName: disk
   accessModes:

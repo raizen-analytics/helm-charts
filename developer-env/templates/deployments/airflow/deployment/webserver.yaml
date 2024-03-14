@@ -1,9 +1,8 @@
-{{- $root := . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: airflow-webserver
-  namespace: {{ $root.Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
@@ -53,11 +52,11 @@ spec:
         - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
           value: '#ccedfc'
         - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ $root.Release.Namespace | quote }}
+          value: {{ .Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ $root.Values.applications.airflow.image }}
+          value: {{ Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ $root.Values.applications.airflow.tag }}
+          value: {{ Values.applications.airflow.tag }}
         volumeMounts:
         - mountPath: /opt/airflow/dags
           name: airflow-dags

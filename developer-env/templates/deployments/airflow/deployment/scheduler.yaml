@@ -1,9 +1,8 @@
-{{- $root := . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: airflow-scheduler
-  namespace: {{ $root.Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
@@ -57,15 +56,15 @@ spec:
         # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
         #   value: engineer
         - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ $root.Release.Namespace | quote }}
+          value: {{ Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ $root.Values.applications.airflow.image }}
+          value: {{ Values.applications.airflow.image }}
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ $root.Values.applications.airflow.tag }}
+          value: {{ Values.applications.airflow.tag }}
         # - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
         #   value: Always
         # - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-        #   value: {{lower .username}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
+        #   value: {{lower .username}}-registry-secret{{range Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
         # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
         #   value: {{lower .username}}-file-data
         # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH

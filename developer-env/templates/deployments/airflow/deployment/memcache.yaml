@@ -1,9 +1,8 @@
-{{- $root := . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: memcache
-  namespace: {{ $root.Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:

@@ -1,9 +1,8 @@
-{{- $root := . -}}
 apiVersion: v1
 kind: Service
 metadata:
   name: memcache
-  namespace: {{ $root.Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   ports:
   - name: "11211"
