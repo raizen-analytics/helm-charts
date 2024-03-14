@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-postgres
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airflow-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: airflow-postgres
+        spotinst.io/restrict-scale-down: 'true'
+    spec:
+      containers:
+      - image: postgres:13.8
+        name: postgres
+        # command:
+        # - sleep
+        # - '900'
+        args:
+          - postgres
+          - -c
+          - max_connections=1000
+          - -c
+          - shared_buffers=100MB
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_DB
+          value: airflow
+        - name: POSTGRES_PASSWORD
+          value: airflow  
+        - name: POSTGRES_USER
+          value: airflow
+        ports:
+        - containerPort: 5432
+        resources: 
+          requests:
+            memory: 2Gi
+            cpu: 0.5
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data/pgdata
+          name: postgres-airflow
+          subPath: postgres
+      restartPolicy: Always
+      volumes:
+      - name: postgres-airflow
+        persistentVolumeClaim:
+          claimName: postgres-airflow

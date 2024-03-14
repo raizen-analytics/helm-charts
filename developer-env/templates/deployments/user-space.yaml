@@ -153,24 +153,13 @@ spec:
           name: user-disk
           subPath: project
         - mountPath: /home/coder/airflow/dags
-          name: user-file-data
+          name: airflow-dags
           subPath: dags
-        - mountPath: /home/coder/airflow/plugins
-          name: user-file-data
-          subPath: plugins
-        - mountPath: /home/coder/airflow/conf
-          name: user-file-data
-          subPath: conf
-        - mountPath: /home/coder/airflow/worker-storage
-          name: user-file-data
-          subPath: worker-storage
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
         - mountPath: /home/coder/shared
           name: shared-file
-        - mountPath: /home/coder/airflow/logs
-          name: user-file-logs
         imagePullPolicy: IfNotPresent
       - name: jupyter
         image: {{ $root.Values.applications.jupyter.image }}
@@ -196,42 +185,13 @@ spec:
           name: user-disk
           subPath: project
         - mountPath: /home/coder/airflow/dags
-          name: user-file-data
+          name: airflow-dags
           subPath: dags
-        - mountPath: /home/coder/airflow/plugins
-          name: user-file-data
-          subPath: plugins
-        - mountPath: /home/coder/airflow/conf
-          name: user-file-data
-          subPath: conf
-        - mountPath: /home/coder/airflow/worker-storage
-          name: user-file-data
-          subPath: worker-storage
-        - mountPath: /home/coder/airflow/logs
-          name: user-file-logs
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
         - mountPath: /home/coder/shared
           name: shared-file
-        imagePullPolicy: IfNotPresent
-      - name: postgres
-        image: postgres:13.8
-        args: ['-p', '29432']
-        env:
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
-        - name: POSTGRES_DB
-          value: airflow
-        - name: POSTGRES_PASSWORD
-          value: airflow  
-        - name: POSTGRES_USER
-          value: airflow
-        ports:
-        - containerPort: 29432
-        resources: 
-          requests:
-            memory: 128Mi
         imagePullPolicy: IfNotPresent
       {{- if $root.Values.applications.rstudio.enabled }}
       - name: rstudio
@@ -293,149 +253,6 @@ spec:
           name: user-file-logs
         imagePullPolicy: IfNotPresent
       {{- end }}
-      - name: airflow-webserver
-        image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
-        # command: ["sh", "-c", "airflow initdb
-        #   && airflow create_user -r Admin -u admin -f admin -p admin -l default -e default
-        #   && airflow webserver"]
-        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
-        env:
-        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
-          value: 'DEBUG'
-        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
-        - name: AIRFLOW__CORE__FERNET_KEY
-          value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
-        - name: AIRFLOW__CORE__EXECUTOR
-          value: KubernetesExecutor
-        - name: AIRFLOW__CORE__LOAD_EXAMPLES
-          value: 'False'
-        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
-          value: airflow
-        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
-          value: /opt/airflow/logs
-        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
-          value: 'False'
-        - name: AIRFLOW__WEBSERVER__RBAC
-          value: 'False'
-        - name: AIRFLOW__WEBSERVER__BASE_URL
-          value: http://127.0.0.1:29903/home/airflow
-        - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
-          value: '127.0.0.1'
-        - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
-          value: '29903'
-        - name: AIRFLOW__API__AUTH_BACKENDS
-          value: airflow.api.auth.backend.default
-        - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ $root.Release.Namespace | quote }}
-        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ $root.Values.applications.airflow.image }}
-        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ $root.Values.applications.airflow.tag }}
-        ports:
-        - containerPort: 29903
-        volumeMounts:
-        - mountPath: /opt/airflow/dags
-          name: user-file-data
-          subPath: dags
-        - mountPath: /opt/airflow/plugins
-          name: user-file-data
-          subPath: plugins
-        - mountPath: /opt/airflow/conf
-          name: user-file-data
-          subPath: conf
-        - mountPath: /opt/airflow/logs
-          name: user-file-logs
-        - mountPath: /opt/airflow/webserver_config.py
-          name: airflow-webserver-config
-          subPath: webserver_config.py
-        imagePullPolicy: IfNotPresent
-      - name: airflow-scheduler
-        image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
-        command: ["sh", "-c", "sleep 60 && airflow scheduler"]
-        env:
-        #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
-          #value: 'DEBUG'
-        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
-        - name: AIRFLOW__CORE__FERNET_KEY
-          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
-        - name: AIRFLOW__CORE__LOAD_EXAMPLES
-          value: 'False'
-        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
-          value: airflow
-        - name: AIRFLOW__WEBSERVER__RBAC
-          value: 'True'
-        - name: AIRFLOW__CORE__EXECUTOR
-          value: KubernetesExecutor
-        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
-          value: /opt/airflow/logs
-        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
-          value: 'False'
-        - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
-          value: "/opt/airflow/pod_template.yml"
-        - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
-          value: '{"_request_timeout" : [50, 50]}'
-        - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
-          value: '60'
-        - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
-          value: '60'
-        - name: AIRFLOW__SCHEDULER__PRINT_STATS_INTERVAL
-          value: '30'
-        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY
-        #   value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
-        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MEMCACHE_HOST
-        #   value: {{lower .username}}-space
-        # - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__DEFAULT_IMPERSONATION
-        #   value: engineer
-        - name: AIRFLOW__KUBERNETES__NAMESPACE
-          value: {{ $root.Release.Namespace | quote }}
-        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-          value: {{ $root.Values.applications.airflow.image }}
-        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-          value: {{ $root.Values.applications.airflow.tag }}
-        # - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY
-        #   value: Always
-        # - name: AIRFLOW__KUBERNETES__IMAGE_PULL_SECRETS
-        #   value: {{lower .username}}-registry-secret{{range $root.Values.imagePullSecrets}},{{ required "A valid name secret!" .name }}{{end}}
-        # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM
-        #   value: {{lower .username}}-file-data
-        # - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
-        #   value: dags
-        # - name: AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM
-        #   value: {{lower .username}}-file-logs
-        # - name: AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME
-        #   value: airflow-scheduler
-        #- name: AIRFLOW__KUBERNETES__RUN_AS_USER
-        #   value: '1000'
-        #- name: AIRFLOW__KUBERNETES__FS_GROUP
-        #   value: '1000'
-        volumeMounts:
-        - mountPath: /opt/airflow/dags
-          name: user-file-data
-          subPath: dags
-        - mountPath: /opt/airflow/conf
-          name: user-file-data
-          subPath: conf
-        - mountPath: /opt/airflow/plugins
-          name: user-file-data
-          subPath: plugins
-        - mountPath: /opt/airflow/logs
-          name: user-file-logs
-        - mountPath: /opt/airflow/pod_template.yml
-          name: airflow-pod-template
-          subPath: pod_template.yml
-        imagePullPolicy: IfNotPresent
-        resources: 
-          requests:
-            memory: 256Mi
-      - name: memcached
-        image: memcached
-        ports:
-        - containerPort: 11211
-        resources: 
-          requests:
-            memory: 32Mi
       - name: firefox
         image: jlesage/firefox
         env:

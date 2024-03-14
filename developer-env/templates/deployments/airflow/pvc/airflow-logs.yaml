@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airflow-logs
+  namespace: {{ $root.Release.Namespace | quote }}
+spec:
+  storageClassName: disk
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 32Gi
