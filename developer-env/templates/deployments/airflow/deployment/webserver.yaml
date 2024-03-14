@@ -60,7 +60,6 @@ spec:
         - mountPath: /opt/airflow/dags
           name: airflow-dags
           subPath: dags
-          subPath: plugins
         - mountPath: /opt/airflow/logs
           name: airflow-logs
         - mountPath: /opt/airflow/webserver_config.py
