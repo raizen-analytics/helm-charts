@@ -62,6 +62,13 @@ spec:
           subPath: dags
         - mountPath: /opt/airflow/logs
           name: airflow-logs
+      volumes:
+      - name: airflow-dags
+        persistentVolumeClaim:
+          claimName: airflow-dags
+      - name: airflow-logs
+        persistentVolumeClaim:
+            claimName: airflow-logs
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 29903
