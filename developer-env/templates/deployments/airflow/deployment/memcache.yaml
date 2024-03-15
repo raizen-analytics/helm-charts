@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: memcache
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: airflow
 spec:
   replicas: 1
   selector:
@@ -17,6 +17,7 @@ spec:
         app: memcache
     spec:
       containers:
+      - env:
         image: memcached
         name: memcache
         ports:
