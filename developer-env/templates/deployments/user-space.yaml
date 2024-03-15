@@ -69,6 +69,13 @@ spec:
       #     subPath: auth
       #   imagePullPolicy: IfNotPresent 
       containers:
+      - name: memcached
+        image: memcached
+        ports:
+        - containerPort: 11211
+        resources: 
+          requests:
+            memory: 32Mi
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v6.1.1
         env:
