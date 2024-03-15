@@ -159,7 +159,7 @@ spec:
         resources: 
           requests:
             memory: 32Mi
-      restartPolicy: Always
+        restartPolicy: Always
         ports:
         - containerPort: 21
         - containerPort: 30000
