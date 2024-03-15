@@ -69,6 +69,13 @@ spec:
       #     subPath: auth
       #   imagePullPolicy: IfNotPresent 
       containers:
+      - name: memcached
+        image: memcached
+        resources: 
+          requests:
+            memory: 32Mi
+        ports:
+        - containerPort: 11211
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v6.1.1
         env:
@@ -248,13 +255,6 @@ spec:
           - mountPath: /dev/shm
             name: dshm
         imagePullPolicy: IfNotPresent
-      - name: memcached
-        image: memcached
-        resources: 
-          requests:
-            memory: 32Mi
-        ports:
-        - containerPort: 11211
       # - name: registry
       #   image: registry:2
       #   env:
