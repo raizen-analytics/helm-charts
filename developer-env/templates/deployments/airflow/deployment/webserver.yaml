@@ -1,79 +1,79 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: airflow-webserver
-#   namespace: {{ .Release.Namespace | quote }}
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: airflow-webserver
-#   strategy:
-#     type: Recreate
-#   template:
-#     metadata:
-#       creationTimestamp: null
-#       labels:
-#         app: airflow-webserver
-#     spec:
-#       containers:
-#       - name: airflow-webserver 
-#         image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
-#         command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
-#         env:
-#         - name: AIRFLOW__LOGGING__LOGGING_LEVEL
-#           value: 'DEBUG'
-#         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-#           value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
-#         - name: AIRFLOW__CORE__FERNET_KEY
-#           value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
-#         - name: AIRFLOW__CORE__EXECUTOR
-#           value: KubernetesExecutor
-#         - name: AIRFLOW__CORE__LOAD_EXAMPLES
-#           value: 'False'
-#         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
-#           value: airflow
-#         - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
-#           value: /opt/airflow/logs
-#         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
-#           value: 'False'
-#         - name: AIRFLOW__WEBSERVER__RBAC
-#           value: 'False'
-#         - name: AIRFLOW__WEBSERVER__BASE_URL
-#           value: http://127.0.0.1:29903/airflow
-#         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
-#           value: '127.0.0.1'
-#         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
-#           value: '29903'
-#         - name: AIRFLOW__API__AUTH_BACKENDS
-#           value: airflow.api.auth.backend.default
-#         - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
-#           value: 'DEV'
-#         - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
-#           value: '#ccedfc'
-#         - name: AIRFLOW__KUBERNETES__NAMESPACE
-#           value: {{ .Release.Namespace | quote }}
-#         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
-#           value: {{ .Values.applications.airflow.image }}
-#         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
-#           value: {{ .Values.applications.airflow.tag }}
-#         volumeMounts:
-#         - mountPath: /opt/airflow/dags
-#           name: airflow-dags
-#           subPath: dags
-#         - mountPath: /opt/airflow/logs
-#           name: airflow-logs
-#       volumes:
-#       - name: airflow-dags
-#         persistentVolumeClaim:
-#           claimName: airflow-dags
-#       - name: airflow-logs
-#         persistentVolumeClaim:
-#             claimName: airflow-logs
-#         imagePullPolicy: IfNotPresent
-#         ports:
-#         - containerPort: 29903
-#         resources: 
-#           requests:
-#             memory: 32Mi
-#       restartPolicy: Always
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-webserver
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airflow-webserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: airflow-webserver
+    spec:
+      containers:
+      - name: airflow-webserver 
+        image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
+        command: ["sh", "-c", "sleep 30 && airflow db migrate && airflow webserver"]
+        env:
+        - name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          value: 'DEBUG'
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
+        - name: AIRFLOW__CORE__FERNET_KEY
+          value: hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw=
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: KubernetesExecutor
+        - name: AIRFLOW__CORE__LOAD_EXAMPLES
+          value: 'False'
+        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: airflow
+        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
+          value: /opt/airflow/logs
+        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+          value: 'False'
+        - name: AIRFLOW__WEBSERVER__RBAC
+          value: 'False'
+        - name: AIRFLOW__WEBSERVER__BASE_URL
+          value: http://127.0.0.1:29903/airflow
+        - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
+          value: '127.0.0.1'
+        - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
+          value: '29903'
+        - name: AIRFLOW__API__AUTH_BACKENDS
+          value: airflow.api.auth.backend.default
+        - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
+          value: 'DEV'
+        - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
+          value: '#ccedfc'
+        - name: AIRFLOW__KUBERNETES__NAMESPACE
+          value: {{ .Release.Namespace | quote }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
+          value: {{ .Values.applications.airflow.image }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
+          value: {{ .Values.applications.airflow.tag }}
+        volumeMounts:
+        - mountPath: /opt/airflow/dags
+          name: airflow-dags
+          subPath: dags
+        - mountPath: /opt/airflow/logs
+          name: airflow-logs
+      volumes:
+      - name: airflow-dags
+        persistentVolumeClaim:
+          claimName: airflow-dags
+      - name: airflow-logs
+        persistentVolumeClaim:
+            claimName: airflow-logs
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 29903
+        resources: 
+          requests:
+            memory: 32Mi
+      restartPolicy: Always

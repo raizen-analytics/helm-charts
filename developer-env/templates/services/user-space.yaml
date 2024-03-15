@@ -16,8 +16,6 @@ spec:
     port: 29432
   - name: "29500"
     port: 29500
-  - name: "11211"
-    port: 11211
   - name: "9191"
     port: 9191
   selector:

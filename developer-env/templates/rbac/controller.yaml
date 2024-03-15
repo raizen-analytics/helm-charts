@@ -13,15 +13,6 @@ rules:
 - apiGroups: ["", "apis", "apps"]
   resources: ["pods", "serviceaccounts", "deployments", "deployments/scale", "namespaces", "replicasets", "apis/apps/deployments", "pods/log", "events"]
   verbs: ["get", "list", "update", "patch", "watch", "delete"]
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["pods", "pods/log"]
-  verbs: ["create", "get", "list", "watch", "update", "patch", "delete", "deletecollection"]
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["create", "get", "list", "watch"]
-- apiGroups: [""]
-  resources: ["pods/portforward"]
-  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
