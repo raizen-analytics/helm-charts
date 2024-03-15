@@ -69,13 +69,6 @@ spec:
       #     subPath: auth
       #   imagePullPolicy: IfNotPresent 
       containers:
-      - name: memcached
-        image: memcached
-        ports:
-        - containerPort: 11211
-        resources: 
-          requests:
-            memory: 32Mi
       - name: oauth
         image: quay.io/pusher/oauth2_proxy:v6.1.1
         env:
@@ -242,6 +235,13 @@ spec:
           name: shared-file
         imagePullPolicy: IfNotPresent
       {{- end }}
+      - name: memcached
+        image: memcached
+        ports:
+        - containerPort: 11211
+        resources: 
+          requests:
+            memory: 32Mi
       - name: firefox
         image: jlesage/firefox
         env:
@@ -255,13 +255,6 @@ spec:
           - mountPath: /dev/shm
             name: dshm
         imagePullPolicy: IfNotPresent
-      - name: memcached
-        image: memcached
-        ports:
-        - containerPort: 11211
-        resources: 
-          requests:
-            memory: 32Mi
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
         args: ['-addr', 'localhost:22', '-path', 'ssh']
@@ -295,36 +288,12 @@ spec:
             items:
             - key: default.conf
               path: default.conf
-        # - name: registry-cfg
-        #   configMap:
-        #     name: {{lower .username}}-registry-cfg
-        #     items:
-        #     - key: config.yaml
-        #       path: config.yaml
         - name: user-apps-html
           configMap:
             name: {{lower .username}}-apps-html
             items:
             - key: index.html
               path: index.html
-        # - name: registry-secret
-        #   secret:
-        #     secretName: {{lower .username}}-registry-secret
-        #     items:
-        #     - key: password
-        #       path: password
-        - name: airflow-pod-template
-          configMap:
-            name: {{lower .username}}-airflow-pod-template
-            items:
-            - key: pod_template.yml
-              path: pod_template.yml
-        - name: airflow-webserver-config
-          configMap:
-            name: airflow-webserver-config
-            items:
-            - key: webserver_config.py
-              path: webserver_config.py
         - name: dshm
           emptyDir:
             medium: Memory
