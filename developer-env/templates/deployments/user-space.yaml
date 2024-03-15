@@ -255,33 +255,13 @@ spec:
           - mountPath: /dev/shm
             name: dshm
         imagePullPolicy: IfNotPresent
-      # - name: registry
-      #   image: registry:2
-      #   env:
-      #   - name: REGISTRY_AUTH
-      #     value: htpasswd
-      #   - name: REGISTRY_AUTH_HTPASSWD_REALM
-      #     value: "Registry Realm"
-      #   - name: REGISTRY_AUTH_HTPASSWD_PATH
-      #     value: /auth/htpasswd
-      #   - name: USER_PASSWORD
-      #     valueFrom:
-      #       secretKeyRef:
-      #         name: {{lower .username}}-registry-secret
-      #         key: password
-      #   ports:
-      #   - containerPort: 29500
-      #   volumeMounts:
-      #     - mountPath: /etc/docker/registry/config.yml
-      #       subPath: config.yaml
-      #       name: registry-cfg
-      #     - mountPath: /auth
-      #       name: user-disk
-      #       subPath: auth
-      #     - mountPath: /var/lib/registry
-      #       name: user-disk
-      #       subPath: docker-registry
-      #   imagePullPolicy: IfNotPresent
+      - name: memcached
+        image: memcached
+        ports:
+        - containerPort: 11211
+        resources: 
+          requests:
+            memory: 32Mi
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
         args: ['-addr', 'localhost:22', '-path', 'ssh']

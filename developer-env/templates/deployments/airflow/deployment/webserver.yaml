@@ -70,6 +70,12 @@ spec:
       - name: airflow-logs
         persistentVolumeClaim:
             claimName: airflow-logs
+      - name: airflow-webserver-config
+        configMap:
+          name: airflow-webserver-config
+          items:
+          - key: webserver_config.py
+            path: webserver_config.py
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 29903
