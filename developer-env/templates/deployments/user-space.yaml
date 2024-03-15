@@ -109,13 +109,6 @@ spec:
           #   name: registry-secret
           #   subPath: password
         imagePullPolicy: IfNotPresent
-      - name: memcached
-        image: memcached
-        ports:
-        - containerPort: 11211
-        resources: 
-          requests:
-            memory: 32Mi
       - name: vscode
         {{- if $root.Values.applications.vscode.command }}
         command: {{- toYaml $root.Values.applications.vscode.command | nindent 10}}
@@ -255,6 +248,13 @@ spec:
           - mountPath: /dev/shm
             name: dshm
         imagePullPolicy: IfNotPresent
+      - name: memcached
+        image: memcached
+        resources: 
+          requests:
+            memory: 32Mi
+        ports:
+        - containerPort: 11211
       # - name: registry
       #   image: registry:2
       #   env:
