@@ -33,5 +33,9 @@ spec:
     port: 30008
   - name: '30009'
     port: 30009
+  - name: '11211'
+    port: 11211
+  - name: '29903'
+    port: 29903
   selector:
     app: shared-space

@@ -19,9 +19,6 @@ spec:
       containers:
       - image: postgres:13.8
         name: postgres
-        # command:
-        # - sleep
-        # - '900'
         args:
           - postgres
           - -c

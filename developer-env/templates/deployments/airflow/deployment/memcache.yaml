@@ -1,28 +1,27 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: memcache
-  namespace: {{ .Release.Namespace | quote }}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: memcache
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: memcache
-    spec:
-      containers:
-      - env:
-        image: memcached
-        name: memcache
-        ports:
-        - containerPort: 11211
-        resources: 
-          requests:
-            memory: 32Mi
-      restartPolicy: Always
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: memcache
+#   namespace: {{ .Release.Namespace | quote }}
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: memcache
+#   strategy:
+#     type: Recreate
+#   template:
+#     metadata:
+#       creationTimestamp: null
+#       labels:
+#         app: memcache
+#     spec:
+#       containers:
+#         image: memcached
+#         name: memcache
+#         ports:
+#         - containerPort: 11211
+#         resources: 
+#           requests:
+#             memory: 32Mi
+#       restartPolicy: Always
