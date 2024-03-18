@@ -5,8 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   ports:
-  - name: "29903"
-    port: 29903
-    targetPort: 29903
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
   selector:
     app: airflow-webserver

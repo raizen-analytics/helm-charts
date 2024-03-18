@@ -40,11 +40,11 @@ spec:
         - name: AIRFLOW__WEBSERVER__RBAC
           value: 'False'
         - name: AIRFLOW__WEBSERVER__BASE_URL
-          value: http://127.0.0.1:29903/airflow
+          value: http://127.0.0.1:8080/airflow
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
           value: '127.0.0.1'
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
-          value: '29903'
+          value: '8080'
         - name: AIRFLOW__API__AUTH_BACKENDS
           value: airflow.api.auth.backend.default
         - name: AIRFLOW__WEBSERVER__INSTANCE_NAME

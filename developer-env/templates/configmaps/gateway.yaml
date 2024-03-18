@@ -44,7 +44,7 @@ data:
         proxy_pass    "http://shared-space:5002";
       }
       location /airflow {
-        proxy_pass    "http://airflow-webserver:29903";
+        proxy_pass    "http://airflow-webserver:8080";
         rewrite       /airflow(/|$)(.*) /$2 break;
       }
     }
