@@ -70,4 +70,3 @@ data:
         - name: airflow-logs
           persistentVolumeClaim:
             claimName: airflow-logs
-{{- end }}
