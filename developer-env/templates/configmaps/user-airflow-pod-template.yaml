@@ -1,10 +1,9 @@
 {{- $root := . -}}
-{{- range .Values.users }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{lower .username}}-airflow-pod-template
+  name: airflow-pod-template
   namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
@@ -18,7 +17,7 @@ data:
       # initContainers:
       #   - name: init-myservice
       #     image: busybox:1.33
-      #     command: ['sh', '-c', "chown -R 50000:50000 /opt/airflow/logs"]
+      #     command: ['sh', '-c', "chown -R 50000:5z  000 /opt/airflow/logs"]
       #     volumeMounts:
       #     - mountPath: "/opt/airflow/logs"
       #       name: airflow-logs
@@ -32,9 +31,9 @@ data:
             - name: AIRFLOW__CORE__FERNET_KEY
               value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
             - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-              value: postgresql+psycopg2://airflow:airflow@{{lower .username}}-space:29432/airflow
+              value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
             - name: MEMCACHE_HOST
-              value: {{lower .username}}-space
+              value: memcache
             # - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
             #   value: airflow
             - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
@@ -67,8 +66,8 @@ data:
       volumes:
         - name: airflow-dags
           persistentVolumeClaim:
-            claimName: {{lower .username}}-file-data
+            claimName: airflow-dags
         - name: airflow-logs
           persistentVolumeClaim:
-            claimName: {{lower .username}}-file-logs
+            claimName: airflow-logs
 {{- end }}

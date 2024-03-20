@@ -63,6 +63,9 @@ spec:
           subPath: dags
         - mountPath: /opt/airflow/logs
           name: airflow-logs
+        - mountPath: /opt/airflow/pod_template.yml
+          name: airflow-pod-template
+          subPath: pod_template.yml
       volumes:
       - name: airflow-dags
         persistentVolumeClaim:
@@ -70,6 +73,12 @@ spec:
       - name: airflow-logs
         persistentVolumeClaim:
             claimName: airflow-logs
+      - name: airflow-pod-template
+        configMap:
+          name: airflow-pod-template
+          items:
+          - key: pod_template.yml
+            path: pod_template.yml
         imagePullPolicy: IfNotPresent
         resources: 
           requests:
