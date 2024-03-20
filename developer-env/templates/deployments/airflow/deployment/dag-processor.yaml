@@ -16,7 +16,7 @@ spec:
       labels:
         app: airflow-dag-processor
     spec:
-      serviceAccountName: airflow-dag-processor
+      serviceAccountName: airflow-scheduler
       automountServiceAccountToken: true
       containers:
       - name: airflow-dag-processor
