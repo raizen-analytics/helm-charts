@@ -36,7 +36,7 @@ spec:
         - name: AIRFLOW__SCHEDULER__PARSING_PROCESSES
           value: '4'
         - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
-          value: '1800'
+          value: '120'
         - name: AIRFLOW__LOGGING__LOGGING_LEVEL
           value: 'DEBUG'
         - name: AIRFLOW__DATABASE__SQL_ALCHEMY_POOL_SIZE
