@@ -42,7 +42,7 @@ spec:
         - name: AIRFLOW__WEBSERVER__BASE_URL
           value: http://127.0.0.1:8080/airflow
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
-          value: '127.0.0.1'
+          value: '0.0.0.0'
         - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
           value: '8080'
         - name: AIRFLOW__API__AUTH_BACKENDS
