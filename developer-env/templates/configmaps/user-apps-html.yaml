@@ -26,7 +26,7 @@ data:
       </ul>
       <h2>Applications</h2>
       <ul>
-        <li><a href="./airflow/">Airflow</a></li>
+        <li><a href="/airflow/">Airflow</a></li>
         <li><a href="/mlflow/">Mlflow</a></li>
       </ul>
       <h2>Other</h2>
