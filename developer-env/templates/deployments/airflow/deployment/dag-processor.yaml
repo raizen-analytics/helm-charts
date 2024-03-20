@@ -41,6 +41,8 @@ spec:
           value: 'DEBUG'
         - name: AIRFLOW__DATABASE__SQL_ALCHEMY_POOL_SIZE
           value: '15'
+        - name: AIRFLOW__SCHEDULER__STANDALONE_DAG_PROCESSOR
+          value: 'True'
         volumeMounts:
         - mountPath: /opt/airflow/dags
           name: airflow-dags

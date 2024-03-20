@@ -41,6 +41,8 @@ spec:
           value: /opt/airflow/logs
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
           value: 'False'
+        - name: AIRFLOW__SCHEDULER__STANDALONE_DAG_PROCESSOR
+          value: 'True'
         - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
           value: "/opt/airflow/pod_template.yml"
         - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
