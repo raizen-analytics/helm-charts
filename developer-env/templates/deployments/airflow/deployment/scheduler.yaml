@@ -34,7 +34,7 @@ spec:
         - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
           value: airflow
         - name: AIRFLOW__WEBSERVER__RBAC
-          value: 'True'
+          value: 'False'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
         - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
