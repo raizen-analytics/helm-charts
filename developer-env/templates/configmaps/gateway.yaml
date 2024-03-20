@@ -45,6 +45,6 @@ data:
       }
       location /airflow {
         proxy_pass    "http://airflow-webserver:8080";
-        rewrite       /airflow(/|$)(.*) /$2 break;
+        # rewrite       /airflow(/|$)(.*) /$2 break;
       }
     }
