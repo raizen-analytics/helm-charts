@@ -37,7 +37,7 @@ data:
             - name: MEMCACHE_PORT
               value: 11211
             - name: MEMCACHE_KEY_PREFIX
-              valueFrom: metadata.labels['dag_id']
+              valueFrom: metadara.labels['dag_id']
             # - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
             #   value: airflow
             - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
