@@ -34,6 +34,8 @@ data:
               value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
             - name: MEMCACHE_HOST
               value: memcache
+            - name: MEMCACHE_PORT
+              value: 11211
             # - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
             #   value: airflow
             - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
