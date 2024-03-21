@@ -133,6 +133,12 @@ spec:
           value: {{ $root.Release.Namespace | quote }}
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
+        - name: MEMCACHE_HOST
+          value: memcache
+        - name: MEMCACHE_PORT
+          value: 11211
+        - name: MEMCACHE_KEY_PREFIX
+          valueFrom: metadata.name
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
