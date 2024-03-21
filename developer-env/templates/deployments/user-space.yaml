@@ -137,8 +137,8 @@ spec:
           value: memcache
         - name: MEMCACHE_PORT
           value: 11211
-        # - name: MEMCACHE_KEY_PREFIX
-        #   valueFrom: metadata.name
+        - name: MEMCACHE_KEY_PREFIX
+          valueFrom: metadata.name
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
@@ -178,8 +178,8 @@ spec:
           value: memcache
         - name: MEMCACHE_PORT
           value: 11211
-        # - name: MEMCACHE_KEY_PREFIX
-        #   valueFrom: metadata.name
+        - name: MEMCACHE_KEY_PREFIX
+          valueFrom: metadata.name
         ports:
         - containerPort: 29902
         resources: {{- toYaml $root.Values.applications.jupyter.resources | nindent 10}}
