@@ -136,9 +136,11 @@ spec:
         - name: MEMCACHE_HOST
           value: memcache
         - name: MEMCACHE_PORT
-          value: 11211
+          value: '11211'
         - name: MEMCACHE_KEY_PREFIX
-          valueFrom: metadata.name
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
