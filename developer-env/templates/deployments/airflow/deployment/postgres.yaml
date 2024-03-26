@@ -3,8 +3,10 @@ kind: Deployment
 metadata:
   name: airflow-postgres
   namespace: {{ .Release.Namespace | quote }}
+  labels:
+    turn-off: true
 spec:
-  replicas: 1
+  #replicas: 1
   selector:
     matchLabels:
       app: airflow-postgres

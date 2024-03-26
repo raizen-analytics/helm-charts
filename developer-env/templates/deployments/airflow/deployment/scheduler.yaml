@@ -3,8 +3,10 @@ kind: Deployment
 metadata:
   name: airflow-scheduler
   namespace: {{ .Release.Namespace | quote }}
+  labels:
+    turn-off: true
 spec:
-  replicas: 1
+  #replicas: 1
   selector:
     matchLabels:
       app: airflow-scheduler
@@ -18,6 +20,14 @@ spec:
     spec:
       serviceAccountName: airflow-scheduler
       automountServiceAccountToken: true
+      initContainers:
+      - name: remove-airflow-logs
+        image: bash
+        command: ["find", "/volume/*", "-type", "f", "mtime", "+3", "-print", "-delete", ";", "find", "/volume/", "-type", "d", "-empty", "-print", "-delete"]
+        volumeMounts:
+        - mountPath: /volume
+          name: airflow-logs
+        imagePullPolicy: IfNotPresent
       containers:
       - name: airflow-scheduler
         image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
