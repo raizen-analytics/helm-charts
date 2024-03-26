@@ -23,7 +23,8 @@ spec:
       initContainers:
       - name: remove-airflow-logs
         image: bash
-        command: ["find", "/volume/*", "-type", "f", "-mtime", "+3", "-print", "-delete", ";", "find", "/volume/", "-type", "d", "-empty", "-print", "-delete"]
+        command: ["/bin/sh", "-c"]
+        args: ["find /volume/* -type f -mtime +3 -print -delete && find /volume/ -type d -empty -print -delete"]
         volumeMounts:
         - mountPath: /volume
           name: airflow-logs
