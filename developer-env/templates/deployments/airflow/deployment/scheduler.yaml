@@ -4,7 +4,7 @@ metadata:
   name: airflow-scheduler
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    turn-off: true
+    turn-off: "yes"
 spec:
   #replicas: 1
   selector:

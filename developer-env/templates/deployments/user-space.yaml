@@ -8,7 +8,7 @@ metadata:
   namespace: {{ $root.Release.Namespace | quote }}
   labels:
     app: {{lower .username}}-space
-    turn-off: true
+    turn-off: "yes"
     owner: {{.username}}
 spec:
   # replicas: 1

@@ -22,7 +22,7 @@ spec:
             - scale
             - deployment
             - --replicas=0
-            - --selector=turn-off=true
+            - --selector=turn-off=yes
             resources:
               requests:
                 memory: 100Mi
