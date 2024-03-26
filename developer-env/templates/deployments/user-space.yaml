@@ -9,6 +9,7 @@ metadata:
   labels:
     app: {{lower .username}}-space
     turn-off: "yes"
+    type: user-space
     owner: {{.username}}
 spec:
   # replicas: 1
