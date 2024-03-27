@@ -157,6 +157,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: airflow-dags
           subPath: dags
+        - mountPath: /home/coder/airflow/logs
+          name: airlfow-logs
+          subPath: logs
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
@@ -197,6 +200,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: airflow-dags
           subPath: dags
+        - mountPath: /home/coder/airflow/logs
+          name: airlfow-logs
+          subPath: logs
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
@@ -245,6 +251,9 @@ spec:
         - mountPath: /home/coder/airflow/dags
           name: airlfow-dags
           subPath: dags
+        - mountPath: /home/coder/airflow/logs
+          name: airlfow-logs
+          subPath: logs
         - mountPath: /home/coder/kaniko
           name: user-file-data
           subPath: kaniko
@@ -296,6 +305,9 @@ spec:
         - name: airflow-dags
           persistentVolumeClaim:
             claimName: airflow-dags
+        - name: airflow-logs
+          persistentVolumeClaim:
+              claimName: airflow-logs
         - name: shared-file
           persistentVolumeClaim:
             claimName: shared-file
