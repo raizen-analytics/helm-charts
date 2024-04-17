@@ -141,7 +141,7 @@ spec:
         - name: MEMCACHE_KEY_PREFIX
           valueFrom:
             fieldRef:
-              fieldPath: metadata.name
+              fieldPath: metadata.owner
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
@@ -187,7 +187,7 @@ spec:
         - name: MEMCACHE_KEY_PREFIX
           valueFrom:
             fieldRef:
-              fieldPath: metadata.name
+              fieldPath: metadata.owner
         ports:
         - containerPort: 29902
         resources: {{- toYaml $root.Values.applications.jupyter.resources | nindent 10}}
