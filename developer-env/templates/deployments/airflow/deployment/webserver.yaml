@@ -60,18 +60,18 @@ spec:
         - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
           value: {{ .Values.applications.airflow.tag }}
         volumeMounts:
-        - mountPath: /opt/airflow/dags
-          name: airflow-dags
-          subPath: dags
+        # - mountPath: /opt/airflow/dags
+        #   name: airflow-dags
+        #   subPath: dags
         - mountPath: /opt/airflow/logs
           name: airflow-logs
         - mountPath: /opt/airflow/webserver_config.py
           name: airflow-webserver-config
           subPath: webserver_config.py
       volumes:
-      - name: airflow-dags
-        persistentVolumeClaim:
-          claimName: airflow-dags
+      # - name: airflow-dags
+      #   persistentVolumeClaim:
+      #     claimName: airflow-dags
       - name: airflow-logs
         persistentVolumeClaim:
             claimName: airflow-logs
