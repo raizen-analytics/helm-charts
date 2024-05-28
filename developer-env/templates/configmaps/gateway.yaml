@@ -34,9 +34,10 @@ data:
         proxy_pass    "http://shared-space:5000";
         rewrite       /mlflow(/|$)(.*) /$2 break;
       }
+
       location /home {
         resolver kube-dns.kube-system.svc.cluster.local valid=5s;
-        set $upstream_server "http://${http_x_forwarded_user}-space.{{ .Release.Namespace }}.svc.cluster.local:80";
+        set $upstream_server "http://${http_x_forwarded_user}-space.{{ .Release.Namespace }}.svc.cluster.local:29180";
         proxy_pass $upstream_server;
       }
       location / {
