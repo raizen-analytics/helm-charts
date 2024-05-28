@@ -70,6 +70,9 @@ spec:
       #     subPath: auth
       #   imagePullPolicy: IfNotPresent 
       containers:
+      - name: dummy
+        image: ubuntu
+        command: ["sleep","infinity"]
       - name: nginx
         image: nginx
         ports:
