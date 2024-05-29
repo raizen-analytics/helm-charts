@@ -70,18 +70,6 @@ spec:
       #     subPath: auth
       #   imagePullPolicy: IfNotPresent 
       containers:
-      - name: dummy
-        image: ubuntu
-        command: ["sleep","infinity"]
-      - name: airflow-webserver
-        image: busybox
-        command: ["sleep", "infinity"]
-      - name: airflow-scheduler
-        image: busybox
-        command: ["sleep", "infinity"]
-      - name: postgres
-        image: busybox
-        command: ["sleep", "infinity"]
       - name: nginx
         image: nginx
         ports:
