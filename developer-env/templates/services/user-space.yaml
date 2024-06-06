@@ -20,6 +20,8 @@ spec:
     port: 9191
   - name: "11211"
     port: 11211
+  - name: "80"
+    port: 80
   selector:
     app: {{lower .username}}-space
   publishNotReadyAddresses: true
