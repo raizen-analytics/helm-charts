@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-scheduler
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    turn-off: "yes"
+spec:
+  #replicas: 1
+  selector:
+    matchLabels:
+      app: airflow-scheduler
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: airflow-scheduler
+    spec:
+      serviceAccountName: airflow-scheduler
+      automountServiceAccountToken: true
+      initContainers:
+      - name: remove-airflow-logs
+        image: bash
+        command: ["/bin/sh", "-c"]
+        args: ["find /volume/* -type f -mtime +3 -print -delete && find /volume/ -type d -empty -print -delete"]
+        volumeMounts:
+        - mountPath: /volume
+          name: airflow-logs
+        imagePullPolicy: IfNotPresent
+      containers:
+      - name: airflow-scheduler
+        image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
+        command: ["sh", "-c", "sleep 60 && airflow scheduler"]
+        env:
+        #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
+          #value: 'DEBUG'
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
+        - name: AIRFLOW__CORE__FERNET_KEY
+          value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
+        - name: AIRFLOW__CORE__LOAD_EXAMPLES
+          value: 'False'
+        - name: AIRFLOW__CORE__DEFAULT_IMPERSONATION
+          value: airflow
+        - name: AIRFLOW__WEBSERVER__RBAC
+          value: 'False'
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: KubernetesExecutor
+        - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
+          value: /opt/airflow/logs
+        - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+          value: 'False'
+        - name: AIRFLOW__SCHEDULER__STANDALONE_DAG_PROCESSOR
+          value: 'True'
+        - name: AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE
+          value: "/opt/airflow/pod_template.yml"
+        - name: AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS
+          value: '{"_request_timeout" : [50, 50]}'
+        - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
+          value: '60'
+        - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
+          value: '120'
+        - name: AIRFLOW__SCHEDULER__PRINT_STATS_INTERVAL
+          value: '30'
+        - name: AIRFLOW__SCHEDULER__SCHEDULE_AFTER_TASK_EXECUTION
+          value: 'False'
+        - name: AIRFLOW__KUBERNETES__NAMESPACE
+          value: {{ .Release.Namespace | quote }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY
+          value: {{ .Values.applications.airflow.image }}
+        - name: AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG
+          value: {{ .Values.applications.airflow.tag }}
+        volumeMounts:
+        - mountPath: /opt/airflow/dags
+          name: airflow-dags
+          subPath: dags
+        - mountPath: /opt/airflow/logs
+          name: airflow-logs
+        - mountPath: /opt/airflow/pod_template.yml
+          name: airflow-pod-template
+          subPath: pod_template.yml
+      volumes:
+      - name: airflow-dags
+        persistentVolumeClaim:
+          claimName: airflow-dags
+      - name: airflow-logs
+        persistentVolumeClaim:
+            claimName: airflow-logs
+      - name: airflow-pod-template
+        configMap:
+          name: airflow-pod-template
+          items:
+          - key: pod_template.yml
+            path: pod_template.yml
+        imagePullPolicy: IfNotPresent
+        resources: 
+          requests:
+            memory: 256Mi

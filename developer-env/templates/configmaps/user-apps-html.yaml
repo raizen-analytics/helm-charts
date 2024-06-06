@@ -26,13 +26,13 @@ data:
       </ul>
       <h2>Applications</h2>
       <ul>
-        <li><a href="./airflow/">Airflow</a></li>
+        <li><a href="/airflow/">Airflow</a></li>
         <li><a href="/mlflow/">Mlflow</a></li>
       </ul>
       <h2>Other</h2>
       <ul>
         <li><a href="./browser/">Firefox</a></li>
-        <li><a href="https://analyticsldt.atlassian.net/wiki/spaces/EED/pages/2333999704/Data+Ops+Estrutura+o">Confluence de DataOPS</a></li>
+        <li><a href="https://analyticsldt.atlassian.net/wiki/spaces/EED/pages/3026288727/DataOps">Confluence de DataOPS</a></li>
       </ul>
       <h2>Instructions</h2>
       <h3>Mlflow</h3>

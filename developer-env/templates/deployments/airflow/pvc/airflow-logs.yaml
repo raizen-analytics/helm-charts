@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airflow-logs
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  storageClassName: azurefile-internal
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 32Gi

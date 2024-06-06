@@ -40,8 +40,11 @@ data:
         set $upstream_server "http://${http_x_forwarded_user}-space.{{ .Release.Namespace }}.svc.cluster.local:29180";
         proxy_pass $upstream_server;
       }
-
       location / {
         proxy_pass    "http://shared-space:5002";
+      }
+      location /airflow {
+        proxy_pass    "http://airflow-webserver:8080";
+        # rewrite       /airflow(/|$)(.*) /$2 break;
       }
     }
