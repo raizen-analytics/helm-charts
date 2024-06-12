@@ -1,0 +1,30 @@
+{{if .Values.scheduleUserSpaceStop.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: stop-userspace
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  schedule: {{ .Values.scheduleUserSpaceStop.cron }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: controller
+          containers:
+          - name: kubectl
+            image: {{ .Values.scheduleUserSpaceStop.image }}
+            args:
+            - scale
+            - deployment
+            - --replicas=0
+            - --selector=type=user-space
+            resources:
+              requests:
+                memory: 100Mi
+          restartPolicy: OnFailure
+{{- end }}

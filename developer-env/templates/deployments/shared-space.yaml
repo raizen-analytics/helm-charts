@@ -17,6 +17,8 @@ spec:
       labels:
         app: shared-space
     spec:
+      serviceAccountName: controller
+      automountServiceAccountToken: true
       containers:
       - name: mlflow
         image: {{ .Values.applications.mlflow.image }}
@@ -28,6 +30,14 @@ spec:
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
+      {{- if .Values.applications.controller.enabled }}
+      - name: controller
+        image: {{ .Values.applications.controller.image }}
+        ports:
+        - containerPort: 5002
+        resources: {{- toYaml .Values.applications.controller.resources | nindent 10}}
+        imagePullPolicy: Always
+      {{- end }}
       - name: ftp-server
         image: stilliard/pure-ftpd
         env:

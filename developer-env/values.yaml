@@ -30,7 +30,7 @@ applications:
         cpu: "250m"
   jupyter:
     image: raizenanalyticsdev.azurecr.io/code-server:latest
-    args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
+    args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/home/jupyter", "--port", "29902"]
     resources:
       requests:
         memory: "256Mi"
@@ -43,8 +43,19 @@ applications:
       requests:
         memory: "256Mi"
         cpu: "250m"
+  controller:
+    enabled: true
+    image: raizenanalyticsdev.azurecr.io/environment-controller:latest
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
+  scheduleUserSpaceStop:
+    enbled: true
+    image: bitnami/kubectl:1.22
+    cron: "0 20 * * *"
   registry:
     admin:
       enabled: false

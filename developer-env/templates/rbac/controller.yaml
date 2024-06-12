@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: controller
+  namespace: {{ .Release.Namespace | quote }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    namespace: {{ .Release.Namespace | quote }}
+    name: pod-controller
+rules:
+- apiGroups: ["", "apis", "apps"]
+  resources: ["pods", "serviceaccounts", "deployments", "namespaces", "replicasets", "apis/apps/deployments"]
+  verbs: ["get", "list", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: controller-role-binding
+  namespace: {{ .Release.Namespace | quote }}
+subjects:
+- kind: ServiceAccount
+  name: controller
+  namespace: {{ .Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: pod-controller
+  apiGroup: rbac.authorization.k8s.io
