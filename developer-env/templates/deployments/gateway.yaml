@@ -19,7 +19,7 @@ spec:
     spec:
       containers:  
       - name: nginx
-        image: nginx
+        image: raizenanalyticsdev.azurecr.io/developer-env/nginx
         env:
         - name: FORCE_RELOAD
           value: {{ randAlphaNum 16 | quote }}

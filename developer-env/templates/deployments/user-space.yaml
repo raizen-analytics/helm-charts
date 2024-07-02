@@ -28,7 +28,7 @@ spec:
       serviceAccountName: airflow-scheduler
       initContainers:
       - name: bash-command
-        image: bash
+        image: raizenanalyticsdev.azurecr.io/developer-env/bash
         command: ["chown", "-R", "1000:1000", "/volume"]
         volumeMounts:
         - mountPath: /volume
@@ -71,7 +71,7 @@ spec:
       #   imagePullPolicy: IfNotPresent 
       containers:
       - name: nginx
-        image: nginx
+        image: raizenanalyticsdev.azurecr.io/developer-env/nginx
         ports:
         - containerPort: 80
         volumeMounts:
@@ -228,14 +228,14 @@ spec:
         imagePullPolicy: IfNotPresent
       {{- end }}
       - name: memcached
-        image: memcached
+        image: raizenanalyticsdev.azurecr.io/developer-env/memcached
         ports:
         - containerPort: 11211
         resources: 
           requests:
             memory: 32Mi
       - name: firefox
-        image: jlesage/firefox
+        image: raizenanalyticsdev.azurecr.io/developer-env/firefox
         env:
         - name: DISPLAY_WIDTH
           value: '1920'
