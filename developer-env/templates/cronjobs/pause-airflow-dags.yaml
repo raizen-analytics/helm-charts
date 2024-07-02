@@ -16,7 +16,7 @@ spec:
         spec:
           containers:
           - name: pause-airflow-dags
-            image: cfmanteiga/alpine-bash-curl-jq
+            image: raizenanalyticsdev.azurecr.io/developer-env/alpine-bash-curl-jq
             command: ["bash", "-c"]
             args:
               - |
