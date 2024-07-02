@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
       - env:
-        image: memcached
-        name: raizenanalyticsdev.azurecr.io/developer-env/memcached
+        image: raizenanalyticsdev.azurecr.io/developer-env/memcached
+        name: memcache
         ports:
         - containerPort: 11211
         resources: 
