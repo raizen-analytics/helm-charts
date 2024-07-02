@@ -19,7 +19,7 @@ spec:
         spotinst.io/restrict-scale-down: 'true'
     spec:
       containers:
-      - image: postgres:13.8
+      - image: raizenanalyticsdev.azurecr.io/developer-env/postgres:13.8
         name: postgres
         args:
           - postgres
