@@ -39,7 +39,7 @@ spec:
         imagePullPolicy: IfNotPresent
       {{- end }}
       - name: ftp-server
-        image: stilliard/pure-ftpd
+        image: raizenanalyticsdev.azurecr.io/developer-env/pure-ftpd
         env:
         - name: PUBLICHOST
           value: shared-space
