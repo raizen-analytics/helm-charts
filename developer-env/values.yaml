@@ -60,7 +60,7 @@ applications:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   scheduleUserSpaceStop:
     enabled: true
-    image: bitnami/kubectl:1.22
+    image: raizenanalyticsdev.azurecr.io/developer-env/kubectl
     cron: "0 23 * * *"
   registry:
     admin:
