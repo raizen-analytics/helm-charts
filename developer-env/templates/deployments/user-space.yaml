@@ -37,9 +37,6 @@ spec:
           name: user-disk
           subPath: project
         imagePullPolicy: IfNotPresent
-      - name: remove-airflow-logs
-        image: raizenanalyticsdev.azurecr.io/developer-env/bash
-        command: ["echo", "hello"]
       # - name: registry-credentials
       #   image: registry:2.6
       #   {{- if $root.Values.applications.registry.admin.enabled}}
