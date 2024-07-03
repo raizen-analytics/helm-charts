@@ -22,7 +22,7 @@ spec:
       automountServiceAccountToken: true
       initContainers:
       - name: remove-airflow-logs
-        image: bash
+        image: raizenanalyticsdev.azurecr.io/developer-env/bash
         command: ["/bin/sh", "-c"]
         args: ["find /volume/* -type f -mtime +3 -print -delete && find /volume/ -type d -empty -print -delete"]
         volumeMounts:
