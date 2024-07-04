@@ -1,0 +1,61 @@
+{{if .Values.applications.pauseAirflowDags.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stop-airflow-dags
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  schedule: {{ .Values.applications.pauseAirflowDags.cron }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          containers:
+          - name: pause-airflow-dags
+            image: raizenanalyticsdev.azurecr.io/developer-env/alpine-bash-curl-jq
+            command: ["bash", "-c"]
+            args:
+              - |
+                #!/bin/bash
+
+                # URL base da API do Airflow
+                AIRFLOW_API_URL="http://airflow-webserver:8080/airflow/api/v1/dags"
+
+                # Obter os IDs dos DAGs que não estão pausados
+                dag_ids=$(curl -X GET "${AIRFLOW_API_URL}?paused=false" | jq -r '.dags[] | .dag_id')
+
+                # Imprimir os DAG IDs obtidos
+                echo "DAG IDs disponíveis para pausar:"
+                echo "$dag_ids"
+                echo
+
+                # Função para pausar um DAG
+                pause_dag() {
+                    local dag_id=$1
+
+                    # Enviar solicitação PATCH para pausar a DAG
+                    response=$(curl -X PATCH "${AIRFLOW_API_URL}/${dag_id}" \
+                        -H "Content-Type: application/json" \
+                        -d '{"is_paused": true}' \
+                        -s -o /dev/null -w "%{http_code}")
+
+                    if [ $response -eq 200 ]; then
+                        echo "DAG ID $dag_id pausada com sucesso."
+                    else
+                        echo "Falha ao pausar DAG ID $dag_id."
+                    fi
+                }
+
+                # Iterar sobre cada DAG_ID e pausá-la
+                for dag_id in $dag_ids; do
+                    pause_dag $dag_id
+                done
+            resources:
+              requests:
+                memory: 100Mi
+          restartPolicy: OnFailure
+{{- end }}
