@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
   labels:
     turn-off: "yes"
+    type: airflow
 spec:
   #replicas: 1
   selector:
