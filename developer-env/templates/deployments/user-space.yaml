@@ -28,7 +28,7 @@ spec:
       serviceAccountName: airflow-scheduler
       initContainers:
       - name: bash-command
-        image: raizenanalyticsdev.azurecr.io/developer-env/bash
+        image: raizenanalyticsdev.azurecr.io/docker.io/bash:5.2.26
         command: ["chown", "-R", "1000:1000", "/volume"]
         volumeMounts:
         - mountPath: /volume
@@ -71,7 +71,7 @@ spec:
       #   imagePullPolicy: IfNotPresent 
       containers:
       - name: nginx
-        image: raizenanalyticsdev.azurecr.io/developer-env/nginx
+        image: raizenanalyticsdev.azurecr.io/docker.io/nginx:1.27.0
         ports:
         - containerPort: 80
         volumeMounts:
@@ -228,7 +228,7 @@ spec:
         imagePullPolicy: IfNotPresent
       {{- end }}
       - name: memcached
-        image: raizenanalyticsdev.azurecr.io/developer-env/memcached
+        image: raizenanalyticsdev.azurecr.io/docker.io/memcached:1.6.29
         ports:
         - containerPort: 11211
         resources: 
