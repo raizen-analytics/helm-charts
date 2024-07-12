@@ -9,6 +9,7 @@ users:
   - username: guifneves
 
 oauth:
+  image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
   proxyProvider: github
   cookieSecret: someSecret
   clientId: someId
@@ -52,6 +53,8 @@ applications:
   controller:
     enabled: true
     image: raizenanalyticsdev.azurecr.io/environment-controller:main
+    maxCpuAvailable: "32"
+    maxMemoryAvailable: "64Gi"
     resources:
       requests:
         memory: "512m"
@@ -60,7 +63,7 @@ applications:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   scheduleUserSpaceStop:
     enabled: true
-    image: bitnami/kubectl:1.22
+    image: raizenanalyticsdev.azurecr.io/developer-env/kubectl
     cron: "0 23 * * *"
   registry:
     admin:

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:  
       - name: nginx
-        image: raizenanalyticsdev.azurecr.io/developer-env/nginx
+        image: raizenanalyticsdev.azurecr.io/docker.io/nginx:1.27.0
         env:
         - name: FORCE_RELOAD
           value: {{ randAlphaNum 16 | quote }}
@@ -33,7 +33,7 @@ spec:
           subPath: default.conf
           name: user-gateway-cfg
       - name: oauth
-        image: quay.io/pusher/oauth2_proxy:v6.1.1
+        image: {{ .Values.oauth.image }}
         env:
         - name: OAUTH2_PROXY_PROVIDER
           value: {{ required "A valid .Values.oauth.proxyProvider entry required!" .Values.oauth.proxyProvider | quote }}
