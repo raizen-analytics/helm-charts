@@ -33,7 +33,7 @@ spec:
           subPath: default.conf
           name: user-gateway-cfg
       - name: oauth
-        image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+        image: {{ .Values.oauth.image }}
         env:
         - name: OAUTH2_PROXY_PROVIDER
           value: {{ required "A valid .Values.oauth.proxyProvider entry required!" .Values.oauth.proxyProvider | quote }}

@@ -9,6 +9,7 @@ users:
   - username: guifneves
 
 oauth:
+  image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
   proxyProvider: github
   cookieSecret: someSecret
   clientId: someId
@@ -52,6 +53,8 @@ applications:
   controller:
     enabled: true
     image: raizenanalyticsdev.azurecr.io/environment-controller:main
+    maxCpuAvailable: "32"
+    maxMemoryAvailable: "64Gi"
     resources:
       requests:
         memory: "512m"
