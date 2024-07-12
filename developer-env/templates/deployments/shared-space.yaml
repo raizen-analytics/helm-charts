@@ -35,9 +35,9 @@ spec:
         image: {{ .Values.applications.controller.image }}
         env:
         - name: MAX_CPU
-          value: {{ .Values.applications.controller.maxCpuAvailable }}
+          value: {{ .Values.applications.controller.maxCpuAvailable | toJson | squote}}
         - name: MAX_MEMORY
-          value: {{ .Values.applications.controller.maxMemoryAvailable }}
+          value: {{ .Values.applications.controller.maxMemoryAvailable | toJson | squote}}
         ports:
         - containerPort: 5002
         resources: {{- toYaml .Values.applications.controller.resources | nindent 10}}
