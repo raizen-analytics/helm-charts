@@ -35,7 +35,7 @@ spec:
         image: {{ .Values.applications.controller.image }}
         env:
         - name: MAX_CPU
-          value: 32 # {{ .Values.applications.controller.maxCpu }}
+          value: '32' # {{ .Values.applications.controller.maxCpu }}
         - name: MAX_MEMORY
           value: '64Gi' # {{ .Values.applications.controller.maxMemory }}
         ports:
