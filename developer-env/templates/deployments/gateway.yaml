@@ -53,7 +53,7 @@ spec:
           value: :4180
         - name: OAUTH2_PROXY_REDIRECT_URL
           value: {{ required "A valid .Values.oauth.redirectUrl entry required!" .Values.oauth.redirectUrl | quote }}
-        - name: OAUTH2_PROXY_SKIP_AUTH_REGEX
+        - name: OAUTH2_PROXY_SKIP_AUTH_ROUTE
           value: "{{- $local := dict "first" true -}} {{range .Values.users}} {{- if not $local.first -}},{{- end -}} {{lower .username}}//* {{- $_ := set $local "first" false -}} {{ end }}"
         resources:
           requests:
