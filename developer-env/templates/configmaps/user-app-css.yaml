@@ -8,7 +8,7 @@ metadata:
   namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
-  style.css: |
+  styles.css: |
     p{
       color: red;
     }
