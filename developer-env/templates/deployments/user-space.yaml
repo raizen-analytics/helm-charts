@@ -289,7 +289,7 @@ spec:
             items:
             - key: index.html
               path: index.html
-        - name: styles-css
+        - name: user-apps-css
           configMap:
             name: {{lower .username}}-styles-css
             items:
