@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{lower .username}}-style-css
+  name: {{lower .username}}-styles-css
   namespace: {{ $root.Release.Namespace | quote }}
 data:
   # yamllint disable rule:line-length
