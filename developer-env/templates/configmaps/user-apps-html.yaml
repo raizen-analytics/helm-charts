@@ -12,6 +12,7 @@ data:
     <!DOCTYPE html>
     <head>
       <meta charset="UTF-8">
+      <link rel="stylesheet" href="./style.css">
     </head>
     <body>
       <h2>Tools</h2>

@@ -81,6 +81,9 @@ spec:
           - mountPath: /usr/share/nginx/html/index.html
             subPath: index.html
             name: user-apps-html
+          - mountPath: /usr/share/nginx/html/styles.css
+            subPath: styles.css
+            name: user-apps-css
           # - mountPath: /usr/share/nginx/html/password
           #   name: registry-secret
           #   subPath: password
@@ -286,6 +289,12 @@ spec:
             items:
             - key: index.html
               path: index.html
+        - name: styles-css
+          configMap:
+            name: {{lower .username}}-styles-css
+            items:
+            - key: styles.css
+              path: styles.css
         - name: dshm
           emptyDir:
             medium: Memory

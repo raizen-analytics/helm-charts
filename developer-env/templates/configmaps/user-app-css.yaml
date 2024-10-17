@@ -1,0 +1,15 @@
+{{- $root := . -}}
+{{- range .Values.users }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{lower .username}}-style-css
+  namespace: {{ $root.Release.Namespace | quote }}
+data:
+  # yamllint disable rule:line-length
+  style.css: |
+    p{
+      color: red;
+    }
+{{- end }}
