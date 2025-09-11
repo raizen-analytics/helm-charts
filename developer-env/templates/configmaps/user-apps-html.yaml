@@ -165,7 +165,7 @@ data:
     	</main>
     
     	<script>
-    		function setTheme(theme) {
+        function setTheme(theme) {
           if (!theme) return;
           localStorage.setItem('user-theme', theme)
           document.documentElement.setAttribute('data-theme', theme)
@@ -175,19 +175,19 @@ data:
             document.querySelector('#theme-switcher svg').classList.remove('moon')
           }
         }
-    		function toggleTheme(e) {
-    			if (document.documentElement.getAttribute('data-theme') == 'light') {
-    				setTheme('dark')
-    			} else {
-    				setTheme('light')
-    			}
-    		}
-    		function onLoad() {
+        function toggleTheme(e) {
+          if (document.documentElement.getAttribute('data-theme') == 'light') {
+            setTheme('dark')
+          } else {
+            setTheme('light')
+          }
+        }
+        function onLoad() {
           setTheme(localStorage.getItem('user-theme'))
-    			let bt = document.getElementById('theme-switcher')
-    			bt.addEventListener('click', toggleTheme)
-    		}
-    		onLoad();
+          let bt = document.getElementById('theme-switcher')
+          bt.addEventListener('click', toggleTheme)
+        }
+        onLoad();
     	</script>
     </body>
 
