@@ -165,21 +165,28 @@ data:
     	</main>
     
     	<script>
-    		function switchTheme(e) {
+    		function setTheme(theme) {
+          if (!theme) return;
+          localStorage.setItem('user-theme', theme)
+          document.documentElement.setAttribute('data-theme', theme)
+          if (theme == 'light') {
+            document.querySelector('#theme-switcher svg').classList.add('moon')
+          } else {
+            document.querySelector('#theme-switcher svg').classList.remove('moon')
+          }
+        }
+    		function toggleTheme(e) {
     			if (document.documentElement.getAttribute('data-theme') == 'light') {
-    				document.documentElement.setAttribute('data-theme', 'dark')
-    				document.querySelector('#theme-switcher svg').classList.remove('moon')
+    				setTheme('dark')
     			} else {
-    				document.documentElement.setAttribute('data-theme', 'light')
-    				document.querySelector('#theme-switcher svg').classList.add('moon')
+    				setTheme('light')
     			}
     		}
-    
     		function onLoad() {
+          setTheme(localStorage.getItem('user-theme'))
     			let bt = document.getElementById('theme-switcher')
-    			bt.addEventListener('click', switchTheme)
+    			bt.addEventListener('click', toggleTheme)
     		}
-    
     		onLoad();
     	</script>
     </body>
