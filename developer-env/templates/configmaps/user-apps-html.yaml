@@ -86,9 +86,7 @@ data:
     		}
     	</style>
     </head>
-    
     <body class="container">
-    
     	<header>
     		<nav>
     			<ul>
@@ -163,7 +161,6 @@ data:
     			<kbd>ssh {{lower .username}}@localhost -p EXPOSED_PORT</kbd>
     		</p>
     	</main>
-    
     	<script>
         function setTheme(theme) {
           if (!theme) return;
@@ -190,5 +187,4 @@ data:
         onLoad();
     	</script>
     </body>
-
 {{- end }}
