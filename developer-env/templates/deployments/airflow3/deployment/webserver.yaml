@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: airflow-webserver
+  name: airflow3-webserver
   namespace: {{ .Release.Namespace | quote }}
   labels:
     turn-off: "yes"

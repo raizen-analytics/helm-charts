@@ -73,6 +73,8 @@ applications:
       enabled: false
       secret: admin-registry
       # secret must have username and password keys
+  pauseAirflowDags:
+    enabled: true
 
 ingress:
   host: dev.project.raizen.ai
