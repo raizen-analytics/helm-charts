@@ -28,7 +28,7 @@ spec:
         env:
         #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
           #value: 'DEBUG'
-        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+        - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@airflow3-postgres:5432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY
           value: "hm2d6x0yCzwg7AmhsjIByJGtoP1ZpIdFBPZFFrPfxHw="
