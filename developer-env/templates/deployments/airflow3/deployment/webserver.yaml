@@ -40,20 +40,20 @@ spec:
           value: /opt/airflow/logs
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING
           value: 'False'
-        - name: AIRFLOW__WEBSERVER__RBAC
-          value: 'False'
-        - name: AIRFLOW__WEBSERVER__BASE_URL
+        # - name: AIRFLOW__WEBSERVER__RBAC
+        #   value: 'False'
+        - name: AIRFLOW__API__BASE_URL
           value: http://127.0.0.1:8080/airflow3
-        - name: AIRFLOW__WEBSERVER__WEB_SERVER_HOST
+        - name: AIRFLOW__API__HOST
           value: '0.0.0.0'
-        - name: AIRFLOW__WEBSERVER__WEB_SERVER_PORT
+        - name: AIRFLOW__API__PORT
           value: '8080'
-        - name: AIRFLOW__API__AUTH_BACKENDS
-          value: airflow.api.auth.backend.default
-        - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
+        # - name: AIRFLOW__API__AUTH_BACKENDS
+        #   value: airflow.api.auth.backend.default
+        - name: AIRFLOW__API__INSTANCE_NAME
           value: 'DEV'
-        - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
-          value: '#ccedfc'
+        # - name: AIRFLOW__WEBSERVER__NAVBAR_COLOR
+        #   value: '#ccedfc'
         - name: AIRFLOW__KUBERNETES_EXECUTOR__NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: AIRFLOW__KUBERNETES_EXECUTOR__WORKER_CONTAINER_REPOSITORY

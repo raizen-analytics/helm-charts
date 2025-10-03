@@ -51,4 +51,4 @@ spec:
       volumes:
       - name: postgres-airflow
         persistentVolumeClaim:
-          claimName: postgres-airflow
+          claimName: postgres3-airflow

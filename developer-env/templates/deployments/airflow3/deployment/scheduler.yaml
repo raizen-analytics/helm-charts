@@ -88,7 +88,7 @@ spec:
           claimName: airflow3-dags
       - name: airflow-logs
         persistentVolumeClaim:
-            claimName: airflow3-logs
+          claimName: airflow3-logs
       - name: airflow-pod-template
         configMap:
           name: airflow3-pod-template
