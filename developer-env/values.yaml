@@ -22,6 +22,9 @@ applications:
   airflow:
     image: raizenanalyticsdev.azurecr.io/airflow-base
     tag: v2.7.2-slim-qa
+  airflow3:
+    image: raizenanalyticsdev.azurecr.io/airflow-base
+    tag: v3.0.6rc1
   vscode:
     image: codercom/code-server
     args: ['code-server', '--auth', 'none', '--bind-addr', '0.0.0.0:29901', '.']
