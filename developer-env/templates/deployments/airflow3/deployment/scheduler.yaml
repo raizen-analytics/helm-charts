@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: airflow-scheduler
+  name: airflow3-scheduler
   namespace: {{ .Release.Namespace | quote }}
   labels:
     turn-off: "yes"
