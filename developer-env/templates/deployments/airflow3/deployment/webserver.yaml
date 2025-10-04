@@ -45,7 +45,7 @@ spec:
         - name: AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS
           value: 'True'
         - name: AIRFLOW__API__BASE_URL
-          value: http://127.0.0.1:8080/airflow3
+          value: http://airflow3-webserver:8080/airflow3
         - name: AIRFLOW__API__HOST
           value: '0.0.0.0'
         - name: AIRFLOW__API__PORT
