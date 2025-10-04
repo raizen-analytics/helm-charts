@@ -47,7 +47,7 @@ data:
             - name: AIRFLOW__LOGGING__REMOTE_LOGGING
               value: 'False'
           envFrom: []
-          image: "{{ $root.Values.applications.airflow.image }}:{{ $root.Values.applications.airflow.tag }}"
+          image: "{{ $root.Values.applications.airflow3.image }}:{{ $root.Values.applications.airflow3.tag }}"
           imagePullPolicy: IfNotPresent
           name: base
           ports: []
