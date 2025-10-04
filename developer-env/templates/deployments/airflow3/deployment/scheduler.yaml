@@ -49,6 +49,8 @@ spec:
           value: 'False'
         - name: AIRFLOW__CORE__EXECUTOR
           value: KubernetesExecutor
+        - name: AIRFLOW__API_AUTH__JWT_SECRET
+          value: raMAULH5y+R/HROuba5QO50mY6k=
         - name: AIRFLOW__LOGGING__BASE_LOG_FOLDER
           value: /opt/airflow/logs
         - name: AIRFLOW__LOGGING__REMOTE_LOGGING

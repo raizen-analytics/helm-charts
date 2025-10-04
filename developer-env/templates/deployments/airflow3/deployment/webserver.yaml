@@ -50,6 +50,8 @@ spec:
           value: '0.0.0.0'
         - name: AIRFLOW__API__PORT
           value: '8080'
+        - name: AIRFLOW__API_AUTH__JWT_SECRET
+          value: raMAULH5y+R/HROuba5QO50mY6k=
         # - name: AIRFLOW__API__AUTH_BACKENDS
         #   value: airflow.api.auth.backend.default
         - name: AIRFLOW__API__INSTANCE_NAME
