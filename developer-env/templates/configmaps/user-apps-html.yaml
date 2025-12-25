@@ -11,57 +11,180 @@ data:
   index.html: |
     <!DOCTYPE html>
     <head>
-      <meta charset="UTF-8">
-    </head>
-    <body>
-      <h2>Tools</h2>
-      <ul>
-        <li><a href="./code/">Code</a></li>
-        <li><a href="./jupyter/">JupyterLab</a></li>
-        <li><a href="./jupyter/tree">Jupyter (classic)</a></li>
-        {{- if $root.Values.applications.rstudio.enabled }}
-        <li><a href="./rstudio/">R-Studio</a></li>
-        {{- end }}
-        <li><a href="/">Controlador de Ambiente</a></li>
-      </ul>
-      <h2>Applications</h2>
-      <ul>
-        <li><a href="/airflow/">Airflow</a></li>
-        <li><a href="/mlflow/">Mlflow</a></li>
-      </ul>
-      <h2>Other</h2>
-      <ul>
-        <li><a href="./browser/">Firefox</a></li>
-        <li><a href="https://analyticsldt.atlassian.net/wiki/spaces/EED/pages/3026288727/DataOps">Confluence de DataOPS</a></li>
-      </ul>
-      <h2>Instructions</h2>
-      <h3>Mlflow</h3>
-      <p>
-        Tracking URI for cluster internal use: http://shared-space:5000
-      </p>
-      <h3>SSH (Experimental)</h3>
-      <p>
-        Download <a href="{{ $root.Values.ssh.clientDownloadLink }}">ws-tunnel</a> and execute: ws-tunnel wss://{{ $root.Values.ingress.host }}/{{lower .username}}/ssh
-      </p>
-      <p>
-        Then connect to the port exposed: ssh {{lower .username}}@localhost -p EXPOSED_PORT
-      </p>
-      <script>
-        function onLoad(){
-          fetch("./password").then(function(response) {
-            response.text().then(function(password){
-              document.getElementById('password').value = password;
-            })
-          });
-        }
+    	<title>DEV</title>
+    	<meta charset="UTF-8">
+    	<link rel="icon"
+    		href="data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E%0Apath %7B fill: %2360903e; %7D%0A@media (prefers-color-scheme: dark) %7B%0Apath %7B fill: %23acd36c; %7D%0A%7D%0A.booster %7B stroke: %23f57c00; %7D%0A%3C/style%3E%3Cpath d='M0.792725 12.2929L5.08562 8.00002L0.792725 3.70712L2.20694 2.29291L7.91405 8.00002L2.20694 13.7071L0.792725 12.2929Z'/%3E%3Cpath d='M7.00006 15H15.0001V13H7.00006V15Z'/%3E%3C/svg%3E"
+    		sizes="any" type="image/svg+xml" />
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+    	<style>
+    		svg:not(:host),
+    		svg:not(:root) {
+    			overflow: hidden;
+    			vertical-align: text-bottom;
+    		}
     
-        function copyToClipboard() {
-          var copyText = document.getElementById("password");
-          copyText.select();
-          copyText.setSelectionRange(0, 99999);
-          document.execCommand("copy");
+    		svg.theme-toggle {
+    			display: inline-block;
+    			width: auto;
+    		}
+    
+    		svg.icon-theme-toggle {
+    			--theme-toggle-duration: .4s;
+    		}
+    
+    		svg.icon-theme-toggle.moon :first-child path {
+    			d: path("M-9 3h25a1 1 0 0017 13v30H0Z");
+    			transition-delay: calc(var(--theme-toggle-duration) * .4);
+    			transition-timing-function:
+    				cubic-bezier(0, 0, 0, 1.25);
+    		}
+    
+    		svg.icon-theme-toggle g circle,
+    		svg.icon-theme-toggle g path {
+    			transform-origin: center;
+    			transition: transform calc(var(--theme-toggle-duration) * .65) cubic-bezier(0, 0, 0, 1.25) calc(var(--theme-toggle-duration) * .35);
+    		}
+    
+    		svg.icon-theme-toggle :first-child path {
+    			transition-duration: calc(var(--theme-toggle-duration) * .6);
+    			transition-property: transform, d;
+    			transition-timing-function:
+    				cubic-bezier(0, 0, .5, 1);
+    		}
+    
+    		svg.icon-theme-toggle :first-child path {
+    			transition-duration: calc(var(--theme-toggle-duration) * .6);
+    			transition-property: transform, d;
+    			transition-timing-function:
+    				cubic-bezier(0, 0, .5, 1);
+    		}
+    
+    		svg.icon-theme-toggle.moon g path {
+    			transform: scale(.75);
+    			transition-delay: 0s;
+    		}
+    
+    		svg.icon-theme-toggle.moon g circle {
+    			transform: scale(1.4);
+    			transition-delay: 0s;
+    		}
+    
+    		svg.icon-theme-toggle g circle,
+    		svg.icon-theme-toggle g path {
+    			transform-origin: center;
+    			transition: transform calc(var(--theme-toggle-duration) * .65) cubic-bezier(0, 0, 0, 1.25) calc(var(--theme-toggle-duration) * .35);
+    		}
+    
+    		svg.icon-theme-toggle.moon g path {
+    			transform: scale(.75);
+    			transition-delay: 0s;
+    		}
+    
+    		a {
+    			text-decoration-style: wavy;
+    		}
+    	</style>
+    </head>
+    <body class="container">
+    	<header>
+    		<nav>
+    			<ul>
+    				<li>
+    					<h2>Welcome, {{lower .username}}!</h2>
+    				</li>
+    			</ul>
+    			<ul>
+    				<li><a href="/" class="contrast" style="text-decoration-style: wavy;">Controller</a></li>
+    				<li><a href="#" id="theme-switcher" class="contrast"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+    							height="24" viewBox="0 0 32 32" fill="currentColor" class="icon-theme-toggle theme-toggle">
+    							<clipPath id="theme-toggle-cutout">
+    								<path d="M0-11h25a1 1 0 0017 13v30H0Z"></path>
+    							</clipPath>
+    							<g clip-path="url(#theme-toggle-cutout)">
+    								<circle cx="16" cy="16" r="8.4"></circle>
+    								<path
+    									d="M18.3 3.2c0 1.3-1 2.3-2.3 2.3s-2.3-1-2.3-2.3S14.7.9 16 .9s2.3 1 2.3 2.3zm-4.6 25.6c0-1.3 1-2.3 2.3-2.3s2.3 1 2.3 2.3-1 2.3-2.3 2.3-2.3-1-2.3-2.3zm15.1-10.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zM3.2 13.7c1.3 0 2.3 1 2.3 2.3s-1 2.3-2.3 2.3S.9 17.3.9 16s1-2.3 2.3-2.3zm5.8-7C9 7.9 7.9 9 6.7 9S4.4 8 4.4 6.7s1-2.3 2.3-2.3S9 5.4 9 6.7zm16.3 21c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zm2.4-21c0 1.3-1 2.3-2.3 2.3S23 7.9 23 6.7s1-2.3 2.3-2.3 2.4 1 2.4 2.3zM6.7 23C8 23 9 24 9 25.3s-1 2.3-2.3 2.3-2.3-1-2.3-2.3 1-2.3 2.3-2.3z">
+    								</path>
+    							</g>
+    						</svg></a></li>
+    			</ul>
+    		</nav>
+    	</header>
+    	<main>
+    		<h3>Tools</h3>
+    		<div class="grid">
+    			<article>
+    				<h4>IDEs</h4>
+    				<ul>
+    					<li><a href="./code/" target="_blank">Code</a></li>
+    					<li><a href="./jupyter/" target="_blank">Jupyter Lab</a></li>
+    					<li><a href="./jupyter/tree" target="_blank">Jupyter</a></li>
+    					{{- if $root.Values.applications.rstudio.enabled }}
+    					<li><a href="./rstudio/" target="_blank">R-Studio</a></li>
+    					{{- end }}
+    				</ul>
+    			</article>
+    			<article>
+    				<h4>Applications</h4>
+    				<ul>
+    					<li><a href="./airflow/" target="_blank">Airflow</a></li>
+    					<li><a href="./mlflow/" target="_blank">MLflow</a></li>
+    				</ul>
+    			</article>
+    			<article>
+    				<h4>Other</h4>
+    				<ul>
+    					<li><a href="./browser/" target="_blank">Firefox</a></li>
+    					<li><a href="https://analyticsldt.atlassian.net/wiki/spaces/EED/pages/3026288727/DataOps" target="_blank">Confluence DataOps</a></li>
+              <li><a href="https://grafana.dev.raizen.ai/" target="_blank">Grafana DEV</a></li>
+    				</ul>
+    			</article>
+    		</div>
+    		<hr />
+    		<h3>Instructions</h3>
+    		<h4>Mlflow</h4>
+    		<p>
+    			Tracking URI for cluster internal use: <a>http://shared-space:5000</a>
+    		</p>
+    		<h4>SSH Tunnel</h4>
+    		<p>
+    			Download <a href="{{ $root.Values.ssh.clientDownloadLink }}" target="_blank">ws-tunnel</a> and execute:
+    		</p>
+    		<p>
+    			<kbd>ws-tunnel wss://{{ $root.Values.ingress.host }}/{{lower .username}}/ssh</kbd>
+    		</p>
+    		<p>
+    			Then connect to the port exposed:
+    		</p>
+    		<p>
+    			<kbd>ssh {{lower .username}}@localhost -p EXPOSED_PORT</kbd>
+    		</p>
+    	</main>
+    	<script>
+        function setTheme(theme) {
+          if (!theme) return;
+          localStorage.setItem('user-theme', theme)
+          document.documentElement.setAttribute('data-theme', theme)
+          if (theme == 'light') {
+            document.querySelector('#theme-switcher svg').classList.add('moon')
+          } else {
+            document.querySelector('#theme-switcher svg').classList.remove('moon')
+          }
+        }
+        function toggleTheme(e) {
+          if (document.documentElement.getAttribute('data-theme') == 'light') {
+            setTheme('dark')
+          } else {
+            setTheme('light')
+          }
+        }
+        function onLoad() {
+          setTheme(localStorage.getItem('user-theme'))
+          let bt = document.getElementById('theme-switcher')
+          bt.addEventListener('click', toggleTheme)
         }
         onLoad();
-      </script>
+    	</script>
     </body>
 {{- end }}
