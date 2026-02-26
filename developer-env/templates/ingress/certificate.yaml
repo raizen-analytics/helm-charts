@@ -11,9 +11,6 @@ spec:
   renewBefore: 360h # 15d
   dnsNames:
   - {{ .Values.ingress.host }}
-  # {{- range .Values.users }}
-  # - {{lower .username}}.{{ $root.Values.ingress.host }}
-  # {{- end }}
   issuerRef:
     name: {{ .Values.ingress.tls.clusterIssuerName | quote }}
     kind: ClusterIssuer
