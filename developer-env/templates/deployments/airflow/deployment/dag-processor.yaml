@@ -7,7 +7,6 @@ metadata:
     turn-off: "yes"
     type: airflow
 spec:
-  #replicas: 1
   selector:
     matchLabels:
       app: airflow-dag-processor
@@ -25,9 +24,11 @@ spec:
       - name: airflow-dag-processor
         image: "{{ .Values.applications.airflow.image }}:{{ .Values.applications.airflow.tag }}"
         command: ["sh", "-c", "sleep 60 && airflow dag-processor"]
+        resources: 
+          requests:
+            memory: 800Mi
+            cpu: 300m
         env:
-        #- name: AIRFLOW__LOGGING__LOGGING_LEVEL
-          #value: 'DEBUG'
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
           value: postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
         - name: AIRFLOW__CORE__FERNET_KEY

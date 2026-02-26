@@ -50,12 +50,12 @@ applications:
   controller:
     enabled: true
     image: raizenanalyticsdev.azurecr.io/environment-controller:main
-    maxCpuAvailable: "12"
-    maxMemoryAvailable: "48Gi"
+    maxCpuAvailable: "5"
+    maxMemoryAvailable: "30Gi"
     resources:
       requests:
-        memory: "512m"
-        cpu: "250m"
+        memory: "700Mi"
+        cpu: "100m"
   mlflow:
     image: raizenanalyticsdev.azurecr.io/mlflowz
   scheduleUserSpaceStop:
@@ -80,15 +80,6 @@ ssh:
 
 imagePullSecrets:
   - name: acr-secret
-
-# nodeSelector:
-#   key: value2
-  
-# tolerations:
-#   - key: "key"
-#     operator: "Equal"
-#     value: "value"
-#     effect: "NoSchedule"
 
 volumes:
   users:

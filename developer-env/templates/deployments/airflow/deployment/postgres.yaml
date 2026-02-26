@@ -7,7 +7,6 @@ metadata:
     turn-off: "yes"
     type: airflow
 spec:
-  #replicas: 1
   selector:
     matchLabels:
       app: airflow-postgres
@@ -41,8 +40,8 @@ spec:
         - containerPort: 5432
         resources: 
           requests:
-            memory: 2Gi
-            cpu: 0.5
+            memory: 500Mi
+            cpu: 100m
         volumeMounts:
         - mountPath: /var/lib/postgresql/data/pgdata
           name: postgres-airflow

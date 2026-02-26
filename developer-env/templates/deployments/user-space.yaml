@@ -12,7 +12,6 @@ metadata:
     type: user-space
     owner: {{.username}}
 spec:
-  # replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -37,38 +36,6 @@ spec:
           name: user-disk
           subPath: project
         imagePullPolicy: IfNotPresent
-      # - name: registry-credentials
-      #   image: registry:2.6
-      #   {{- if $root.Values.applications.registry.admin.enabled}}
-      #   command: ["/bin/sh", "-c", "htpasswd -Bbc /auth/htpasswd {{lower .username}} $(USER_PASSWORD) && htpasswd -Bb /auth/htpasswd $(ADMIN_USER) $(ADMIN_PASSWORD)"]
-      #   {{ else }}
-      #   command: ["htpasswd", "-Bbc", "/auth/htpasswd", "{{lower .username}}", "$(USER_PASSWORD)"]
-      #   {{ end }}
-      #   env:
-      #   - name: USER_PASSWORD
-      #     valueFrom:
-      #       secretKeyRef:
-      #         name: {{lower .username}}-registry-secret
-      #         key: password
-      #   {{- if $root.Values.applications.registry.admin.enabled}}
-      #   - name: ADMIN_USER
-      #     valueFrom:
-      #       secretKeyRef:
-      #         name: {{ $root.Values.applications.registry.admin.secret }}
-      #         key: username
-      #   - name: ADMIN_PASSWORD
-      #     valueFrom:
-      #       secretKeyRef:
-      #         name: {{ $root.Values.applications.registry.admin.secret }}
-      #         key: password
-      #   {{- end }}
-      #   - name: FORCE_RELOAD
-      #     value: {{randAlphaNum 16 | quote}}
-      #   volumeMounts:
-      #   - mountPath: /auth
-      #     name: user-disk
-      #     subPath: auth
-      #   imagePullPolicy: IfNotPresent 
       containers:
       - name: nginx
         image: raizenanalyticsdev.azurecr.io/docker.io/nginx:1.27.0
@@ -81,9 +48,6 @@ spec:
           - mountPath: /usr/share/nginx/html/index.html
             subPath: index.html
             name: user-apps-html
-          # - mountPath: /usr/share/nginx/html/password
-          #   name: registry-secret
-          #   subPath: password
         imagePullPolicy: IfNotPresent
       - name: vscode
         {{- if $root.Values.applications.vscode.command }}
@@ -92,7 +56,6 @@ spec:
         {{- if $root.Values.applications.vscode.args }}
         args: {{- toYaml $root.Values.applications.vscode.args | nindent 10}}
         {{- end }}
-        # args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
         image: {{ $root.Values.applications.vscode.image }}
         env:
         - name: USERNAME
@@ -103,8 +66,6 @@ spec:
           value: kaniko
         - name: K8S_KANIKO_VOLUME_CLAIM
           value: {{lower .username}}-file-data
-        # - name: K8S_REGISTRY_SECRET_NAME
-        #   value: {{lower .username}}-registry-secret
         - name: K8S_NAMESPACE
           value: {{ $root.Release.Namespace | quote }}
         - name: MLFLOW_TRACKING_URI
@@ -120,9 +81,6 @@ spec:
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.vscode.resources | nindent 10}}
-        # resources: 
-        #   requests:
-        #     memory: 200Mi
         volumeMounts:
         - mountPath: /home/coder/
           name: user-disk
@@ -146,7 +104,6 @@ spec:
         {{- if $root.Values.applications.jupyter.args }}
         args: {{- toYaml $root.Values.applications.jupyter.args | nindent 10}}
         {{- end }}
-        # args: ["jupyter", "lab", "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.base_url=/jupyter", "--port", "29902"]
         env:
         - name: MLFLOW_TRACKING_URI
           value: http://shared-space:5000
@@ -186,7 +143,6 @@ spec:
         {{- if $root.Values.applications.rstudio.args }}
         args: {{- toYaml $root.Values.applications.rstudio.args | nindent 10}}
         {{- end }}
-        # args: ['code-server','--host','0.0.0.0', '.', '--auth', 'none', '--port', '29901']
         image: {{ $root.Values.applications.rstudio.image }}
         env:
         - name: USERNAME
@@ -208,9 +164,6 @@ spec:
         ports:
         - containerPort: 29901
         resources: {{- toYaml $root.Values.applications.rstudio.resources | nindent 10}}
-        # resources: 
-        #   requests:
-        #     memory: 200Mi
         volumeMounts:
         - mountPath: /home/coder/
           name: user-disk
@@ -234,6 +187,7 @@ spec:
         resources: 
           requests:
             memory: 32Mi
+            cpu: 10m
       - name: firefox
         image: raizenanalyticsdev.azurecr.io/developer-env/firefox
         env:
