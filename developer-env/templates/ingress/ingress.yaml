@@ -13,9 +13,6 @@ spec:
   tls:
   - hosts:
     - {{ .Values.ingress.host }}
-    # {{- range .Values.users }}
-    # - {{lower .username}}.{{ $root.Values.ingress.host }}
-    # {{- end }}
     secretName: {{ .Values.ingress.secretName }}
   rules:
   - host: {{ .Values.ingress.host }}
@@ -28,11 +25,4 @@ spec:
             name: user-gateway
             port:
               number: 4180
-  # {{- range .Values.users }}
-  # - host: {{lower .username}}.{{ $root.Values.ingress.host }}
-  #   http:
-  #     paths:
-  #     - backend:
-  #         serviceName: {{lower .username}}-space
-  #         servicePort: 29500
   {{- end }}

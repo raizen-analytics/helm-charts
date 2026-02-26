@@ -39,6 +39,10 @@ spec:
       containers:
       - name: nginx
         image: raizenanalyticsdev.azurecr.io/docker.io/nginx:1.27.0
+        resources: 
+          requests:
+            memory: 50Mi
+            cpu: 10m
         ports:
         - containerPort: 80
         volumeMounts:
@@ -190,6 +194,10 @@ spec:
             cpu: 10m
       - name: firefox
         image: raizenanalyticsdev.azurecr.io/developer-env/firefox
+        resources: 
+          requests:
+            memory: 200Mi
+            cpu: 50m
         env:
         - name: DISPLAY_WIDTH
           value: '1920'
@@ -203,6 +211,10 @@ spec:
         imagePullPolicy: IfNotPresent
       - name: ws-tunnel
         image: raizenanalyticsdev.azurecr.io/ws-tunnel-server
+        resources: 
+          requests:
+            memory: 50Mi
+            cpu: 10m
         args: ['-addr', 'localhost:22', '-path', 'ssh']
         ports:
           - containerPort: 9191
