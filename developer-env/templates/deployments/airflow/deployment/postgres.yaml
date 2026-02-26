@@ -40,7 +40,7 @@ spec:
         - containerPort: 5432
         resources: 
           requests:
-            memory: 500Mi
+            memory: 1Gi
             cpu: 100m
         volumeMounts:
         - mountPath: /var/lib/postgresql/data/pgdata
