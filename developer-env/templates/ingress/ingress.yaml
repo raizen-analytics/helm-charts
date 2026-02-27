@@ -25,4 +25,4 @@ spec:
             name: user-gateway
             port:
               number: 4180
-  {{- end }}
+{{- end }}
